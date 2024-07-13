@@ -31,7 +31,7 @@ services:
   owaspzap:
     image: securecodebox/zap
     ports:
-      - "8081:8080"
+      - "8081:8080" #hardware : container
     networks:
       - dev-network
 
