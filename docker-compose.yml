@@ -34,6 +34,8 @@ services:
       - "8081:8080" #hardware : container
     networks:
       - dev-network
+    #build: 
+    #depends-on: jenkins
 
 networks:
   dev-network:

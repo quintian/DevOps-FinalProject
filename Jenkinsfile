@@ -32,6 +32,11 @@ pipeline {
                 }
             }
         }
+        stage('OWASP Dependency Analysis') {
+            steps{
+                // OWASP dependency steps
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
