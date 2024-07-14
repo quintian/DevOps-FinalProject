@@ -27,7 +27,7 @@ Output:
 > Receiving objects: 100% (9967/9967), 7.55 MiB | 7.42 MiB/s, done.
 > Resolving deltas: 100% (3762/3762), done.
 
--Create configuration files for grafana as finalproject/grafana.ini
+- Create configuration files for grafana as finalproject/grafana.ini
 ```
 [server]
 ; TBD: Explore http vs https
@@ -42,7 +42,7 @@ serve_from_sub_path = false
 admin_user = admin
 admin_password = admin
 ```
--Create configuration files for promethues as finalproject/prometheus.yml
+- Create configuration files for promethues as finalproject/prometheus.yml
 ```
 global:
   scrape_interval: 15s
