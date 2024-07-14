@@ -1,0 +1,16 @@
+# Dockerfile for spring-petclinic testing (OWASP-ZAP)
+
+FROM openjdk:11.0.1-jre-slim-stretch
+
+# Expose port 8080 (assuming your application runs on this port)
+EXPOSE 8083:8080
+
+# Define an argument for the JAR file name
+# ARG JAR= spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar # JAR FILE GENERATED IN JENKINS BUILD STAGE GOES HERE
+# This will be supplied in teh run statement
+
+# Copy the JAR file from the target directory of your local machine into the container at /app.jar
+COPY target/$JAR /app.jar
+
+# Specify the command to run your application within the container
+ENTRYPOINT ["java","-jar","/app.jar"]
