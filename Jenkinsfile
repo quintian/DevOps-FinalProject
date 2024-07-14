@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -8,13 +7,13 @@ pipeline {
         DOCKERFILE_PATH = 'sandbox_dockerfile'
     }
 
-
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', credentialsId: 'rponcepoGithubPAT', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
+
         stage('Build') {
             steps {
                 script {
@@ -34,20 +33,21 @@ pipeline {
                 }
             }
         }
-        stage('Monitor Jenkins') {
+
+        stage('Static Analysis') {
             steps {
                 script {
-                    // TBD: Prometheus monitoring
-                    echo 'Setting up Prometheus monitoring for Jenkins'
+                    withSonarQubeEnv('SonarQube') {
+                        sh './mvnw sonar:sonar'
+                    }
                 }
             }
         }
 
-        stage('Setup Grafana Dashboard') {
+        stage('Security Analysis') {
             steps {
                 script {
-                    // TBD: Setup Grafana dashboard
-                    echo 'Setting up Grafana dashboard'
+                  //  TBD
                 }
             }
         }
@@ -72,8 +72,7 @@ pipeline {
         stage('Run') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "${mvnHome}/bin/mvn spring-boot:run"
+                // TBD
                 }
             }
         }
