@@ -1,50 +1,41 @@
-
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
                 git url: 'https://github.com/quintian/DevOps-FinalProject.git', branch: 'main'
             }
         }
+
         stage('Build') {
             steps {
-                script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "${mvnHome}/bin/mvn clean package"
-                }
+                sh './mvnw clean package'
             }
         }
-        stage('Test') {
+
+        stage('Static Analysis') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "${mvnHome}/bin/mvn test"
-                }
-            }
-        }
-        stage('Monitor Jenkins') {
-            steps {
-                script {
-                    // TBD: Prometheus monitoring
-                    echo 'Setting up Prometheus monitoring for Jenkins'
+                    withSonarQubeEnv('SonarQube') {
+                        sh './mvnw sonar:sonar'
+                    }
                 }
             }
         }
 
-        stage('Setup Grafana Dashboard') {
+        stage('Security Analysis') {
             steps {
                 script {
-                    // TBD: Setup Grafana dashboard
-                    echo 'Setting up Grafana dashboard'
+                  //  TBD
                 }
             }
         }
-        stage('Run') {
+
+        stage('Deploy') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "${mvnHome}/bin/mvn spring-boot:run"
+                // TBD
                 }
             }
         }
