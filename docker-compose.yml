@@ -33,15 +33,20 @@ services:
       - dev-network
 
   owaspzap:
-    image: securecodebox/zap
+    image : zaproxy/zap-stable
+    #image: securecodebox/zap
     ports:
-      - "8081:8080" #hardware : container
+      - "8081:8080"
     networks:
       - dev-network
-    #build: 
-    #depends-on: jenkins
+    volumes:
+      - proj-vol:/zap/wrk:rw
+    command: "zap-baseline.py -t https://www.example.com -r report_html"
 
 networks:
   dev-network:
     external: true
 
+volumes:
+  proj-vol:
+    external: true
