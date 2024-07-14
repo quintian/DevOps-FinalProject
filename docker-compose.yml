@@ -29,14 +29,23 @@ services:
       - dev-network
 
   owaspzap:
-    image: securecodebox/zap
+    image : zaproxy/zap-stable
+    #image: securecodebox/zap
     ports:
       - "8081:8080"
     networks:
       - dev-network
+    volumes:
+      - proj-vol:/zap/wrk:rw
+    command: "zap-baseline.py -t https://www.example.com"
+    
 
 networks:
   dev-network:
+    external: true
+
+volumes:
+  proj-vol:
     external: true
 
 # version: '3'
