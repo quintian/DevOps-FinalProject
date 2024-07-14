@@ -27,7 +27,35 @@ Output:
 > Receiving objects: 100% (9967/9967), 7.55 MiB | 7.42 MiB/s, done.
 > Resolving deltas: 100% (3762/3762), done.
 
+-Create configuration files for grafana as finalproject/grafana.ini
+```
+[server]
+; TBD: Explore http vs https
+protocol = http
+http_port = 3000
+domain = localhost
+root_url = %(protocol)s://%(domain)s:%(http_port)s/
+serve_from_sub_path = false
 
+[security]
+; TBD: This may be removed once SSH is setup
+admin_user = admin
+admin_password = admin
+```
+-Create configuration files for promethues as finalproject/prometheus.yml
+```
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'jenkins'
+    static_configs:
+      - targets: ['jenkins:8080']
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+```
 - Create dev-network
 
 `docker network create dev-network`
