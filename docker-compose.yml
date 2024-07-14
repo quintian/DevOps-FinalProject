@@ -16,6 +16,8 @@ services:
 
   prometheus:
     image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:
@@ -25,6 +27,8 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
     networks:
       - dev-network
 
@@ -40,45 +44,4 @@ services:
 networks:
   dev-network:
     external: true
-
-# version: '3'
-# services:
-#   jenkins:
-#     image: jenkins/jenkins:lts
-#     ports:
-#       - "8080:8080"
-#     networks:
-#       - dev-network
-
-#   sonarqube:
-#     image: sonarqube
-#     ports:
-#       - "9000:9000"
-#     networks:
-#       - dev-network
-
-#   prometheus:
-#     image: prom/prometheus
-#     ports:
-#       - "9090:9090"
-#     networks:
-#       - dev-network
-
-#   grafana:
-#     image: grafana/grafana
-#     ports:
-#       - "3000:3000"
-#     networks:
-#       - dev-network
-
-#   owaspzap:
-#     image: owasp/zap2docker-stable
-#     ports:
-#       - "8081:8080"
-#     networks:
-#       - dev-network
-
-# networks:
-#   dev-network:
-#     external: true
 

@@ -1,10 +1,6 @@
+
 pipeline {
     agent any
-    
-    environment {
-        DOCKER_COMPOSE_PATH = "/Users/qt/Documents/17636-DevOps/FinalProject/docker-compose.yml"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -13,22 +9,34 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('finalproject/spring-petclinic') {
-                    sh './mvnw clean install'
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    sh "${mvnHome}/bin/mvn clean package"
                 }
             }
         }
         stage('Test') {
             steps {
-                dir('finalproject/spring-petclinic') {
-                    sh './mvnw test'
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    sh "${mvnHome}/bin/mvn test"
                 }
             }
         }
-        stage('Static Analysis') {
+        stage('Monitor Jenkins') {
             steps {
                 script {
-                    // SonarQube analysis steps (to be added later)
+                    // TBD: Prometheus monitoring
+                    echo 'Setting up Prometheus monitoring for Jenkins'
+                }
+            }
+        }
+
+        stage('Setup Grafana Dashboard') {
+            steps {
+                script {
+                    // TBD: Setup Grafana dashboard
+                    echo 'Setting up Grafana dashboard'
                 }
             }
         }
@@ -38,9 +46,11 @@ pipeline {
             }
         }
         stage('Deploy') {
+        stage('Run') {
             steps {
                 script {
-                    // Deployment steps using Ansible (to be added later)
+                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    sh "${mvnHome}/bin/mvn spring-boot:run"
                 }
             }
         }
