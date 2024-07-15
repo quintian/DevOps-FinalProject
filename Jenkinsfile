@@ -15,6 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('spring-petclinic-pipeline/spring-petclinic') {
+                    sh "ls"
                     sh './mvnw clean install'
                 }
             }
