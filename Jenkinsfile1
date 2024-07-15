@@ -6,10 +6,7 @@ pipeline {
         //DOCKER_IMAGE = 'sandboxSpringPetClinic'
         //DOCKERFILE_PATH = 'sandbox_dockerfile'
     }
-    tools {
-        jdk: 'jdk'
-        maven: 'maven'
-    }
+
 
     stages {
         stage('Checkout') {
