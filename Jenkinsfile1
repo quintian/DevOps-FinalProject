@@ -34,7 +34,7 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQube') {
+                    withSonarQubeEnv() {
                         sh './mvnw sonar:sonar'
                     }
                 }
