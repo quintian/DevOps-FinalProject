@@ -31,15 +31,24 @@ services:
       - ./grafana.ini:/etc/grafana/grafana.ini
     networks:
       - dev-network
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
 
   owaspzap:
-    image: securecodebox/zap
+    image : zaproxy/zap-stable
+    #image: securecodebox/zap
     ports:
       - "8081:8080"
     networks:
       - dev-network
+    volumes:
+      - proj-vol:/zap/wrk:rw
+    command: "zap-baseline.py -t https://www.example.com -r report_html"
 
 networks:
   dev-network:
     external: true
 
+volumes:
+  proj-vol:
+    external: true
