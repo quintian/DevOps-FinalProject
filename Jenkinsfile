@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'PAT', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'main', credentialsId: 'camelCaseCurryPAT', url: 'https://github.com/quintian/DevOps-FinalProject'
                 
             }
         }
