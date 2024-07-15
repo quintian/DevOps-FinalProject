@@ -13,4 +13,4 @@ EXPOSE 8083:8080
 COPY target/$JAR /app.jar
 
 # Specify the command to run your application within the container
-ENTRYPOINT ["java","-jar","/app.jar"]
+# ENTRYPOINT ["java","-jar","/app.jar"]

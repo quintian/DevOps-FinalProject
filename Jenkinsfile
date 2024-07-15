@@ -11,9 +11,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'appCont', credentialsId: 'rponcepoGithubPATglobal', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'newCont', credentialsId: 'rponcepoGithubPATglobal', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
+        
         stage('Build') {
             steps {
                 script {
@@ -37,15 +38,38 @@ pipeline {
             }
         }
 
+        stage('Run') {
+            steps {
+                script {
+                    sh """
+                        cd spring-petclinic
+                        ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082
+                    """
+                }
+            }
+        }
+
+        /*
         stage('Build Sandbox Container') {
             steps {
                 script {
                     def jarFile = "${env.WORKSPACE}/target/*.jar"
-                    sh "docker build -t ${DOCKER_IMAGE} --build-arg JAR=${jarFile} -f ${DOCKERFILE_PATH} ."
-                    sh "docker run ${DOCKER_IMAGE} --network ${DOCKER_NETWORK}"
+                    node {
+                        def app = docker.build("${DOCKERFILE_PATH}")
+                        app.inside {
+                            sh "java -jar ${jarFile}"
+                        }
+                    }
+                }
+
+                
+                script {
+                    docker.image()
                 }
             }
         }
+        */
+    
 
         /*
         stage('OWASP Dependency Analysis') {
@@ -70,17 +94,6 @@ pipeline {
         }
 
         //Pretty sure we don't want to run here; we want Ansible to run it on a VM.
-
-        stage('Run') {
-            steps {
-                script {
-                    sh """
-                        cd spring-petclinic
-                        ${mvnHome}/bin/mvn spring-boot:run
-                    """
-                }
-            }
-        }
 
         
     }
