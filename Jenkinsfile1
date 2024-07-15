@@ -9,7 +9,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 //git url: 'https://github.com/quintian/DevOps-FinalProject.git', branch: 'main'
-                git branch: 'main', credentialsId: 'camelCaseCurryPAT', url: 'https://github.com/quintian/DevOps-FinalProject.git'
+                git branch: 'camel', credentialsId: 'camelCaseCurryPAT', url: 'https://github.com/quintian/DevOps-FinalProject.git'
+                git branch: 'camel', credentialsId: 'camelCaseCurryPAT', url: 'https://github.com/camelCaseCurry/spring-petclinic'
             }
         }
         stage('Build') {
