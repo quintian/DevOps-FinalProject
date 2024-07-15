@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
-                    sh "cd spring_petclinic"
+                    sh "cd spring-petclinic"
                     sh "${mvnHome}/bin/mvn clean package"
                     // Copying the .jar output to the Jenkins Workspace. This is so OWASP-ZAP can scan it later.
                     def jarFile = "${env.WORKSPACE}/target/*.jar"
