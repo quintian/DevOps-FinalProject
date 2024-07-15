@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_COMPOSE_PATH = "\Users\Otaku\OneDrive\Desktop\Final Project\docker_compose.yml"
+        DOCKER_COMPOSE_PATH = "/Users/Otaku/OneDrive/Desktop/Final Project/docker_compose.yml"
     }
 
     stages {
