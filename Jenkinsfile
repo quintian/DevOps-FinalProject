@@ -29,14 +29,15 @@ pipeline {
         stage('Static Analysis') {
             steps {
                 script {
-                    // SonarQube analysis steps (to be added later)
+                    
+                    sh "echo SonarQube analysis steps (to be added later)"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    // Deployment steps using Ansible (to be added later)
+                    sh "echo Deployment steps using Ansible (to be added later)"
                 }
             }
         }
