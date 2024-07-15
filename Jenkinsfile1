@@ -32,14 +32,14 @@ pipeline {
             steps {
                 script {
                     
-                    sh "echo SonarQube analysis steps (to be added later)"
+                    sh "echo SonarQube"
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh "echo Deployment steps using Ansible (to be added later)"
+                    sh "echo Deployment"
                 }
             }
         }
