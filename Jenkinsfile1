@@ -42,17 +42,7 @@ pipeline {
                 }
             }
         }
-/*
-        stage('SonarQube Analysis') {
-            steps{
-                script{
-                withSonarQubeEnv() {
-                sh "${SCANNER_HOME/bin/SonarQube -Dsonar.projectKey=finalproject -Dsonar.projectName='finalproject'"
-                    }
-                }
-            }
-        }
-*/
+
         stage('Deploy') {
             steps {
                 script {
