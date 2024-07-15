@@ -47,7 +47,7 @@ pipeline {
         stage('Security Analysis') {
             steps {
                 script {
-                  //  TBD
+                  echo "TBD"
                 }
             }
         }
