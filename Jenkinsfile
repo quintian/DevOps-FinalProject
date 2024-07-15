@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('spring-petclinic-pipeline/spring-petclinic') {
+                dir('/var/jenkins_home/workspace/spring-petclinic-pipeline/spring-petclinic') {
                     sh "ls"
                     sh './mvnw clean install'
                 }
