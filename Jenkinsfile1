@@ -17,11 +17,11 @@ pipeline {
                 git branch: 'camel', credentialsId: 'camelCaseCurryPAT', url: 'https://github.com/camelCaseCurry/spring-petclinic'
             }
         }
-        stage('Build') {
+        stage('Compile') {
             steps {
                 dir('/var/jenkins_home/workspace/finalproject') {
                     //sh "ls"
-                    sh './mvnw clean install'
+                    sh './mvnw clean compile'
                 }
             }
         }
@@ -42,7 +42,14 @@ pipeline {
                 }
             }
         }
-
+        stage('Compile') {
+            steps {
+                dir('/var/jenkins_home/workspace/finalproject') {
+                    //sh "ls"
+                    sh './mvnw clean install'
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 script {
