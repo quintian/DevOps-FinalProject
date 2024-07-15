@@ -33,6 +33,16 @@ pipeline {
             }
         }
 
+         stage('Static Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQube') {
+                        sh './mvnw sonar:sonar'
+                    }
+                }
+            }
+        }
+/*
         stage('SonarQube Analysis') {
             steps{
                 script{
@@ -42,6 +52,7 @@ pipeline {
                 }
             }
         }
+*/
         stage('Deploy') {
             steps {
                 script {
