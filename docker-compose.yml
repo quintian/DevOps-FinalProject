@@ -3,7 +3,7 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     ports:
-      - "8080:8080"
+      - "8082:8086"
     networks:
       - dev-network
 
@@ -31,7 +31,7 @@ services:
   owaspzap:
     image: securecodebox/zap
     ports:
-      - "8081:8080"
+      - "8081:8083"
     networks:
       - dev-network
 
