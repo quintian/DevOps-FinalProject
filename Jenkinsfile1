@@ -19,17 +19,12 @@ pipeline {
         }
         stage('Compile') {
             steps {
-                dir('/var/jenkins_home/workspace/finalproject') {
-                    //sh "ls"
-                    sh './mvnw clean compile'
-                }
+                sh './mvnw clean compile'
             }
         }
         stage('Test') {
             steps {
-                dir('/var/jenkins_home/workspace/finalproject')  {
-                    sh './mvnw test'
-                }
+                sh './mvnw test'
             }
         }
 
