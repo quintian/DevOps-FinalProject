@@ -1,11 +1,13 @@
 version: '3'
 services:
   jenkins:
-    image: jenkins/jenkins:lts
-    ports:
-      - "8080:8080"
+    build:
+      context: .
+      dockerfile: jenkins_dockerfile # Need JDK17 and Maven 3.9.7
     networks:
-      - dev-network
+     - dev-network 
+    ports:
+      - 8080:8080
 
   sonarqube:
     image: sonarqube

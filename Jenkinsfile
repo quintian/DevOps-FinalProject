@@ -7,17 +7,23 @@ pipeline {
         DOCKERFILE_PATH = 'sandbox_dockerfile'
     }
 
+    tools {
+        jdk 'Java17' // Must be manually defined in Jenkins console. Use JDK 17 linux 64 Tarball at: https://download.oracle.com/java/17/archive/jdk-17.0.10_linux-x64_bin.tar.gz
+        maven 'maven397' // Must be manually defined in Jenkins console. Use Maven 3.9.7 per Spring Petclinic most recent update. 
+    }
+    
+
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', credentialsId: 'rponcepoGithubPAT', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'main', credentialsId: 'rponcepoGithubPATglobal', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    def mvnHome = tool name: 'maven397', type: 'hudson.tasks.Maven$MavenInstallation'
                     sh "cd spring_petclinic"
                     sh "${mvnHome}/bin/mvn clean package"
                     // Copying the .jar output to the Jenkins Workspace. This is so OWASP-ZAP can scan it later.
@@ -28,7 +34,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
+                    def mvnHome = tool name: 'maven397', type: 'hudson.tasks.Maven$MavenInstallation'
                     sh "${mvnHome}/bin/mvn test"
                 }
             }
@@ -40,14 +46,6 @@ pipeline {
                     withSonarQubeEnv('SonarQube') {
                         sh './mvnw sonar:sonar'
                     }
-                }
-            }
-        }
-
-        stage('Security Analysis') {
-            steps {
-                script {
-                  //  TBD
                 }
             }
         }
