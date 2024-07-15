@@ -42,7 +42,7 @@ pipeline {
                 }
             }
         }
-        stage('Compile') {
+        stage('Build') {
             steps {
                 dir('/var/jenkins_home/workspace/finalproject') {
                     //sh "ls"
