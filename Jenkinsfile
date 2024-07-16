@@ -115,6 +115,7 @@ pipeline {
                 script {
                     def mvnHome = tool name: 'Maven', type: 'hudson.tasks.Maven$MavenInstallation'
                     sh "${mvnHome}/bin/mvn spring-boot:run"
+                    // ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082
                 }
             }
         }
