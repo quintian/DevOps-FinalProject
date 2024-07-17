@@ -244,3 +244,23 @@ Output is long like this:
 > java.lang.IllegalStateException: Response is committed
 
 - restart Jenkins container so that all tools installed take effect
+
+## 3. Confugure SonarQube
+- Install the sonarqube plugin in Jenkins-> Manage Jenkins -> Plugins
+- Create a sonarqube installation in Jenkins->Manage Jenkins->Tools
+- While the sonarqube container is running, go to http://localhost:9000
+- Log in with admin as username and password. Create a new password if prompted.
+- In Sonarqube-> Administration->Security, generare a new token and save it somewhere.
+- In a terminal, run `ipconfig /all` and make note of your IPV4 address.
+- In Jenkins->Manage Jenkins-> System, Create aa sonarqube server. For credentials, create a new secret text as your IPV4 address. For the server url use http://`your IPV4`:9000
+- Now the Sonarqube analysis stage in the Jenkinsfile you wrote earlier will send the data to that url and you can see teh analysis results there. The project will be called petclinic.
+  ```
+  stage('Static Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv() {
+                        sh './mvnw sonar:sonar'
+                    }
+                }
+            }
+  ```
