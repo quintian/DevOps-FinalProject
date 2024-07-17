@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
       - "8082:8082" # For spring-petclinic app
-      - "8083:8083" # For OWASP-ZAP exposure
+      - "8084:8084" # For OWASP-ZAP exposure
     networks:
       - dev-network
     # volumes:
@@ -42,17 +42,6 @@ services:
       - dev-network
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-
-  # owaspzap:
-  #   image : zaproxy/zap-stable
-    #image: securecodebox/zap
-  #   ports:
-  #     - "8081:8080"
-  #   networks:
-  #     - dev-network
-  #   volumes:
-  #     - proj-vol:/zap/wrk:rw
-  #   command: "zap-baseline.py -t https://www.example.com -r report_html"
 
 networks:
   dev-network:

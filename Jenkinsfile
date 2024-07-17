@@ -20,9 +20,9 @@ pipeline {
                     sh """
                         cd spring-petclinic
                         ${mvnHome}/bin/mvn clean package
-                        cp target/*.jar ${env.WORKSPACE}/
+                        # cp target/*.jar ${env.WORKSPACE}/
                     """
-                    def jarFile = "${env.WORKSPACE}/target/*.jar"
+                    // def jarFile = "${env.WORKSPACE}/target/*.jar"
                 }
             }
         }
@@ -43,6 +43,7 @@ pipeline {
                     sh """
                         cd spring-petclinic
                         nohup ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &
+                        sleep 5
                     """
                 }
             }
@@ -68,19 +69,34 @@ pipeline {
         }
         */
 
-        
+        stage('OWASP ZAP Scan') {
+            steps{
+                script{
+                    sh """
+                    docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
+                    --user root \
+                    -t zaproxy/zap-weekly  \
+                    zap-baseline.py -t http://\$(ip -f inet -o addr show docker0 | awk '{print \$4}' | cut -d '/' -f 1):8082 \
+                    -r report_html -x zapreport.html
+                    """ 
+                    // > ${env.WORKSPACE}
+                }
+            }
+        }
 
+        /*
         stage('OWASP Dependency Analysis') {
             agent {
                 docker {
                     image 'zaproxy/zap-stable'
-                    args "-p 8084:8080 -v ${env.WORKSPACE}:/zap/wrk " //So that ZAP can attack correctly. Need to expose 8083:8083 in base image; or just 8083....
+                    args "-p 8084:8080 -v ${env.WORKSPACE}:/zap/wrk --network dev-network" //So that ZAP can attack correctly. Need to expose 8083:8083 in base image; or just 8083....
                 }
             }
             steps{
-                sh "zap-baseline.py -t jenkins:8082 -r report_html"
+                sh "zap-baseline.py -t http://jenkins:8082 -r report_html"
             }
         }
+        */
         
 
         stage('Static Analysis') {
