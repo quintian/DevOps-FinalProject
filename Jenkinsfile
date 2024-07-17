@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'runTest', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'zapReport', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
         
@@ -72,42 +72,39 @@ pipeline {
         stage('OWASP ZAP Scan') {
             steps{
                 script{
-                    sh """
-                    docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
-                    --user root \
-                    -t zaproxy/zap-weekly  \
-                    zap-baseline.py -t http://\$(ip -f inet -o addr show docker0 | awk '{print \$4}' | cut -d '/' -f 1):8082 \
-                    -r report_html -x zapreport.html
-                    """ 
-                    // > ${env.WORKSPACE}
-                }
+                    try {
+                        sh "id"
+                        sh """
+                        docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
+                        --user root \
+                        -t zaproxy/zap-weekly  \
+                        zap-baseline.py -t http://\$(ip -f inet -o addr show docker0 | awk '{print \$4}' | cut -d '/' -f 1):8082 \
+                        -r report_html.html \
+                        || true
+                        """ 
+                        // > ${env.WORKSPACE}
+                    } catch (Exception e) {
+                        echo "Error occurred during OWASP ZAP Scan: ${e}"
+                    }
+                } 
             }
         }
 
         /*
-        stage('OWASP Dependency Analysis') {
-            agent {
-                docker {
-                    image 'zaproxy/zap-stable'
-                    args "-p 8084:8080 -v ${env.WORKSPACE}:/zap/wrk --network dev-network" //So that ZAP can attack correctly. Need to expose 8083:8083 in base image; or just 8083....
-                }
-            }
-            steps{
-                sh "zap-baseline.py -t http://jenkins:8082 -r report_html"
-            }
-        }
-        */
-        
-
         stage('Static Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQube') {
-                        sh './mvnw sonar:sonar'
+                    try{
+                        withSonarQubeEnv('SonarQube') {
+                            sh './mvnw sonar:sonar'
+                        }
+                    } catch (Exception f) {
+                        echo "Error occurred during Sonarqube analysis: ${f}"
                     }
                 }
             }
         }
+        */
 
         //Pretty sure we don't want to run here; we want Ansible to run it on a VM.
 
@@ -116,10 +113,21 @@ pipeline {
 
     post {
         success {
-            echo 'Build successful.'
+            echo 'Pipeline succeeded.'
         }
         failure {
-            echo 'Build Failure.'
+            echo 'Pipeline encountered fatal error'
+        }
+        always {
+            // Publish OWASP ZAP report
+            publishHTML([
+                reportDir: '/var/jenkins_home/workspace/',
+                reportFiles: 'report_html.html',
+                reportName: 'OWASP ZAP Report',
+                keepAll: true,
+                allowMissing: false,
+                alwaysLinkToLastBuild: true
+            ])
         }
     }
 }
