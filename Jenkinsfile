@@ -3,15 +3,14 @@ pipeline {
 
     environment {
         DOCKER_NETWORK = 'dev_network' 
-        DOCKER_IMAGE = 'sandboxSpringPetClinic'
-        DOCKERFILE_PATH = 'sandbox_dockerfile'
-        def mvnHome = tool name: 'maven397', type: 'hudson.tasks.Maven$MavenInstallation'
+        mvnHome = tool name: 'maven397', type: 'hudson.tasks.Maven$MavenInstallation'
+        
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'newCont', credentialsId: 'rponcepoGithubPATglobal', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'runTest', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
         
@@ -21,9 +20,9 @@ pipeline {
                     sh """
                         cd spring-petclinic
                         ${mvnHome}/bin/mvn clean package
-                        cp target/*.jar ${env.WORKSPACE}/
+                        # cp target/*.jar ${env.WORKSPACE}/
                     """
-                    def jarFile = "${env.WORKSPACE}/target/*.jar"
+                    // def jarFile = "${env.WORKSPACE}/target/*.jar"
                 }
             }
         }
@@ -40,48 +39,65 @@ pipeline {
 
         stage('Run') {
             steps {
-                script {
+                script { 
                     sh """
                         cd spring-petclinic
-                        ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082
+                        nohup ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &
+                        sleep 5
                     """
                 }
             }
         }
 
         /*
-        stage('Build Sandbox Container') {
+        stage('Wait for Application') {
             steps {
                 script {
-                    def jarFile = "${env.WORKSPACE}/target/*.jar"
-                    node {
-                        def app = docker.build("${DOCKERFILE_PATH}")
-                        app.inside {
-                            sh "java -jar ${jarFile}"
+                    timeout(time: 2, unit: 'MINUTES') {
+                        waitUntil {
+                            script {
+                                def response = sh(
+                                    script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost:8082/actuator/health',
+                                    returnStdout: true
+                                ).trim()
+                                return response == '200'
+                            }
                         }
                     }
-                }
-
-                
-                script {
-                    docker.image()
                 }
             }
         }
         */
-    
+
+        stage('OWASP ZAP Scan') {
+            steps{
+                script{
+                    sh """
+                    docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
+                    --user root \
+                    -t zaproxy/zap-weekly  \
+                    zap-baseline.py -t http://\$(ip -f inet -o addr show docker0 | awk '{print \$4}' | cut -d '/' -f 1):8082 \
+                    -r report_html -x zapreport.html
+                    """ 
+                    // > ${env.WORKSPACE}
+                }
+            }
+        }
 
         /*
         stage('OWASP Dependency Analysis') {
             agent {
-                docker { zaproxy/zap-stable }
+                docker {
+                    image 'zaproxy/zap-stable'
+                    args "-p 8084:8080 -v ${env.WORKSPACE}:/zap/wrk --network dev-network" //So that ZAP can attack correctly. Need to expose 8083:8083 in base image; or just 8083....
+                }
             }
             steps{
-                // OWASP dependency steps
-                sh "zap-baseline.py -t https://www.example.com -r report_html"
+                sh "zap-baseline.py -t http://jenkins:8082 -r report_html"
             }
         }
         */
+        
 
         stage('Static Analysis') {
             steps {

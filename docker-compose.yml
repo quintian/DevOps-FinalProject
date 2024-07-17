@@ -1,12 +1,20 @@
 version: '3'
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: 
+      context: .
+      dockerfile: jenkins_dockerfile
+    user: root
+    privileged: true # This might get me past Docker: permission denied
     ports:
       - "8080:8080"
-      - "8082:8082"
+      - "8082:8082" # For spring-petclinic app
+      - "8084:8084" # For OWASP-ZAP exposure
     networks:
       - dev-network
+    # volumes:
+    # - /var/run/docker.sock:/var/run/docker.sock # If this is unspecified, returns "Docker: not found" if it is, I get "docker: permission denied." 
+    # - /usr/bin/docker:/usr/bin/docker # If this is unspecified, I get docker: not found
 
   sonarqube:
     image: sonarqube
@@ -34,17 +42,6 @@ services:
       - dev-network
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-
-  owaspzap:
-    image : zaproxy/zap-stable
-    #image: securecodebox/zap
-    ports:
-      - "8081:8080"
-    networks:
-      - dev-network
-    volumes:
-      - proj-vol:/zap/wrk:rw
-    command: "zap-baseline.py -t https://www.example.com -r report_html"
 
 networks:
   dev-network:
