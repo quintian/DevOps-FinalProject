@@ -51,4 +51,6 @@ NOTE: Do NOT put a space into the name of a test in Jenkins
 Docker Images used:
 
 Th way that is working (sort of):
-had to manually start the docker daemon: sudo service docker start after restarting the container
+had to manually start the docker daemon: 
+sudo service docker start 
+after restarting the container. Should probably add this as an ENTRYPOINT or CMD in the image.

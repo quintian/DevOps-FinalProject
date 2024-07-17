@@ -16,12 +16,12 @@ services:
     # - /var/run/docker.sock:/var/run/docker.sock # If this is unspecified, returns "Docker: not found" if it is, I get "docker: permission denied." 
     # - /usr/bin/docker:/usr/bin/docker # If this is unspecified, I get docker: not found
 
-  # sonarqube:
-  #   image: sonarqube
-  #   ports:
-  #     - "9000:9000"
-  #   networks:
-  #     - dev-network
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - dev-network
 
   prometheus:
     image: prom/prometheus
