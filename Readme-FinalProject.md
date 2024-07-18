@@ -1,6 +1,7 @@
 
 # question
- - the config done on Jenkins web shall be automated by code? yes for automation
+- the config done on Jenkins web shall be automated by code? yes for automation
+- distributed build?
 
 You need to do:
 - jenkins if check out gitlink?
@@ -49,7 +50,7 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     ports:
-      - "8080:8080"
+      - "8090:8090"
     networks:
       - dev-network
 
@@ -146,22 +147,25 @@ Output:
 
 - newer jenkins password
 
-> (base) qt@Quinns-MBP-2 FinalProject % docker exec -it finalproject_jenkins_1 cat /var/jenkins_home/secrets/initialAdminPassword
-> f35dd85035f54c838432af5c58529b7c
-
-> (base) qt@Quinns-MBP-2 FinalProject % docker exec finalproject_jenkins_1  cat /var/jenkins_home/secrets/initialAdminPassword
-> eab3e6ccc05946198407e2ee129f62e8
-
 
 > (base) qt@Quinns-MBP-2 FinalProject % docker exec -it beautiful_wilson cat /var/jenkins_home/secrets/initialAdminPassword
 > 7b92745ffb55478996224e52b1b716dd
-- Access Jenkins through your web browser (default: http://localhost:8080)
+- Access Jenkins through your web browser (default: http://localhost:8082)
 
 Go to this web address and type in the Admin password from the above: eab3e6ccc05946198407e2ee129f62e8
 
-- Install the necessary plugins: Docker, Git, Pipeline, and GitHub Integration, Promethues, Sonarqube, .. (from project requirements), or as recommended on the comming page, then save the Jenkins URL by clicking the 'Save and Finish' button and 'Start using' button. 
+- Set jenkins URL for remote users: http://72.104.37.225:8082/ (format is < your public ip address>:<host port number for Jenkins>)
+
+Set username and password as you wish. (Refer to screenshot: )
+
+  username: admin 
+  password: 123
+
+- Install the necessary plugins: Docker, Git, Docker Pipeline, openJDK-native-plugin, Maven Intergration, pipeline maven integration, and GitHub Integration, Configuration as Code, Promethues, Sonarqube, .. (from project requirements), or as recommended on the comming page, then save the Jenkins URL by clicking the 'Save and Finish' button and 'Start using' button. 
 
 Please refer to screenshot 4 and 5. 
+
+
 
 - Create a New Pipeline Job:
 
@@ -174,8 +178,43 @@ Click "OK."
 In the job configuration page, scroll down to the "Pipeline" section.
 Choose "Pipeline script from SCM" for the "Definition" field.
 Set "SCM" to "Git."
-Enter the repository URL for your forked GitHub repo (e.g., https://github.com/YOUR_GITHUB_USERNAME/spring-petclinic.git). For our case, this repo link shall be: https://github.com/quintian/DevOps-FinalProject/spring-petclinic.git
+Enter the repository URL for your forked GitHub repo (e.g., https://github.com/YOUR_GITHUB_USERNAME/spring-petclinic.git). 
 Specify the branch to build (e.g., main).
+
+Alternatively, choose  "Pipeline script ", copy paste Jenkinsfile into the script box. 
+
+Then click 'Apply' and 'Save' at the bottom. (Refere to screenshot: )
+
+
+- Set up build triggers to poll Source Control Management (SCM)
+
+1. Scroll to 'Build Triggers', check the box: "Github hook trigger for GITScm polling".
+
+(Refer to screenshot: )
+
+On https://github.com/quintian/spring-petclinic.git settings-> Webhooks->Settings
+
+Payload URL* : http://72.104.37.225:8082/github-webhook/
+Content type: application/json
+Secret: 123 (anything you like)
+SSL verification: Enable
+Which events would you like to trigger this webhook? : Just the push event
+Active: check
+Then click 'save' or 'update webhook'
+
+
+2. Configure SCM Polling Schedule:
+
+Go to your Jenkins dashboard and locate the job you want to configure.
+Click on the job to enter its configuration page.
+
+Scroll down to the "Build Triggers" section in the job configuration.
+Select the option for "Poll SCM" to enable SCM polling.
+In the Schedule text box, enter the cron expression that specifies your desired schedule. For example:
+For once half an hour: 30 * * * *
+or For 6:00:00pm UTC daily: 0 18 * * *
+
+(Refer to screenshot: )
 
 - Check Jenkins Logs:
 
@@ -230,7 +269,7 @@ Output is long like this:
 - restart Jenkins container so that all tools installed take effect
 docker restart <docker-conainer-name>
 
-- find the intalled jdk17 path inside jenkins and add it to UI tools page in the box: JAVA_HOME
+- find the intalled jdk17 path inside jenkins and add it to UI tools page in the box: JAVA_HOME (Note: no need of this for the first build - Jenkins only )
 
 Run the command in a running container, and found /usr/lib/jvm/openjdk-17
 
@@ -238,6 +277,12 @@ Run the command in a running container, and found /usr/lib/jvm/openjdk-17
 > jenkins@9eb07a5d5e92:/$ ls /usr/lib/jvm/
 > java-1.17.0-openjdk-amd64  java-17-openjdk-amd64  openjdk-17
 
+
+- Configure Maven in Jenkins:
+
+After installing the plugin, go back to Manage Jenkins > Global Tool Configuration.
+Scroll down to Maven and click Add Maven.
+Provide a name (e.g., "Maven") and configure the installation. You can either install automatically or specify an existing Maven installation path.
 
 - find if port 8080 is in use inside jenkins container: 
 
@@ -254,6 +299,4 @@ Run the command in a running container, and found /usr/lib/jvm/openjdk-17
 > Transfer-Encoding: chunked
 > Server: Jetty(10.0.20)
 
-- To fix this, go to manage Jenkins-> security -> CSRF Protection
 
-Enable proxy compatibility - check  this box, then restart jenkins container
