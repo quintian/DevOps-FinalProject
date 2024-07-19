@@ -45,8 +45,4 @@ services:
 
 networks:
   dev-network:
-    external: true
-
-volumes:
-  proj-vol:
-    external: true
+    external: false
