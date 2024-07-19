@@ -2,6 +2,7 @@
 # question
 - the config done on Jenkins web shall be automated by code? yes for automation
 - distributed build?
+- which part we need to take care of security specially?
 
 You need to do:
 - jenkins if check out gitlink?
@@ -300,3 +301,65 @@ Provide a name (e.g., "Maven") and configure the installation. You can either in
 > Server: Jetty(10.0.20)
 
 
+## 3. How to perform Jenkins automatic/continous build, test, run with a new push from Github repository
+
+- set the original cloned petclinic package as the submodule of forked git: https://github.com/quintian/spring-petclinic.git, so that any code change can be pushed to this git repo which then sends a githubWeb push to Jenkins webserver as trigger for new build
+
+Run the commands and the output is:
+
+```
+(base) qt@Quinns-MBP-2 FinalProject % git submodule add https://github.com/quintian/spring-petclinic.git spring-petclinic
+
+fatal: 'spring-petclinic' already exists in the index
+(base) qt@Quinns-MBP-2 FinalProject % git rm --cached spring-petclinic
+
+rm 'spring-petclinic'
+(base) qt@Quinns-MBP-2 FinalProject % rm -rf .git/modules/spring-petclinic
+rm -rf spring-petclinic
+
+(base) qt@Quinns-MBP-2 FinalProject % git submodule add https://github.com/quintian/spring-petclinic.git spring-petclinic
+
+Cloning into '/Users/qt/Documents/17636-DevOps/FinalProject/spring-petclinic'...
+remote: Enumerating objects: 9975, done.
+remote: Total 9975 (delta 0), reused 0 (delta 0), pack-reused 9975
+Receiving objects: 100% (9975/9975), 7.55 MiB | 5.72 MiB/s, done.
+Resolving deltas: 100% (3765/3765), done.
+(base) qt@Quinns-MBP-2 FinalProject % git submodule update --init --recursive
+
+```
+
+- change petclinic code and push the change to the forked git repo
+
+```
+Run the commands and the output is: 
+
+(base) qt@Quinns-MBP-2 FinalProject % cd spring-petclinic 
+(base) qt@Quinns-MBP-2 spring-petclinic % git add src/main/resources/messages/messages.properties
+git commit -m "Update welcome message"
+git push origin main
+
+[main fd1ef5f] Update welcome message
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 638 bytes | 638.00 KiB/s, done.
+Total 7 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/quintian/spring-petclinic.git
+   6ae98b1..fd1ef5f  main -> main
+
+```
+- check if the new push with code update delivered to Jenkins pipeline and trigger a new build
+
+Go to the forked github repo settings->webhooks->Manage webhookd->recent deliveries. If not success or 502, you can click on the '...' sign and resend, but actually the push may be received by Jenkins pipeline. So you can go to Jenkins pipeline current build and see if the githubweb push is already arrived with the same commit message you put in earlier. 
+
+( Refer to screenshot: )
+
+- Let the Jenkins pipeline automatically build. When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". 
+( Refer to screenshot: Petclinic web up with updated welcome message. )
+
+
+   
