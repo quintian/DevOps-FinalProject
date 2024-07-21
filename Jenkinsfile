@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'zapReport', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
             }
         }
         
@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Run') {
+        stage('Run Test Instance') {
             steps {
                 script { 
                     sh """
@@ -49,25 +49,7 @@ pipeline {
             }
         }
 
-        /*
-        stage('Wait for Application') {
-            steps {
-                script {
-                    timeout(time: 2, unit: 'MINUTES') {
-                        waitUntil {
-                            script {
-                                def response = sh(
-                                    script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost:8082/actuator/health',
-                                    returnStdout: true
-                                ).trim()
-                                return response == '200'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        */
+
 
         stage('OWASP ZAP Scan') {
             steps{
