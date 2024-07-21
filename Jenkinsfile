@@ -73,15 +73,23 @@ pipeline {
             }
         }
     }
-     always {
-            // Publish OWASP ZAP report
-            publishHTML([
-                reportDir: '/var/jenkins_home/workspace/',
-                reportFiles: 'report_html.html',
-                reportName: 'OWASP ZAP Report',
-                keepAll: true,
-                allowMissing: false,
-                alwaysLinkToLastBuild: true
-            ])
+    post {
+            success {
+                echo 'Pipeline succeeded.'
+            }
+            failure {
+                echo 'Pipeline encountered fatal error'
+            }
+            always {
+                // Publish OWASP ZAP report
+                publishHTML([
+                    reportDir: '/var/jenkins_home/workspace/',
+                    reportFiles: 'report_html.html',
+                    reportName: 'OWASP ZAP Report',
+                    keepAll: true,
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true
+                ])
+            }
         }
 }
