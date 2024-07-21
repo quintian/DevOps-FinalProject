@@ -1,54 +1,25 @@
-version: '3'
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
+  mysql:
+    image: mysql:8.4
     ports:
-      - "8080:8080"
-    networks:
-      - dev-network
-
-  sonarqube:
-    image: sonarqube
-    ports:
-      - "9000:9000"
-    networks:
-      - dev-network
-
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    networks:
-      - dev-network
-
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./grafana.ini:/etc/grafana/grafana.ini
-    networks:
-      - dev-network
+      - "3306:3306"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-
-  owaspzap:
-    image : zaproxy/zap-stable
-    #image: securecodebox/zap
-    ports:
-      - "8081:8080"
-    networks:
-      - dev-network
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
     volumes:
-      - proj-vol:/zap/wrk:rw
-    command: "zap-baseline.py -t https://www.example.com -r report_html"
-
-networks:
-  dev-network:
-    external: true
-
-volumes:
-  proj-vol:
-    external: true
+      - "./conf.d:/etc/mysql/conf.d:ro"
+    profiles:
+      - mysql
+  postgres:
+    image: postgres:16.3
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
+    profiles:
+      - postgres
