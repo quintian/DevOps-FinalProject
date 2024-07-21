@@ -1,4 +1,4 @@
-version: '3'
+
 services:
   jenkins:
     build: 
@@ -12,9 +12,8 @@ services:
       - "8084:8084" # For OWASP-ZAP exposure
     networks:
       - dev-network
-    # volumes:
-    # - /var/run/docker.sock:/var/run/docker.sock # If this is unspecified, returns "Docker: not found" if it is, I get "docker: permission denied." 
-    # - /usr/bin/docker:/usr/bin/docker # If this is unspecified, I get docker: not found
+    # command: sh -c "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "
+    entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]
 
   sonarqube:
     image: sonarqube
@@ -46,3 +45,4 @@ services:
 networks:
   dev-network:
     external: false
+
