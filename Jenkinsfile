@@ -73,4 +73,15 @@ pipeline {
             }
         }
     }
+     always {
+            // Publish OWASP ZAP report
+            publishHTML([
+                reportDir: '/var/jenkins_home/workspace/',
+                reportFiles: 'report_html.html',
+                reportName: 'OWASP ZAP Report',
+                keepAll: true,
+                allowMissing: false,
+                alwaysLinkToLastBuild: true
+            ])
+        }
 }
