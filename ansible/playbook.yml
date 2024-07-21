@@ -1,0 +1,51 @@
+---
+- hosts: myhosts
+  become: yes
+  vars:
+    jar_file: spring-petclinic-3.3.0-SNAPSHOT.jar
+    jar_path: /opt
+    service_name: petclinic
+
+  tasks:
+    - name: Ensure the target directory exists
+      file:
+        path: "{{ jar_path }}"
+        state: directory
+
+    - name: Check if JAR file exists and get its checksum
+      stat:
+        path: "{{ jar_path }}/{{ jar_file }}"
+      register: existing_jar
+
+    - name: Copy the JAR file to the target host
+      copy:
+        src: "/var/jenkins_home/workspace/petclinic/target/{{ jar_file }}"
+        dest: "{{ jar_path }}/{{ jar_file }}"
+      register: jar_copied
+
+    - name: Ensure Java is installed
+      package:
+        name: openjdk-17-jre-headless
+        state: present
+
+    - name: Create systemd service file
+      template:
+        src: "{{ service_name }}.service.j2"
+        dest: /etc/systemd/system/{{ service_name }}.service
+      notify: Reload systemd
+
+    - name: Ensure the service is enabled
+      systemd:
+        name: "{{ service_name }}"
+        enabled: yes
+
+    - name: Restart the service if JAR was updated
+      systemd:
+        name: "{{ service_name }}"
+        state: restarted
+      when: jar_copied.changed or not existing_jar.stat.exists
+
+  handlers:
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
