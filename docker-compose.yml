@@ -1,11 +1,19 @@
 version: '3'
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: 
+      context: .
+      dockerfile: jenkins_dockerfile
+    user: root
+    privileged: true # This might get me past Docker: permission denied
     ports:
       - "8080:8080"
+      - "8082:8082" # For spring-petclinic app
+      - "8084:8084" # For OWASP-ZAP exposure
     networks:
       - dev-network
+    # command: sh -c "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "
+    entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]
 
   sonarqube:
     image: sonarqube
