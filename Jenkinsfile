@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_NETWORK = 'dev_network' 
+        // DOCKER_NETWORK = 'dev_network' 
         mvnHome = tool name: 'maven397', type: 'hudson.tasks.Maven$MavenInstallation'
         
     }
@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/spring-petclinic.git'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/rponcepo/spring-petclinic.git'
             }
         }
         
@@ -44,7 +44,7 @@ pipeline {
                         sh './mvnw sonar:sonar'
                     }
                 }
-          } 
+            } 
         }
 
         stage('Run Test Instance') {
@@ -66,8 +66,8 @@ pipeline {
                 script{
                     try {
                         sh """  
-                        sudo service docker start
-                        sleep 15
+                        # sudo service docker start
+                        # sleep 15
                         docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
                         --user root \
                         -t zaproxy/zap-weekly  \
@@ -82,6 +82,17 @@ pipeline {
             }
         }
 
+        stage('Deploy with Ansible') {
+            steps {
+                script { 
+                    ansiblePlaybook(
+                        credentialsId: 'web-server',
+                        playbook: '/opt/ansible/playbook.yml',
+                        inventory: '/opt/ansible/inventory.ini'
+                    )
+                }
+            }
+        }
         
         
     }
