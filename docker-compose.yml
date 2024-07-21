@@ -1,0 +1,54 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+    networks:
+      - dev-network
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - dev-network
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - dev-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - dev-network
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+  owaspzap:
+    image : zaproxy/zap-stable
+    #image: securecodebox/zap
+    ports:
+      - "8081:8080"
+    networks:
+      - dev-network
+    volumes:
+      - proj-vol:/zap/wrk:rw
+    command: "zap-baseline.py -t https://www.example.com -r report_html"
+
+networks:
+  dev-network:
+    external: true
+
+volumes:
+  proj-vol:
+    external: true
