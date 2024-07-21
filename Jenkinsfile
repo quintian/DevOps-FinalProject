@@ -10,7 +10,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
+                // git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/DevOps-FinalProject'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/quintian/spring-petclinic.git'
             }
         }
         
@@ -18,30 +19,39 @@ pipeline {
             steps {
                 script {
                     sh """
-                        cd spring-petclinic
+                        # cd spring-petclinic
                         ${mvnHome}/bin/mvn clean package
-                        # cp target/*.jar ${env.WORKSPACE}/
                     """
-                    // def jarFile = "${env.WORKSPACE}/target/*.jar"
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
                     sh """
-                        cd spring-petclinic
+                        # cd spring-petclinic
                         ${mvnHome}/bin/mvn test
                     """
                 }
             }
         }
 
+        stage('Static Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv() {
+                        sh './mvnw sonar:sonar'
+                    }
+                }
+          } 
+        }
+
         stage('Run Test Instance') {
             steps {
                 script { 
                     sh """
-                        cd spring-petclinic
+                        # cd spring-petclinic
                         nohup ${mvnHome}/bin/mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &
                         sleep 5
                     """
@@ -55,8 +65,9 @@ pipeline {
             steps{
                 script{
                     try {
-                        sh "id"
-                        sh """
+                        sh """  
+                        sudo service docker start
+                        sleep 15
                         docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
                         --user root \
                         -t zaproxy/zap-weekly  \
@@ -64,7 +75,6 @@ pipeline {
                         -r report_html.html \
                         || true
                         """ 
-                        // > ${env.WORKSPACE}
                     } catch (Exception e) {
                         echo "Error occurred during OWASP ZAP Scan: ${e}"
                     }
@@ -72,24 +82,7 @@ pipeline {
             }
         }
 
-        /*
-        stage('Static Analysis') {
-            steps {
-                script {
-                    try{
-                        withSonarQubeEnv('SonarQube') {
-                            sh './mvnw sonar:sonar'
-                        }
-                    } catch (Exception f) {
-                        echo "Error occurred during Sonarqube analysis: ${f}"
-                    }
-                }
-            }
-        }
-        */
-
-        //Pretty sure we don't want to run here; we want Ansible to run it on a VM.
-
+        
         
     }
 
