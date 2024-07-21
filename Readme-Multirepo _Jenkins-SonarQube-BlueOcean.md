@@ -1,4 +1,5 @@
-## 3. Confugure SonarQube and Blue Ocean
+## Setup The Pipeline to Poll the Repositories
+## Confugure SonarQube and Blue Ocean
 - Install the sonarqube plugin in Jenkins-> Manage Jenkins -> Plugins. Also install Blue Ocean plugin.
 - Create a sonarqube installation in Jenkins->Manage Jenkins->Tools
 - While the sonarqube container is running, go to http://localhost:9000
