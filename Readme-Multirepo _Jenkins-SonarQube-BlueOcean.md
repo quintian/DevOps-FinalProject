@@ -1,5 +1,3 @@
-## Setup The Pipeline to Poll the Repositories
-
 
 ## Confugure SonarQube and Blue Ocean
 - Install the Sonarqube Scanner (latest version) plugin in Jenkins-> Manage Jenkins -> Plugins.
