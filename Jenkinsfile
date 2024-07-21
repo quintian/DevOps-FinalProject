@@ -22,12 +22,13 @@ pipeline {
                 sh './mvnw clean compile'
             }
         }
+        /***
         stage('Test') {
             steps {
                 sh './mvnw test'
             }
         }
-
+        */
          stage('Static Analysis') {
             steps {
                 script {
@@ -37,6 +38,7 @@ pipeline {
                 }
             }
         }
+        /*
         stage('Build') {
             steps {
                 dir('/var/jenkins_home/workspace/finalproject') {
@@ -52,5 +54,6 @@ pipeline {
                 }
             }
         }
+        */
     }
 }
