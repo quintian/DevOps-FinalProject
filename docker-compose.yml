@@ -44,4 +44,5 @@ services:
 
 networks:
   dev-network:
-    external: true
+    external: false
+

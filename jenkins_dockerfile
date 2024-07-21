@@ -19,7 +19,7 @@ RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plu
 RUN sudo apt-get install iproute2 -y
 RUN sudo apt-get install ansible -y
 
-# COPY ansible ./opt/ansible
+COPY ansible /opt/ansible
 
 # Add an entrypoint script to start Docker
 COPY jenkins_startup_script.sh ./
