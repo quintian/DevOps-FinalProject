@@ -3,7 +3,24 @@
 
 # Tooling
 
+## Host Operating System Details: 
 
+Operating System: macOS Monterey, version 12.3.1
+
+Chipset: Intel Core i5
+
+## Software used: 
+
+Docker version: 20.10.8, build 3967b7d
+
+Docker Desktop version: 4.30.0
+
+Docker Compose version v2.27.0-desktop.2
+
+Visual Studio Code version: 1.89.0 (Universal)
+
+VSCode extention: Docker v1.29.1
+(Note: I use VSCode as editor, but any editor would work. )
 
 # Steps
 
@@ -154,7 +171,7 @@ Set username and password as you wish. (Refer to screenshot: )
   username: admin 
   password: 123
 
-- Install the necessary plugins: Docker, Git, Docker Pipeline, openJDK-native-plugin, Maven Intergration, pipeline maven integration, and GitHub Integration, Configuration as Code, Promethues, Sonarqube, .. (from project requirements), or as recommended on the comming page, then save the Jenkins URL by clicking the 'Save and Finish' button and 'Start using' button. 
+- Install the necessary plugins: Docker, Git, Docker Pipeline, Maven Intergration, pipeline maven integration, and GitHub Integration, Configuration as Code, Promethues, Sonarqube, .. (from project requirements), or as recommended on the comming page, then save the Jenkins URL by clicking the 'Save and Finish' button and 'Start using' button. 
 
 Please refer to screenshot 4 and 5. 
 
@@ -286,11 +303,13 @@ Select the option for "Poll SCM" to enable SCM polling.
 In the Schedule text box, enter the cron expression that specifies your desired schedule. For example:
 put  "H/30 * * * *" into the scheduling box. This means your pipeline will rebuild every half an hour by schedule. 
 
+Then you click 'apply' and 'save' button and restart Jenkins container to make this configuration effect. 
+
 
 (Refer to screenshot: Jenkins pipeline config for 'Build Triggers')
 
 
-- change petclinic code and push the change to the forked git repo
+- Change petclinic code and commit the change to the forked git repo
 
 You can change the original spring-petclinic website welcome message into "Welcome Group 4!" in its file: 'src/main/resources/messages/messages.properties' locally, and push the change into the public forked repo, or change the message on your git repo directly, then commit the change with a commit messsage "Update welcome message". 
 
@@ -319,9 +338,67 @@ To https://github.com/quintian/spring-petclinic.git
 ```
 
 
-- Let the Jenkins pipeline automatically build. When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". 
+- Let the Jenkins pipeline automatically build, check its result and polling log.
 
-( Refer to screenshot: Petclinic web up with updated welcome message. )
+When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". ( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
 
+You can also check the SCM polling log by the pipeline menu, as the sceenshot 'Jenkins pipeline polling log by SCM schedule'.
+
+
+# Text Capture
+
+## 3. How to perform Jenkins automatic/continous build, test, run with SCM Polling Schedule
+
+
+- Configure SCM Polling Schedule:
+
+Go to your Jenkins dashboard and locate the pipeline you want to configure.
+Click on the job to enter its configuration page.
+
+Scroll down to the "Build Triggers" section in the job configuration.
+Select the option for "Poll SCM" to enable SCM polling.
+In the Schedule text box, enter the cron expression that specifies your desired schedule. For example:
+put  "H/30 * * * *" into the scheduling box. This means your pipeline will rebuild every half an hour by schedule. 
+
+Then you click 'apply' and 'save' button and restart Jenkins container to make this configuration effect. 
+
+
+(Refer to screenshot: Jenkins pipeline config for 'Build Triggers')
+
+
+- Change petclinic code and commit the change to the forked git repo
+
+You can change the original spring-petclinic website welcome message into "Welcome Group 4!" in its file: 'src/main/resources/messages/messages.properties' locally, and push the change into the public forked repo, or change the message on your git repo directly, then commit the change with a commit messsage "Update welcome message". 
+
+The terminal output is like this: 
+
+```
+Run the commands and the output is: 
+
+(base) qt@Quinns-MBP-2 spring-petclinic % git add src/main/resources/messages/messages.properties
+git commit -m "Update welcome message"
+git push origin main
+
+[main fd1ef5f] Update welcome message
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Enumerating objects: 13, done.
+Counting objects: 100% (13/13), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 638 bytes | 638.00 KiB/s, done.
+Total 7 (delta 4), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/quintian/spring-petclinic.git
+   6ae98b1..fd1ef5f  main -> main
+
+```
+
+
+- Let the Jenkins pipeline automatically build, check its result and polling log.
+
+When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". ( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
+
+You can also check the SCM polling log by the pipeline menu, as the sceenshot 'Jenkins pipeline polling log by SCM schedule'.
 
    
