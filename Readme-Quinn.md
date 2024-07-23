@@ -193,25 +193,10 @@ Specify the branch to build (e.g., main).
 
 Alternatively, choose  "Pipeline script ", copy paste Jenkinsfile into the script box. 
 
-Then click 'Apply' and 'Save' at the bottom. (Refere to screenshot: )
+Then click 'Apply' and 'Save' at the bottom. 
 
 
-- Set up build triggers to poll Source Control Management (SCM)
 
-1. Scroll to 'Build Triggers', check the box: "Github hook trigger for GITScm polling".
-
-(Refer to screenshot: )
-
-On https://github.com/quintian/spring-petclinic.git settings-> Webhooks->Settings
-
-Payload URL* : http://72.104.37.225:8082/github-webhook/
-(Note: the URL first part is your public ip address, which can be obtained by google 'my public ip address' and copy the ipv4 address from that website. )
-Content type: application/json
-Secret: 123 (anything you like)
-SSL verification: Enable
-Which events would you like to trigger this webhook? : Just the push event
-Active: check
-Then click 'save' or 'update webhook'
 
 
 - Check Jenkins Logs:
@@ -306,7 +291,7 @@ put  "H/30 * * * *" into the scheduling box. This means your pipeline will rebui
 Then you click 'apply' and 'save' button and restart Jenkins container to make this configuration effect. 
 
 
-(Refer to screenshot: Jenkins pipeline config for 'Build Triggers')
+(Refer to screenshot: Jenkins pipeline config for Poll SCM Schedule. )
 
 
 - Change petclinic code and commit the change to the forked git repo
@@ -337,10 +322,20 @@ To https://github.com/quintian/spring-petclinic.git
 
 ```
 
+Please refer to screenshot: "Commit a code change of messages in git repo". 
+
 
 - Let the Jenkins pipeline automatically build, check its result and polling log.
 
-When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". ( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
+Jenkins pipeline SCM Polling found a change in github web where the code is sourced (refer to screenshot: 'Polling log shows change found in git repo'), then the pipeline automatically built with this change (refer to sceenshot: 'Jenkins pipeline auto build when found change from githubweb'). 
+
+
+When it's in the run stage, go to PetClinic website: https://localhost:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". (In case the automatic deployment is not set)
+
+If the automatic deployment is set in the Jenkinsfile, the website will be on automatically. 
+
+( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
+
 
 You can also check the SCM polling log by the pipeline menu, as the sceenshot 'Jenkins pipeline polling log by SCM schedule'.
 
@@ -393,9 +388,11 @@ To https://github.com/quintian/spring-petclinic.git
    6ae98b1..fd1ef5f  main -> main
 
 ```
-
+Please refer to screenshot: "Commit a code change of messages in git repo". 
 
 - Let the Jenkins pipeline automatically build, check its result and polling log.
+
+Jenkins pipeline SCM Polling found a change in github web where the code is sourced (refer to screenshot: 'Polling log shows change found in git repo'), then the pipeline automatically built with this change (refer to sceenshot: 'Jenkins pipeline auto build when found change from githubweb'). 
 
 When it's in the run stage, go to PetClinic website: https://localhost:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". 
 
