@@ -358,12 +358,12 @@ Click on the job to enter its configuration page.
 Scroll down to the "Build Triggers" section in the job configuration.
 Select the option for "Poll SCM" to enable SCM polling.
 In the Schedule text box, enter the cron expression that specifies your desired schedule. For example:
-put  "H/30 * * * *" into the scheduling box. This means your pipeline will rebuild every half an hour by schedule. 
+put  "H/5 * * * *" into the scheduling box. This means your pipeline will rebuild every half an hour by schedule. 
 
 Then you click 'apply' and 'save' button and restart Jenkins container to make this configuration effect. 
 
 
-(Refer to screenshot: Jenkins pipeline config for 'Build Triggers')
+(Refer to screenshot: Jenkins pipeline config for Poll SCM Schedule. )
 
 
 - Change petclinic code and commit the change to the forked git repo
@@ -397,7 +397,11 @@ To https://github.com/quintian/spring-petclinic.git
 
 - Let the Jenkins pipeline automatically build, check its result and polling log.
 
-When it's in the run stage, go to PetClinic website: https://localhost:8090 or from the remote: https: <your public IP>:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". ( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
+When it's in the run stage, go to PetClinic website: https://localhost:8090. You should see the clinic web with an updated welcome message: "Welcome Group 4!". 
+
+If the automatic deployment is set in the Jenkinsfile, the website will be on automatically. 
+
+( Refer to screenshot: 'Petclinic web up with updated welcome message'. )
 
 You can also check the SCM polling log by the pipeline menu, as the sceenshot 'Jenkins pipeline polling log by SCM schedule'.
 
