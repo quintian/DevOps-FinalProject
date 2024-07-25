@@ -1,0 +1,11 @@
+[Unit]
+Description=Java Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/java -jar {{ jar_path }}/{{ jar_file }}
+User=team4
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
