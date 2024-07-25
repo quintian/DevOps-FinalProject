@@ -21,6 +21,7 @@ pipeline {
                     sh """
                         # cd spring-petclinic
                         ${mvnHome}/bin/mvn clean package
+                        sudo service docker start &
                     """
                 }
             }
@@ -66,8 +67,6 @@ pipeline {
                 script{
                     try {
                         sh """  
-                        # sudo service docker start
-                        # sleep 15
                         docker run --privileged -v /var/jenkins_home/workspace/:/zap/wrk:rw \
                         --user root \
                         -t zaproxy/zap-weekly  \
@@ -79,6 +78,14 @@ pipeline {
                         echo "Error occurred during OWASP ZAP Scan: ${e}"
                     }
                 } 
+            }
+        }
+
+        stage('cleanup'){
+            steps{
+                script{
+                    sh "sudo service docker stop"
+                }
             }
         }
 
