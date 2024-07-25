@@ -1,0 +1,17 @@
+So far the only way seen for automatically installing tools and having the same configuration is copying the var/jenkins_home directory to a new jenkins instance. 
+The new instance must be offline while you update it and then restarted. 
+The credentials must be changed. For the purposes of Sonarqube setup, the user must provide a username and their sonarqube token.
+Either using the jenkins cli (I had issues downloading this tool due to java version issues) 
+or maybe by editng credentials file at var/jenkins_home/credentials.xml directly.
+It seems the file's passwords are encrypted so cli is the better choice. You would need to delete all credentials inherited by the copy with delete-credentials before adding new credentials. 
+The command for creating a credential is create-credentials-by-xml. The format for the sonarqube credential is 
+```
+<org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@183.va_de8f1dd5a_2b_">
+          <scope>GLOBAL</scope>
+          <id>sonarqube</id>
+          <description></description>
+          <secret>{AQAAABAAAAAwzMIPUX8hlcM/MFzXzJsT01oJLhEQ0My/UJhrSudAZ4xBENSAcfttpmDbVWFBWbuMkgaiotB2CDMOZ9wh4txPbA==}</secret>
+        </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
+```
+Since you copied the whole folder you need to update teh github url in /var/jenkins_home/jobs/finalproject/config.xml as well.
+The ids for credentials should be kept the same.
