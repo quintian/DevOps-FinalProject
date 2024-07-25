@@ -2,21 +2,23 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_NETWORK = 'dev-network'
+        PROJECT_NAME = 'devops-finalproject-akash'
+        DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
         DOCKER_IMAGE = 'akashcha/spring-petclinic'
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000' // URL of the SonarQube server
-        SONARQUBE_LOGIN = 'squ_f33d0568a7c9e6d8c427d516affc3fe531b2b69a' // Authentication token for SonarQube
+        SONARQUBE_LOGIN = 'squ_de17e66059ae81ae9872a29edb0a12eec136267b' // Authentication token for SonarQube
         DEPLOYMENT_URL = 'http://192.168.1.2:8082' // Placeholder for the application URL
         SSH_USER = 'vagrant' // Vagrant default user
         TARGET_HOST = '192.168.56.10' // The static IP address of the VM
+        SONAR_SCANNER_CONTAINER_NAME = 'sonarqube'
     }
 
     stages {
             stage('Setup Docker Network') {
                 steps {
-                    echo 'Setting up Docker network...'
+                echo "Setting up Docker network: ${env.DOCKER_NETWORK}"
                     sh 'docker network create ${DOCKER_NETWORK} || true'
                 }
             }
@@ -152,11 +154,16 @@ pipeline {
                 script {
                     try {
 
+                        // Create the /zap/wrk directory
+                        sh """
+                            docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk
+                        """
+
                         // Run the ZAP baseline scan
                         sh """
                             docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py \
                                 -t ${env.DEPLOYMENT_URL} \
-                                -r zap-report.html
+                                -r zap-report.html -I
                         """
                     } catch (Exception e) {
                         echo "Error during preparing ZAP Analysis Script: ${e}"
@@ -189,6 +196,7 @@ pipeline {
         }
         success {
             echo 'Pipeline completed successfully.'
+            archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true
     }
         failure {
             echo 'Pipeline failed.'
