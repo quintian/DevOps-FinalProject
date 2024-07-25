@@ -6,6 +6,10 @@ services:
       dockerfile: jenkins_dockerfile
     user: root
     privileged: true # This might get me past Docker: permission denied
+    environment:
+      ANSIBLE_HOST_KEY_CHECKING: "False"
+    volumes:
+      - ./ansible:/opt/ansible
     ports:
       - "8080:8080"
       - "8082:8082" # For spring-petclinic app
@@ -45,4 +49,3 @@ services:
 networks:
   dev-network:
     external: false
-
