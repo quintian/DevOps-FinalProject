@@ -7,6 +7,14 @@
     service_name: petclinic
 
   tasks:
+    - name: Make sure we have a non-root user to run the service
+      ansible.builtin.user:
+        name: petclinic
+        state: present
+        comment: "Web Server User"
+        shell: /usr/sbin/nologin
+        system: yes
+
     - name: Ensure the target directory exists
       file:
         path: "{{ jar_path }}"
