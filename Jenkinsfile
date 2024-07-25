@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_NAME = 'devops-finalproject-akash'
+        PROJECT_NAME = 'devops-finalproject'
         DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
         DOCKER_IMAGE = 'akashcha/spring-petclinic'
         ZAP_CONTAINER_NAME = 'owasp-zap'
@@ -42,42 +42,30 @@ pipeline {
             }
         }
 
-   //   stage('Setup VM with Vagrant') {
-   //       steps {
-   //           script {
-   //               try {
-   //                   sh 'sh setup-vagrant.sh'
-   //               } catch (Exception e) {
-   //                   echo "Error during VM setup with Vagrant: ${e}"
-   //                   currentBuild.result = 'FAILURE'
-   //               }
-   //           }
-   //       }
-   //   }
 
-   //     stage('Test') {
-   //         steps {
-   //             script {
-   //                 sh """
-   //                     # cd spring-petclinic
-   //                     mvn test
-   //                 """
-   //             }
-   //         }
-   //     }
+        stage('Test') {
+            steps {
+                script {
+                    sh """
+                        # cd spring-petclinic
+                        mvn test
+                    """
+                }
+            }
+        }
 
 
-    //    stage('Run Test Instance') {
-    //        steps {
-    //            script {
-    //                sh """
-    //                    # cd spring-petclinic
-    //                    nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &
-    //                    sleep 5
-    //                """
-    //            }
-    //        }
-    //    }
+        stage('Run Test Instance') {
+            steps {
+                script {
+                    sh """
+                        # cd spring-petclinic
+                        nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &
+                        sleep 5
+                    """
+                }
+            }
+        }
 
 
         stage('Static Analysis') {
@@ -124,29 +112,6 @@ pipeline {
                 }
             }
         }
-
-//               stage('Deploy with Ansible') {
-//           steps {
-//               script {
-//                   try {
-//                       sh """
-//                           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.vagrant.d/insecure_private_key ${SSH_USER}@${TARGET_HOST} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys" < ~/.vagrant.d/insecure_private_key.pub
-//                       """
-//                       sh """
-//                           ansible-playbook -i /opt/ansible/inventory.ini /opt/ansible/playbook.yml --private-key ~/.vagrant.d/insecure_private_key
-//                       """
-//                   script {
-//                           env.DEPLOYMENT_URL = 'http://192.168.56.10:8082'
-//                       echo "Application deployed at ${env.DEPLOYMENT_URL}"
-//                   }
-//                   } catch (Exception e) {
-//                       echo "Error during deployment with Ansible: ${e}"
-//                       currentBuild.result = 'FAILURE'
-//                   }
-//               }
-//           }
-//       }
-
 
 
         stage('Prepare ZAP Analysis using socket') {
