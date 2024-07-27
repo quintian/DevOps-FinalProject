@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_NAME = 'devops-finalproject-akash'
+        PROJECT_NAME = 'team4-devops-finalproject'
         DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
