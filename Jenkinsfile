@@ -287,16 +287,6 @@ pipeline {
                                 echo "Port 22 rule already exists"
                             }
 
-                            def ruleExists80 = sh(script: """
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${AWS_REGION} --query 'SecurityGroups[*].IpPermissions[?FromPort==`80` && ToPort==`80` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
-                            """, returnStdout: true).trim()
-
-                            if (!ruleExists80) {
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 80 --cidr 0.0.0.0/0"
-                            } else {
-                                echo "Port 80 rule already exists"
-                            }
-
                             def ruleExists443 = sh(script: """
                                 aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${AWS_REGION} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
                             """, returnStdout: true).trim()
@@ -419,7 +409,6 @@ pipeline {
                                 """
                             }
 
-                            // Run the Ansible playbook with necessary variables
                     sh """
                         ansible-playbook -i inventory.ini ${WORKSPACE}/deploy-petclinic.yml \
                         -e ami_id=${AMI_ID} \
