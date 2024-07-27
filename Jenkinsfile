@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_NAME = 'team4-devops-finalproject'
+        PROJECT_NAME = 'devops-finalproject-akash'
         DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
@@ -67,7 +67,6 @@ pipeline {
              steps {
                  script {
                      sh """
-                         # cd spring-petclinic
                          mvn test
                      """
                  }
@@ -212,6 +211,8 @@ pipeline {
                                 env.INSTANCE_IP = instanceDetails[1]
                                 echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"
                             } else {
+                                env.INSTANCE_ID = null
+                                env.INSTANCE_IP = null
                                 echo "No existing running EC2 instances found. Proceeding to create a new instance."
                             }
                         } catch (Exception e) {
@@ -238,6 +239,8 @@ pipeline {
                             echo "EC2 Instance ID: ${env.INSTANCE_ID}"
                         } catch (Exception e) {
                             echo "Error creating EC2 instance: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
                         }
                     }
                 }
