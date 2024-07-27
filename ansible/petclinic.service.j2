@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 ExecStart=/usr/bin/java -jar {{ jar_path }}/{{ jar_file }}
-User=team4
+User=petclinic
 Restart=on-failure
 
 [Install]
