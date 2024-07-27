@@ -7,7 +7,7 @@ pipeline {
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
-        SONARQUBE_LOGIN = 'squ_3bdc64e87739c6467619afd27cba0784961a7dab' // Authentication token for SonarQube
+        SONARQUBE_LOGIN = 'squ_e1e70d0009e9f60a767cca521528ef557b1b0543' // Authentication token for SonarQube
         DEPLOYMENT_URL = 'http://192.168.1.2:8082' // Placeholder for the application URL
         SSH_USER = 'ubuntu'
         AWS_REGION = 'us-east-1'
@@ -119,8 +119,29 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk'
-                        sh 'docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py -t ${env.DEPLOYMENT_URL} -r zap-report.html -I'
+                // Check if the service is accessible
+                def serviceAccessible = false
+                for (int i = 0; i < 5; i++) {
+                    try {
+                        sh "curl -s -o /dev/null -w '%{http_code}' http://192.168.1.2:8082"
+                        serviceAccessible = true
+                        break
+                    } catch (Exception e) {
+                        echo "Service not accessible yet, retrying in 30 seconds..."
+                        sleep(30)
+                    }
+                }
+
+                if (!serviceAccessible) {
+                    error("Service not accessible at http://192.168.1.2:8082")
+                }
+
+                echo "ZAP_CONTAINER_NAME: ${env.ZAP_CONTAINER_NAME}"
+                echo "DEPLOYMENT_URL: ${env.DEPLOYMENT_URL}"
+
+                // Using double quotes to allow variable substitution
+                sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk"
+                sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py -t ${env.DEPLOYMENT_URL} -r zap-report.html -I"
                     } catch (Exception e) {
                         echo "Error during preparing ZAP Analysis Script: ${e}"
                         currentBuild.result = 'FAILURE'
@@ -133,7 +154,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html'
+                        sh "docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html"
                     } catch (Exception e) {
                         echo "Error during copying ZAP report: ${e}"
                         currentBuild.result = 'FAILURE'
@@ -211,8 +232,8 @@ pipeline {
                                 env.INSTANCE_IP = instanceDetails[1]
                                 echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"
                             } else {
-                                env.INSTANCE_ID = null
-                                env.INSTANCE_IP = null
+                                env.INSTANCE_ID = ''
+                                env.INSTANCE_IP = ''
                                 echo "No existing running EC2 instances found. Proceeding to create a new instance."
                             }
                         } catch (Exception e) {
