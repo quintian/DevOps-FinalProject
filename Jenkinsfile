@@ -21,12 +21,18 @@ pipeline {
     }
 
     stages {
-            stage('Setup Docker Network') {
-                steps {
-                echo "Setting up Docker network: ${env.DOCKER_NETWORK}"
-                    sh 'docker network create ${DOCKER_NETWORK} || true'
+        stage('Cleanup') {
+            steps {
+                script {
+                    try {
+                    sh 'rm -f ${WORKSPACE}/zap-report.html'
+                    } catch (Exception e) {
+                        echo "Error during cleanup: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
             }
+        }
 
         stage('Checkout') {
             steps {
@@ -39,20 +45,38 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean package'
+                    sh 'mvn clean package -Dmaven.test.skip=true'
                 }
             }
         }
 
+         stage('Test') {
+             steps {
+                 script {
+                    try {
+                     sh """
+                         mvn test
+                     """
+                    } catch (Exception e) {
+                        echo "Error during testing: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                 }
+             }
+         }
 
-
-        stage('Debug Workspace') {
-            steps {
+       stage('Setup Docker Network') {
+                steps {
                 script {
-                    sh 'ls -al ${WORKSPACE}'
-                    sh 'ls -al ${LOCAL_SSH_KEY_PATH}'
+                    try {
+                echo "Setting up Docker network: ${env.DOCKER_NETWORK}"
+                    sh 'docker network create ${DOCKER_NETWORK} || true'
+                    } catch (Exception e) {
+                        echo "Error setting up Docker network: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
-            }
+           }
         }
 
         stage('Prepare SSH Key') {
@@ -62,18 +86,6 @@ pipeline {
                 }
             }
         }
-
-         stage('Test') {
-             steps {
-                 script {
-                     sh """
-                         mvn test
-                     """
-                 }
-             }
-         }
-
-
 
         stage('Static Analysis') {
             steps {
@@ -114,12 +126,10 @@ pipeline {
             }
         }
 
-
         stage('Prepare ZAP Analysis using socket') {
             steps {
                 script {
                     try {
-                // Check if the service is accessible
                 def serviceAccessible = false
                 for (int i = 0; i < 5; i++) {
                     try {
@@ -139,7 +149,6 @@ pipeline {
                 echo "ZAP_CONTAINER_NAME: ${env.ZAP_CONTAINER_NAME}"
                 echo "DEPLOYMENT_URL: ${env.DEPLOYMENT_URL}"
 
-                // Using double quotes to allow variable substitution
                 sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk"
                 sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py -t ${env.DEPLOYMENT_URL} -r zap-report.html -I"
                     } catch (Exception e) {
@@ -167,21 +176,22 @@ pipeline {
             steps {
                 withAWS(credentials: 'aws-credentials') {
                     script {
-                        sh 'aws sts get-caller-identity'
+                        try {
+                            sh 'aws sts get-caller-identity'
+                        } catch (Exception e) {
+                            echo "Error verifying AWS account: ${e}"
+                            currentBuild.result = 'FAILURE'
+                        }
                     }
                 }
             }
         }
 
-        stage('Open Ports 80, 443, and 8080') {
+        stage('Open Ports 443 and 8080') {
             steps {
                 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     script {
                     try {
-                            def port80Exists = sh(script: """
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`80` && ToPort==`80` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
-                            """, returnStdout: true).trim()
-
                             def port443Exists = sh(script: """
                                 aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
                             """, returnStdout: true).trim()
@@ -189,12 +199,6 @@ pipeline {
                             def port8080Exists = sh(script: """
                                 aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`8080` && ToPort==`8080` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
                             """, returnStdout: true).trim()
-
-                            if (!port80Exists) {
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 80 --cidr 0.0.0.0/0"
-                            } else {
-                                echo "Port 80 rule already exists"
-                            }
 
                             if (!port443Exists) {
                                 sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 443 --cidr 0.0.0.0/0"
@@ -208,7 +212,7 @@ pipeline {
                                 echo "Port 8080 rule already exists"
                             }
                     } catch (Exception e) {
-                            echo "Error opening ports 80, 443, and 8080: ${e.getMessage()}"
+                            echo "Error opening ports 443, and 8080: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
                         }
