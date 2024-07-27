@@ -112,7 +112,7 @@ Reference: https://commandmasters.com/commands/sw_vers-osx/
 
    1. ![[./screenshots/Software_or_tools_version.png]]
 
-# STEPS
+# Steps
 
 **Goal:** Build a DevSecOps pipeline for the spring-petclinic project using Docker, Jenkins, SonarQube, Prometheus, Grafana, OWASP ZAP, and Ansible for deploying the application to an AWS EC2 instance.
 
@@ -266,7 +266,7 @@ To accomplish this assignment, follow these steps:
      - job_name: 'prometheus'
        static_configs:
          - targets: ['192.168.1.4:9090']
-    
+
    ```
 
    - Create and run the Prometheus container:
@@ -787,7 +787,7 @@ To accomplish this assignment, follow these steps:
            }
        }
    }
-    
+
    ```
 
 ## Step 4: Configure SonarQube
