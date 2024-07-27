@@ -1,0 +1,80 @@
+---
+- name: Deploy Spring PetClinic Application
+  hosts: new_ec2
+  become: yes
+  vars:
+    jar_file: "/home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar"
+  tasks:
+    - name: Update the package list
+      apt:
+        update_cache: yes
+
+    - name: Install OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Copy the Spring PetClinic JAR file to the EC2 instance
+      copy:
+        src: "{{ jar_file }}"
+        dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Run the Spring PetClinic application
+      shell: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"
+      args:
+        chdir: /home/ubuntu
+      register: run_result
+
+    - name: Debug - Check if the application is running
+      shell: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"
+      register: ps_result
+
+    - debug:
+        msg: "Run Result: {{ run_result }}"
+
+    - debug:
+        msg: "Process Status: {{ ps_result }}"
+
+- name: Create and Configure EC2 Instance
+  hosts: localhost
+  tasks:
+    - name: Create a new EC2 instance
+      command: >
+        aws ec2 run-instances
+        --image-id {{ ami_id }}
+        --count 1
+        --instance-type {{ instance_type }}
+        --key-name {{ key_name }}
+        --security-group-ids {{ security_group_id }}
+        --subnet-id {{ subnet_id }}
+        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-ec2-instance}]'
+        --region {{ region }}
+        --query 'Instances[0].InstanceId'
+        --output text
+      register: ec2_instance
+
+    - name: Wait for the EC2 instance to be running
+      command: >
+        aws ec2 wait instance-running
+        --instance-ids {{ ec2_instance.stdout }}
+        --region {{ region }}
+
+    - name: Get the public IP of the new EC2 instance
+      command: >
+        aws ec2 describe-instances
+        --instance-ids {{ ec2_instance.stdout }}
+        --region {{ region }}
+        --query 'Reservations[0].Instances[0].PublicIpAddress'
+        --output text
+      register: ec2_ip
+
+    - name: Update the Ansible inventory with the new EC2 instance
+      lineinfile:
+        path: ./inventory.ini
+        regexp: '^new_ec2'
+        line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"
+      delegate_to: localhost
+
