@@ -227,7 +227,7 @@ pipeline {
 
         stage('Create EC2 Instance') {
             when {
-                expression { !env.INSTANCE_ID }
+        expression { !env.INSTANCE_ID || env.INSTANCE_ID.trim() == "" }
             }
             steps {
                 withAWS(credentials: 'aws-credentials') {
