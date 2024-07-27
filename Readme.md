@@ -1,6 +1,3 @@
-
-
-
 ## Overall
 
 ### Summary of Detailed Technical Steps for DevSecOps Pipeline using AWS EC2
@@ -10,68 +7,132 @@
 #### Step 1: Set Up Docker Containers
 
 1. **Fork and Clone Repository**
+
    - Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository on GitHub/GitLab.
    - Clone the forked repository to your local machine.
-
 2. **Create a Custom Docker Network**
+
    - Create a Docker network to connect all the services:
      ```bash
      docker network create dev-network
      ```
-
 3. **Set Up Jenkins**
+
+   - Create a docker-compose file:
    - Create a `Dockerfile` for Jenkins and build the image:
-     ```Dockerfile
-     FROM jenkins/jenkins:lts
-     USER root
-     RUN apt-get update && apt-get install -y docker.io
-     COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-     RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
-     USER jenkins
-     ```
-   - Build and run the Jenkins container:
-     ```bash
-     docker build -t custom-jenkins .
-     docker run -d --name jenkins --network dev-network -p 8080:8080 -p 50000:50000 custom-jenkins
-     ```
 
+   ```Dockerfile
+   FROM jenkins/jenkins:lts
+
+   USER root
+   RUN apt-get update \
+         && apt-get install -y sudo \
+         && apt-get install -y maven \
+         && rm -rf /var/lib/apt/lists/*
+
+   # Optionally set up Maven environment variables
+   ENV MAVEN_HOME /usr/share/maven
+   ENV PATH $MAVEN_HOME/bin:$PATH
+
+   RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+   RUN sudo apt-get update \
+         && sudo apt-get install ca-certificates curl unzip \
+         && sudo install -m 0755 -d /etc/apt/keyrings \
+         && sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \
+         && sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+   RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   RUN sudo apt-get update
+
+   RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+   RUN sudo apt-get install iproute2 -y
+   RUN sudo apt-get install ansible -y
+   RUN sudo apt-get install openssh-server -y
+
+   RUN apt-get update && apt-get install -y curl gnupg apt-transport-https
+
+   # Install AWS CLI
+   RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
+       unzip awscliv2.zip && \
+       sudo ./aws/install
+
+   # Copy the SSH key to a specific location in the Docker image
+   COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem
+   COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub
+   RUN chmod 600 /root/.ssh/petclinic_key_pair.pem
+
+   USER jenkins
+
+   RUN jenkins-plugin-cli --plugins \
+       trilead-api:2.147.vb_73cc728a_32e \
+       docker-workflow \
+       workflow-aggregator \
+       sonar \
+       prometheus \
+       zap \
+       git \
+       pipeline-stage-step \
+       ansible \
+       cloudbees-disk-usage-simple \
+       aws-credentials \
+       credentials-binding \
+       pipeline-aws
+
+   COPY ansible /opt/ansible
+
+   ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "] # Override the default entrypoint
+
+   ```
+
+
+   Create and run the SonarQube container:
+
+   ```bash
+   docker run -d --name sonarqube --network dev-network -p 9000:9000 sonarqube
+   ```
+
+
+   5. **Set Up Prometheus**
+
+      - Create a `prometheus.yml` configuration file for Prometheus:
+        ```yaml
+        global:
+          scrape_interval: 15s
+        scrape_configs:
+          - job_name: 'jenkins'
+            static_configs:
+              - targets: ['jenkins:8080']
+        ```
+      - Create and run the Prometheus container:
+        ```bash
+        docker run -d --name prometheus --network dev-network -p 9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+        ```
+   6. **Set Up Grafana**
+
+      - Create a `grafana.ini` configuration file for Grafana:
+        ```ini
+        [server]
+        protocol = http
+        http_port = 3000
+        domain = 192.168.1.5
+        root_url = %(protocol)s://%(domain)s:%(http_port)s/
+        serve_from_sub_path = false
+        [security]
+        admin_user = admin
+        admin_password = admin
+        ```
+      - Create and run the Grafana container:
+        ```bash
+        docker run -d --name grafana --network dev-network -p 3000:3000 -v $(pwd)/grafana.ini:/etc/grafana/grafana.ini grafana/grafana
+        ```
+
+
+   ```
+
+   ```
 4. **Set Up SonarQube**
-   - Create and run the SonarQube container:
-     ```bash
-     docker run -d --name sonarqube --network dev-network -p 9000:9000 sonarqube
-     ```
 
-5. **Set Up Prometheus**
-   - Create a `prometheus.yml` configuration file for Prometheus:
-     ```yaml
-     global:
-       scrape_interval: 15s
-     scrape_configs:
-       - job_name: 'jenkins'
-         static_configs:
-           - targets: ['jenkins:8080']
-     ```
-   - Create and run the Prometheus container:
-     ```bash
-     docker run -d --name prometheus --network dev-network -p 9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
-     ```
-
-6. **Set Up Grafana**
-   - Create a `grafana.ini` configuration file for Grafana:
-     ```ini
-     [server]
-     protocol = http
-     http_port = 3000
-     domain = 192.168.1.5
-     root_url = %(protocol)s://%(domain)s:%(http_port)s/
-     serve_from_sub_path = false
-     [security]
-     admin_user = admin
-     admin_password = admin
-     ```
-   - Create and run the Grafana container:
-     ```bash
-     docker run -d --name grafana --network dev-network -p 3000:3000 -v $(pwd)/grafana.ini:/etc/grafana/grafana.ini grafana/grafana
 ```
 
 7. **Set Up OWASP ZAP**
@@ -220,7 +281,11 @@
              }
          }
      }
-	```
+     ```
+
+   ```
+
+   ```
 
 #### Step 3: Configure SonarQube
 
@@ -233,6 +298,7 @@
 
 1. **Prometheus Configuration**
    - Update the `prometheus.yml` file to scrape metrics from Jenkins:
+
 ```yaml
      global:
        scrape_interval: 15s
@@ -253,26 +319,32 @@
 Here's a detailed guide to launching an EC2 instance using the AWS Management Console:
 
 ##### Step 1: Log in to the AWS Management Console
+
 1. Open a web browser and navigate to the [AWS Management Console](https://aws.amazon.com/console/).
 2. Sign in with your AWS account credentials.
 
 ##### Step 2: Navigate to the EC2 Dashboard
+
 1. From the AWS Management Console, click on **Services** in the top-left corner.
 2. Under the **Compute** category, select **EC2**.
 
 ##### Step 3: Launch an Instance
+
 1. On the EC2 Dashboard, click the **Launch Instance** button.
 
 ##### Step 4: Choose an Amazon Machine Image (AMI)
+
 1. Select an AMI based on your requirements. For this guide, we'll use **Ubuntu Server 20.04 LTS**.
    - You can find this AMI by searching for "Ubuntu Server 20.04 LTS" in the **Quick Start** tab.
 2. Click the **Select** button next to your chosen AMI.
 
 ##### Step 5: Choose an Instance Type
+
 1. Select an instance type based on your needs. For most purposes, the **t2.micro** instance type is sufficient and falls under the Free Tier eligibility.
 2. Click the **Next: Configure Instance Details** button.
 
 ##### Step 6: Configure Instance Details
+
 1. **Number of instances:** Keep it as 1.
 2. **Network:** Select the VPC you want to launch your instance in. If you don't have a VPC, the default VPC will be selected.
 3. **Subnet:** Choose a subnet within your VPC. Ensure that the subnet has auto-assign public IP enabled, or select **Enable** under the **Auto-assign Public IP** dropdown.
@@ -282,16 +354,19 @@ Here's a detailed guide to launching an EC2 instance using the AWS Management Co
 7. Click the **Next: Add Storage** button.
 
 ##### Step 7: Add Storage
+
 1. The default storage configuration should suffice, but you can adjust the storage size and type if necessary.
    - For example, you might want to increase the storage size from the default 8 GB to 20 GB.
 2. Click the **Next: Add Tags** button.
 
 ##### Step 8: Add Tags
+
 1. (Optional) Add tags to help identify your instance. Tags are key-value pairs.
    - For example, you could add a tag with **Key:** `Name` and **Value:** `MyFirstEC2Instance`.
 2. Click the **Next: Configure Security Group** button.
 
 ##### Step 9: Configure Security Group
+
 1. **Security group name:** Provide a name for your security group, such as `MyEC2SecurityGroup`.
 2. **Description:** Provide a description, such as `Security group for my EC2 instance`.
 3. **Inbound rules:**
@@ -308,20 +383,24 @@ Here's a detailed guide to launching an EC2 instance using the AWS Management Co
 4. Click the **Review and Launch** button.
 
 ##### Step 10: Review and Launch
+
 1. Review your instance configuration.
 2. Click the **Launch** button.
 
 ##### Step 11: Select an Existing Key Pair or Create a New Key Pair
+
 1. In the **Select an existing key pair or create a new key pair** dialog box, choose **Create a new key pair**.
 2. Provide a name for the key pair, such as `my-ec2-key`.
 3. Click the **Download Key Pair** button to download the `.pem` file (e.g., `my-ec2-key.pem`). **Note:** Keep this file secure as it is required to SSH into your instance.
 4. Click the **Launch Instances** button.
 
 ##### Step 12: View Your Instances
+
 1. Click the **View Instances** button to return to the EC2 Dashboard.
 2. Your new instance will be listed. Initially, the instance state will be **Pending**. Wait for the instance state to change to **Running**.
 
 ##### Step 13: SSH into Your EC2 Instance
+
 1. Open a terminal on your local machine.
 2. Navigate to the directory where your key pair file (`my-ec2-key.pem`) is stored.
 3. Change the permissions of the key pair file to ensure it's not publicly viewable:
@@ -332,6 +411,7 @@ Here's a detailed guide to launching an EC2 instance using the AWS Management Co
    ```sh
    ssh -i "my-ec2-key.pem" ubuntu@your-ec2-public-ip
    ```
+
    - Replace `your-ec2-public-ip` with the Public IP address of your EC2 instance.
 
 By following these steps, you will have successfully launched an EC2 instance, configured it with necessary security groups, and connected to it via SSH.Step 6: Configure Ansible for Deployment
@@ -341,6 +421,8 @@ By following these steps, you will have successfully launched an EC2 instance, c
      ```ini
      [web]
      ec2-public-dns ansible_user=ec2-user
+     ```
+
 ```
 
 2. **Create Ansible Playbook**
@@ -413,6 +495,8 @@ By following these steps, you will have successfully launched an EC2 instance, c
              }
          }
      }
+     ```
+
 ```
 
 #### Step 8: Verify the Setup
@@ -442,3 +526,4 @@ By following these steps, you will have successfully launched an EC2 instance, c
    - Provide a short video demonstrating the automated build, deployment, and monitoring process.
 
 By following these detailed steps, you can successfully set up and configure a DevSecOps pipeline for the spring-petclinic project, incorporating security, continuous integration, continuous delivery, and monitoring using AWS EC2 for deployment.
+```
