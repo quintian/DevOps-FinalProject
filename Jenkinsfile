@@ -134,7 +134,7 @@ pipeline {
                                     sonar-scanner \
                                     -Dsonar.projectKey=spring-petclinic \
                                     -Dsonar.sources=. \
-                            -Dsonar.java.binaries=target/classes \
+                                    -Dsonar.java.binaries=target/classes \
                                     -Dsonar.host.url=${env.SONARQUBE_URL} \
                                     -Dsonar.login=${env.SONARQUBE_LOGIN}
                                 """
@@ -303,49 +303,6 @@ pipeline {
             }
         }
 
-        stage('Configure Security Group') {
-            steps {
-                withAWS(credentials: 'aws-credentials') {
-                    script {
-                        try {
-                            def ruleExists22 = sh(script: """
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${AWS_REGION} --query 'SecurityGroups[*].IpPermissions[?FromPort==`22` && ToPort==`22` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
-                            """, returnStdout: true).trim()
-
-                            if (!ruleExists22) {
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 22 --cidr 0.0.0.0/0"
-                            } else {
-                                echo "Port 22 rule already exists"
-                            }
-
-                            def ruleExists443 = sh(script: """
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${AWS_REGION} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
-                            """, returnStdout: true).trim()
-
-                            if (!ruleExists443) {
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 443 --cidr 0.0.0.0/0"
-                            } else {
-                                echo "Port 443 rule already exists"
-                            }
-
-                            def ruleExists8080 = sh(script: """
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${AWS_REGION} --query 'SecurityGroups[*].IpPermissions[?FromPort==`8080` && ToPort==`8080` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
-                            """, returnStdout: true).trim()
-
-                            if (!ruleExists8080) {
-                        sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 8080 --cidr 0.0.0.0/0"
-                            } else {
-                                echo "Port 8080 rule already exists"
-                            }
-                        } catch (Exception e) {
-                            echo "Error configuring security group: ${e.getMessage()}"
-                            currentBuild.result = 'FAILURE'
-                            throw e
-                        }
-                    }
-                }
-            }
-        }
 
         stage('Get EC2 Instance IP') {
             steps {
