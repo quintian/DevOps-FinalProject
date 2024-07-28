@@ -4,6 +4,7 @@ pipeline {
     environment {
         PROJECT_NAME = 'devops-finalproject-akash'
         DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
+        JENKINS_URL = '10.120.64.242:8080'
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
@@ -18,6 +19,13 @@ pipeline {
         SUBNET_ID ='subnet-0d2f18bee0a9a0ca1'
         LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'  // Path to the SSH key inside the container
         JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'
+        GITHUB_REPO = "akashcha/spring-petclinic"
+        WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"
+        GITHUB_TOKEN = credentials('github-token')
+    }
+
+    triggers {
+        pollSCM('* * * * *')
     }
 
     stages {
@@ -39,6 +47,29 @@ pipeline {
                 echo 'Checking out the repository...'
                 git branch: 'main', url: 'https://github.com/akashcha/spring-petclinic.git'
                 echo 'Repository checked out successfully.'
+            }
+        }
+
+        stage('Create GitHub Webhook') {
+            steps {
+                script {
+                    def payload = """
+                    {
+                      "name": "web",
+                      "active": true,
+                      "events": ["push", "pull_request"],
+                      "config": {
+                        "url": "${WEBHOOK_URL}",
+                        "content_type": "json",
+                        "insecure_ssl": "0"
+                      }
+                    }
+                    """
+                    sh """
+                    curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Content-Type: application/json" \
+                    -d '${payload}' "https://api.github.com/repos/${GITHUB_REPO}/hooks"
+                    """
+                }
             }
         }
 
@@ -418,7 +449,9 @@ pipeline {
                         -e subnet_id=${SUBNET_ID} \
                         -e region=${AWS_REGION} \
                         -e jar_file=${WORKSPACE}/${JAR_FILE} \
-                        -e ssh_key_path=${LOCAL_SSH_KEY_PATH}
+                        -e ssh_key_path=${LOCAL_SSH_KEY_PATH} \
+                        -e instance_id=${env.INSTANCE_ID} \
+                        -e instance_ip=${env.INSTANCE_IP}
                     """
                     } catch (Exception e) {
                         echo "Error deploying to EC2 using Ansible: ${e.getMessage()}"
