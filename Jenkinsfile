@@ -152,7 +152,7 @@ pipeline {
             steps {
                 script {
                     sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &'
-                        sleep 5
+                        sleep 10
                 }
             }
         }
@@ -169,7 +169,7 @@ pipeline {
                         break
                     } catch (Exception e) {
                         echo "Service not accessible yet, retrying in 30 seconds..."
-                        sleep(30)
+                        sleep(5)
                     }
                 }
 
