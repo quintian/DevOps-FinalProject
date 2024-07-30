@@ -6,14 +6,14 @@
    1. OS Name: macOS Sonoma Version 14.5
    2. Build version: 23F79
    3. Chipset: Apple M1 Pro
-2. Screenshot :  
+2. Screenshot :
    ![[./screenshots/macversion 1.png]]
-3. Source: Using commands hostname and sw_vers  
-   ==sreeakash@KP-QNPHXDYRW1 ~ %== hostname  
-   KP-QNPHXDYRW1  
-   ==sreeakash@KP-QNPHXDYRW1 ~ %== sw_vers  
-   ProductName: macOS  
-   ProductVersion: 14.5  
+3. Source: Using commands hostname and sw_vers
+   ==sreeakash@KP-QNPHXDYRW1 ~ %== hostname
+   KP-QNPHXDYRW1
+   ==sreeakash@KP-QNPHXDYRW1 ~ %== sw_vers
+   ProductName: macOS
+   ProductVersion: 14.5
    BuildVersion: 23F79
 
 Reference: https://commandmasters.com/commands/sw_vers-osx/
@@ -35,76 +35,76 @@ Reference: https://commandmasters.com/commands/sw_vers-osx/
    11. **chmod**: chmod (GNU coreutils) 9.4
    12. **nano**:  GNU nano, version 7.2
    13. **mkdir**: mkdir (GNU coreutils) 9.4
-2. Source:  
-   ==sreeakash@KP-QNPHXDYRW1 files % ==docker --version  
-   Docker version 26.1.4, build 5650f9b  
-   ==sreeakash@KP-QNPHXDYRW1 files % ==grep --version | head -n 1  
-   grep (BSD grep, GNU compatible) 2.6.0-FreeBSD  
-   ==sreeakash@KP-QNPHXDYRW1 files % ==brew info coreutils | grep "coreutils:"  
-   ==> coreutils: stable 9.5 (bottled), HEAD  
-   ==sreeakash@KP-QNPHXDYRW1 files % ==sh --version  
-   GNU bash, version 3.2.57(1)-release (arm64-apple-darwin23)  
-   Copyright (C) 2007 Free Software Foundation, Inc.  
-   ==sreeakash@KP-QNPHXDYRW1 files % ==zsh --version  
-   zsh 5.9 (x86_64-apple-darwin23.0)  
-   ==sreeakash@KP-QNPHXDYRW1 ~ %== docker exec server_container cat /etc/os-release  
-   PRETTY_NAME="Ubuntu 24.04 LTS"  
-   NAME="Ubuntu"  
-   VERSION_ID="24.04"  
-   VERSION="24.04 LTS (Noble Numbat)"  
-   VERSION_CODENAME=noble  
-   ID=ubuntu  
-   ID_LIKE=debian  
-   HOME_URL="https://www.ubuntu.com/"  
-   SUPPORT_URL="https://help.ubuntu.com/"  
-   BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"  
-   PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"  
-   UBUNTU_CODENAME=noble  
-   LOGO=ubuntu-logo  
-   ==sreeakash@KP-QNPHXDYRW1 ~ %== docker exec client_container cat /etc/os-release  
-   PRETTY_NAME="Ubuntu 24.04 LTS"  
-   NAME="Ubuntu"  
-   VERSION_ID="24.04"  
-   VERSION="24.04 LTS (Noble Numbat)"  
-   VERSION_CODENAME=noble  
-   ID=ubuntu  
-   ID_LIKE=debian  
-   HOME_URL="https://www.ubuntu.com/"  
-   SUPPORT_URL="https://help.ubuntu.com/"  
-   BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"  
-   PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"  
-   UBUNTU_CODENAME=noble  
-   LOGO=ubuntu-logo  
-   root@8bd802f8ae6b:/# "ssh" "-V" "OpenSSH Client"  
-   OpenSSH_9.6p1 Ubuntu-3ubuntu13.3, OpenSSL 3.0.13 30 Jan 2024  
-   root@8bd802f8ae6b:/# "apt-get" "--version" "APT-GET"  
-   apt 2.7.14 (arm64)  
-   root@8bd802f8ae6b:/# "chown" "--version" "CHOWN"  
-   chown (GNU coreutils) 9.4  
-   Copyright (C) 2023 Free Software Foundation, Inc.  
-   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).  
-   This is free software: you are free to change and redistribute it.  
+2. Source:
+   ==sreeakash@KP-QNPHXDYRW1 files % ==docker --version
+   Docker version 26.1.4, build 5650f9b
+   ==sreeakash@KP-QNPHXDYRW1 files % ==grep --version | head -n 1
+   grep (BSD grep, GNU compatible) 2.6.0-FreeBSD
+   ==sreeakash@KP-QNPHXDYRW1 files % ==brew info coreutils | grep "coreutils:"
+   ==> coreutils: stable 9.5 (bottled), HEAD
+   ==sreeakash@KP-QNPHXDYRW1 files % ==sh --version
+   GNU bash, version 3.2.57(1)-release (arm64-apple-darwin23)
+   Copyright (C) 2007 Free Software Foundation, Inc.
+   ==sreeakash@KP-QNPHXDYRW1 files % ==zsh --version
+   zsh 5.9 (x86_64-apple-darwin23.0)
+   ==sreeakash@KP-QNPHXDYRW1 ~ %== docker exec server_container cat /etc/os-release
+   PRETTY_NAME="Ubuntu 24.04 LTS"
+   NAME="Ubuntu"
+   VERSION_ID="24.04"
+   VERSION="24.04 LTS (Noble Numbat)"
+   VERSION_CODENAME=noble
+   ID=ubuntu
+   ID_LIKE=debian
+   HOME_URL="https://www.ubuntu.com/"
+   SUPPORT_URL="https://help.ubuntu.com/"
+   BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+   PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+   UBUNTU_CODENAME=noble
+   LOGO=ubuntu-logo
+   ==sreeakash@KP-QNPHXDYRW1 ~ %== docker exec client_container cat /etc/os-release
+   PRETTY_NAME="Ubuntu 24.04 LTS"
+   NAME="Ubuntu"
+   VERSION_ID="24.04"
+   VERSION="24.04 LTS (Noble Numbat)"
+   VERSION_CODENAME=noble
+   ID=ubuntu
+   ID_LIKE=debian
+   HOME_URL="https://www.ubuntu.com/"
+   SUPPORT_URL="https://help.ubuntu.com/"
+   BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+   PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+   UBUNTU_CODENAME=noble
+   LOGO=ubuntu-logo
+   root@8bd802f8ae6b:/# "ssh" "-V" "OpenSSH Client"
+   OpenSSH_9.6p1 Ubuntu-3ubuntu13.3, OpenSSL 3.0.13 30 Jan 2024
+   root@8bd802f8ae6b:/# "apt-get" "--version" "APT-GET"
+   apt 2.7.14 (arm64)
+   root@8bd802f8ae6b:/# "chown" "--version" "CHOWN"
+   chown (GNU coreutils) 9.4
+   Copyright (C) 2023 Free Software Foundation, Inc.
+   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).
+   This is free software: you are free to change and redistribute it.
    There is NO WARRANTY, to the extent permitted by law.
 
-   Written by David MacKenzie and Jim Meyering.  
-   root@8bd802f8ae6b:/# "chmod" "--version" "CHMOD"  
-   chmod (GNU coreutils) 9.4  
-   Copyright (C) 2023 Free Software Foundation, Inc.  
-   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).  
-   This is free software: you are free to change and redistribute it.  
+   Written by David MacKenzie and Jim Meyering.
+   root@8bd802f8ae6b:/# "chmod" "--version" "CHMOD"
+   chmod (GNU coreutils) 9.4
+   Copyright (C) 2023 Free Software Foundation, Inc.
+   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).
+   This is free software: you are free to change and redistribute it.
    There is NO WARRANTY, to the extent permitted by law.
 
-   Written by David MacKenzie and Jim Meyering.  
-   OpenSSH_9.6p1 Ubuntu-3ubuntu13.3, OpenSSL 3.0.13 30 Jan 2024  
-   root@0dfc25f9c7e7:/# "nano" "--version" "Nano"  
-   GNU nano, version 7.2  
-   (C) 2023 the Free Software Foundation and various contributors  
-   Compiled options: --disable-libmagic --enable-utf8  
-   root@0dfc25f9c7e7:/# "mkdir" "--version" "MKDIR"  
-   mkdir (GNU coreutils) 9.4  
-   Copyright (C) 2023 Free Software Foundation, Inc.  
-   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).  
-   This is free software: you are free to change and redistribute it.  
+   Written by David MacKenzie and Jim Meyering.
+   OpenSSH_9.6p1 Ubuntu-3ubuntu13.3, OpenSSL 3.0.13 30 Jan 2024
+   root@0dfc25f9c7e7:/# "nano" "--version" "Nano"
+   GNU nano, version 7.2
+   (C) 2023 the Free Software Foundation and various contributors
+   Compiled options: --disable-libmagic --enable-utf8
+   root@0dfc25f9c7e7:/# "mkdir" "--version" "MKDIR"
+   mkdir (GNU coreutils) 9.4
+   Copyright (C) 2023 Free Software Foundation, Inc.
+   License GPLv3+: GNU GPL version 3 or later [https://gnu.org/licenses/gpl.html](https://gnu.org/licenses/gpl.html).
+   This is free software: you are free to change and redistribute it.
    There is NO WARRANTY, to the extent permitted by law.
 
    Written by David MacKenzie.
@@ -124,34 +124,32 @@ To accomplish this assignment, follow these steps:
 
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
-   1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==  
+   1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==
       ![[./screenshots/1_download_docker_file_for_apple_silicon_chip.png]]
-   2. Download complete  
+   2. Download complete
       ![[./screenshots/2_download_complete.png]]
-   3. Copy Docker.app to Applications folder  
+   3. Copy Docker.app to Applications folder
       ![./screenshots/3_Copy_Docker.app_to_Applications_folder.png]
-   4. Copying to applications folder on my mac in progress  
+   4. Copying to applications folder on my mac in progress
       ![[./screenshots/4_Copying_in_progress.png]]
-   5. Open the copied docker file  
+   5. Open the copied docker file
       ![[./screenshots/5_Open_the_copied_Docker_app.png]]
-   6. Accept Docker service agreement  
+   6. Accept Docker service agreement
       ![[./screenshots/6_Accept_the_terms_before_docker_starts.png]]
-   7. Use recommended settings and Finish  
+   7. Use recommended settings and Finish
       ![[./screenshots/7_Use_recommended_settings_and_finish.png]]
-   8. Either create an account on docker or sign in using existing account.  
+   8. Either create an account on docker or sign in using existing account.
       ![[./screenshots/8_Either create an account on docker or sign in using existing account.png]]
-   9. Signing in using existing docker account.  
+   9. Signing in using existing docker account.
       ![[./screenshots/9_Signing in using existing docker account.png]]
-   10. Docker is installed and signed-in. Now proceed to the docker desktop app.  
+   10. Docker is installed and signed-in. Now proceed to the docker desktop app.
        ![[./screenshots/11_Docker is installed and signed-in_proceed.png]]
-   11. Check if docker is installed by checking the docker version  
+   11. Check if docker is installed by checking the docker version
        ![[./screenshots/12_Check if docker is installed by checking the docker version.png]]
-   12. Run hello-world test just to make sure everything is working fine.  
+   12. Run hello-world test just to make sure everything is working fine.
        ![[./screenshots/13_Run hello-world test just to make sure everything is work fine.png]]
-   13. Check on the docker app if the hello-world container instance ran and exited as expected  
+   13. Check on the docker app if the hello-world container instance ran and exited as expected
        ![[./screenshots/14_Check on the docker app if the hello-world container instance ran and exited as expected.png]]
-
-
 
 ## Step 2: Set Up Docker Containers
 
@@ -165,7 +163,7 @@ To accomplish this assignment, follow these steps:
 Below is the text representation of the project structure shown in the image:
 
 ```
-DevOps-FinalProject
+DevOps-FinalProject-Akash
 ├── ansible
 │   ├── deploy-petclinic.yml
 │   └── inventory.ini
@@ -190,7 +188,8 @@ DevOps-FinalProject
 #### Create Jenkins container
 
 Create Jenkins container using a dockerfile (Jenkinsfile) including all the plugins that may be required for accomplish the all the tasks. We use a custom script to create jenkins docker container:
-```docker file for jenkins container 
+
+```docker
 FROM jenkins/jenkins:lts  
    
 USER root  
@@ -261,12 +260,14 @@ ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /us
 # Use the official Jenkins LTS (Long Term Support) image as the base image
 FROM jenkins/jenkins:lts
 ```
+
 - **FROM jenkins/jenkins:lts**: This sets the base image for the Dockerfile to the official Jenkins LTS image, which includes the Jenkins application and all necessary dependencies to run it.
 
 ```Dockerfile
 # Switch to the root user to perform installation tasks
 USER root
 ```
+
 - **USER root**: This switches the user to `root` so that we have the necessary permissions to install additional packages and perform configurations.
 
 ```Dockerfile
@@ -276,6 +277,7 @@ RUN apt-get update \
 	&& apt-get install -y maven \
 	&& rm -rf /var/lib/apt/lists/*
 ```
+
 - **RUN apt-get update**: Updates the list of available packages and their versions.
 - **&& apt-get install -y sudo**: Installs the `sudo` package, which allows a permitted user to execute a command as the superuser or another user.
 - **&& apt-get install -y maven**: Installs Apache Maven, a build automation tool used primarily for Java projects.
@@ -286,6 +288,7 @@ RUN apt-get update \
 ENV MAVEN_HOME /usr/share/maven
 ENV PATH $MAVEN_HOME/bin:$PATH
 ```
+
 - **ENV MAVEN_HOME /usr/share/maven**: Sets the `MAVEN_HOME` environment variable to the location where Maven is installed.
 - **ENV PATH $MAVEN_HOME/bin:$PATH**: Adds Maven’s `bin` directory to the `PATH` environment variable so that Maven commands can be run from anywhere.
 
@@ -293,6 +296,7 @@ ENV PATH $MAVEN_HOME/bin:$PATH
 # Allow the Jenkins user to run sudo commands without a password
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 ```
+
 - **RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers**: Modifies the sudoers file to allow the `jenkins` user to execute `sudo` commands without needing to enter a password. This is important for automating tasks that require elevated privileges.
 
 ```Dockerfile
@@ -303,6 +307,7 @@ RUN sudo apt-get update \
 	&& sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \
 	&& sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
+
 - **sudo apt-get update**: Updates the list of available packages and their versions.
 - **sudo apt-get install ca-certificates curl unzip**: Installs the necessary packages for handling HTTPS connections (`ca-certificates`), transferring data with URLs (`curl`), and unzipping files (`unzip`).
 - **sudo install -m 0755 -d /etc/apt/keyrings**: Creates a directory for storing keyrings with the appropriate permissions.
@@ -314,6 +319,7 @@ RUN sudo apt-get update \
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 RUN sudo apt-get update
 ```
+
 - **RUN echo ...**: Adds Docker’s official repository to the sources list for the package manager. The repository URL is determined based on the current system’s architecture and OS version.
 - **RUN sudo apt-get update**: Updates the package list to include the packages available from the newly added Docker repository.
 
@@ -321,30 +327,35 @@ RUN sudo apt-get update
 # Install Docker, Docker Compose, and other necessary packages
 RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 ```
+
 - **RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y**: Installs Docker Engine (`docker-ce`), Docker CLI (`docker-ce-cli`), Containerd (`containerd.io`), Docker Buildx plugin (`docker-buildx-plugin`), and Docker Compose plugin (`docker-compose-plugin`).
 
 ```Dockerfile
 # Install iproute2 for networking tools
 RUN sudo apt-get install iproute2 -y
 ```
+
 - **RUN sudo apt-get install iproute2 -y**: Installs `iproute2`, a collection of utilities for controlling and monitoring networking, routing, and traffic control in Linux.
 
 ```Dockerfile
 # Install Ansible for automation and configuration management
 RUN sudo apt-get install ansible -y
 ```
+
 - **RUN sudo apt-get install ansible -y**: Installs Ansible, an open-source automation tool for configuration management, application deployment, and task automation.
 
 ```Dockerfile
 # Install OpenSSH server for SSH functionalities
 RUN sudo apt-get install openssh-server -y
 ```
+
 - **RUN sudo apt-get install openssh-server -y**: Installs OpenSSH server, which allows the container to handle SSH connections.
 
 ```Dockerfile
 # Update the package list and install curl, gnupg, and apt-transport-https for downloading the AWS CLI
 RUN apt-get update && apt-get install -y curl gnupg apt-transport-https
 ```
+
 - **RUN apt-get update && apt-get install -y curl gnupg apt-transport-https**: Updates the package list and installs `curl` (for transferring data with URLs), `gnupg` (for encryption and signing data and communications), and `apt-transport-https` (for accessing repositories over HTTPS).
 
 ```Dockerfile
@@ -353,6 +364,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "aws
     unzip awscliv2.zip && \
     sudo ./aws/install
 ```
+
 - **RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip"**: Downloads the AWS CLI installer for the appropriate architecture.
 - **&& unzip awscliv2.zip**: Unzips the downloaded AWS CLI installer.
 - **&& sudo ./aws/install**: Runs the AWS CLI installer.
@@ -363,6 +375,7 @@ COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem
 COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub
 RUN chmod 600 /root/.ssh/petclinic_key_pair.pem
 ```
+
 - **COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem**: Copies the private SSH key to the specified location in the Docker image.
 - **COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub**: Copies the public SSH key to the specified location in the Docker image.
 - **RUN chmod 600 /root/.ssh/petclinic_key_pair.pem**: Changes the permissions of the private SSH key to make it readable only by the owner, ensuring security.
@@ -371,6 +384,7 @@ RUN chmod 600 /root/.ssh/petclinic_key_pair.pem
 # Switch back to the Jenkins user
 USER jenkins
 ```
+
 - **USER jenkins**: Switches the user back to `jenkins` for the remaining operations.
 
 ```Dockerfile
@@ -391,126 +405,130 @@ RUN jenkins-plugin-cli --plugins \
     credentials-binding \
     pipeline-aws
 ```
+
 - **RUN jenkins-plugin-cli --plugins ...**: Uses the Jenkins Plugin CLI to install a list of essential Jenkins plugins. Each plugin is specified by its identifier and version (if needed). These plugins provide various functionalities, such as Docker integration (`docker-workflow`), pipeline support (`workflow-aggregator`), static analysis (`sonar`), monitoring (`prometheus`), security analysis (`zap`), version control (`git`), and AWS integration (`aws-credentials`, `pipeline-aws`).
 
 ```Dockerfile
 # Copy Ansible playbooks or configuration files to the Docker image
 COPY ansible /opt/ansible
 ```
+
 - **COPY ansible /opt/ansible**: Copies the Ansible playbooks or configuration files from the host machine to the specified directory in the Docker image.
 
 ```Dockerfile
 # Override the default entrypoint to start Docker service and then Jenkins
 ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]
 ```
+
 - **ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]**: Overrides the default entrypoint to first start the Docker service (`sudo service docker start`) and then start Jenkins using Tini (`/usr/bin/tini -- /usr/local/bin/jenkins.sh`). Tini is used to ensure proper handling of signal forwarding and zombie reaping.
 
+#### Create docker compose for all other containers
 
-####  Create docker compose for all other containers
 Create docker compose (docker-compose.yml) that creates all the containers with appropriate configs and custom docker network:
-  ```bash  
+
+```bash
 services:  
-  jenkins:  
-    container_name: jenkins  
-    build:  
-      context: .  
-      dockerfile: jenkins_dockerfile  
-    user: root  
-    privileged: true  
-    ports:  
-      - "8080:8080"  
-      - "50000:50000"  
-      - "8082:8082" # For spring-petclinic app  
-      - "8084:8084" # For OWASP-ZAP exposure  
-    volumes:  
-      - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.2  
-    entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
-  
-  sonarqube:  
-    image: sonarqube:latest  
-    container_name: sonarqube  
-    depends_on:  
-      - db  
-    ports:  
-      - "9000:9000"  
-    environment:  
-      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar  
-      - SONAR_JDBC_USERNAME=sonar  
-      - SONAR_JDBC_PASSWORD=sonar  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.3  
-  
-  db:  
-    image: postgres:13  
-    container_name: postgres  
-    environment:  
-      - POSTGRES_USER=sonar  
-      - POSTGRES_PASSWORD=sonar  
-      - POSTGRES_DB=sonar  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.7  
-  
-  
-  prometheus:  
-    image: prom/prometheus:latest  
-    container_name: prometheus  
-    ports:  
-      - "9090:9090"  
-    volumes:  
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  
-    command:  
-      - '--config.file=/etc/prometheus/prometheus.yml'  
-      - '--storage.tsdb.path=/prometheus'  
-      - '--web.console.libraries=/etc/prometheus/console_libraries'  
-      - '--web.console.templates=/etc/prometheus/consoles'  
-      - '--web.enable-lifecycle'  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.4  
-  
-  grafana:  
-    image: grafana/grafana:latest  
-    container_name: grafana  
-    ports:  
-      - "3000:3000"  
-    environment:  
-      - GF_SECURITY_ADMIN_USER=admin  
-      - GF_SECURITY_ADMIN_PASSWORD=admin  
-    volumes:  
-      - ./grafana.ini:/etc/grafana/grafana.ini  
-      - ./grafana/provisioning:/etc/grafana/provisioning  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.5  
-  
-  owasp-zap:  
-    image: zaproxy/zap-weekly  
-    container_name: owasp-zap  
-    entrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]  
-    ports:  
-      - "8081:8081"  
-    networks:  
-      dev-network:  
-        ipv4_address: 192.168.1.6  
-    healthcheck:  
-      test: ["CMD", "zap-cli", "status", "-t", "60"]  
-      interval: 1m  
-      timeout: 30s  
-      retries: 3  
-      start_period: 30s  
-  
+jenkins:  
+  container_name: jenkins  
+  build:  
+    context: .  
+    dockerfile: jenkins_dockerfile  
+  user: root  
+  privileged: true  
+  ports:  
+    - "8080:8080"  
+    - "50000:50000"  
+    - "8082:8082" # For spring-petclinic app  
+    - "8084:8084" # For OWASP-ZAP exposure  
+  volumes:  
+    - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.2  
+  entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
+
+sonarqube:  
+  image: sonarqube:latest  
+  container_name: sonarqube  
+  depends_on:  
+    - db  
+  ports:  
+    - "9000:9000"  
+  environment:  
+    - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar  
+    - SONAR_JDBC_USERNAME=sonar  
+    - SONAR_JDBC_PASSWORD=sonar  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.3  
+
+db:  
+  image: postgres:13  
+  container_name: postgres  
+  environment:  
+    - POSTGRES_USER=sonar  
+    - POSTGRES_PASSWORD=sonar  
+    - POSTGRES_DB=sonar  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.7  
+
+
+prometheus:  
+  image: prom/prometheus:latest  
+  container_name: prometheus  
+  ports:  
+    - "9090:9090"  
+  volumes:  
+    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  
+  command:  
+    - '--config.file=/etc/prometheus/prometheus.yml'  
+    - '--storage.tsdb.path=/prometheus'  
+    - '--web.console.libraries=/etc/prometheus/console_libraries'  
+    - '--web.console.templates=/etc/prometheus/consoles'  
+    - '--web.enable-lifecycle'  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.4  
+
+grafana:  
+  image: grafana/grafana:latest  
+  container_name: grafana  
+  ports:  
+    - "3000:3000"  
+  environment:  
+    - GF_SECURITY_ADMIN_USER=admin  
+    - GF_SECURITY_ADMIN_PASSWORD=admin  
+  volumes:  
+    - ./grafana.ini:/etc/grafana/grafana.ini  
+    - ./grafana/provisioning:/etc/grafana/provisioning  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.5  
+
+owasp-zap:  
+  image: zaproxy/zap-weekly  
+  container_name: owasp-zap  
+  entrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]  
+  ports:  
+    - "8081:8081"  
+  networks:  
+    dev-network:  
+      ipv4_address: 192.168.1.6  
+  healthcheck:  
+    test: ["CMD", "zap-cli", "status", "-t", "60"]  
+    interval: 1m  
+    timeout: 30s  
+    retries: 3  
+    start_period: 30s  
+
 networks:  
-  dev-network:  
-    driver: bridge  
-    ipam:  
-      config:  
-        - subnet: 192.168.1.0/24
-```  
+dev-network:  
+  driver: bridge  
+  ipam:  
+    config:  
+      - subnet: 192.168.1.0/24
+```
 
 ##### Explanation of `docker-compose.yml` Commands
 
@@ -543,19 +561,20 @@ jenkins:
 
 - **container_name**: Assigns a name to the container.
 - **build**:
-   - **context**: Sets the build context to the current directory.
-   - **dockerfile**: Specifies the Dockerfile to use for building the image.
+
+  - **context**: Sets the build context to the current directory.
+  - **dockerfile**: Specifies the Dockerfile to use for building the image.
 - **user**: Sets the user as `root` to execute commands with root privileges.
 - **privileged**: Allows the container to run in privileged mode, giving it extended privileges.
 - **ports**: Maps host ports to container ports:
-   - `8080:8080`: Jenkins web UI.
-   - `50000:50000`: Jenkins agent connections.
-   - `8082:8082`: Spring PetClinic app.
-   - `8084:8084`: OWASP ZAP exposure.
+
+  - `8080:8080`: Jenkins web UI.
+  - `50000:50000`: Jenkins agent connections.
+  - `8082:8082`: Spring PetClinic app.
+  - `8084:8084`: OWASP ZAP exposure.
 - **volumes**: Mounts the Docker socket to the container to allow Docker commands within Jenkins.
 - **networks**: Connects the container to a custom network with a specified IP address.
 - **entrypoint**: Sets the command to run when the container starts. It starts the Docker service and Jenkins.
-
 - SonarQube Service
 
 ```yaml
@@ -581,7 +600,6 @@ sonarqube:
 - **ports**: Maps host port 9000 to container port 9000 (SonarQube web UI).
 - **environment**: Sets environment variables for database configuration.
 - **networks**: Connects the container to a custom network with a specified IP address.
-
 - Database Service (PostgreSQL)
 
 ```yaml
@@ -601,7 +619,6 @@ db:
 - **container_name**: Assigns a name to the container.
 - **environment**: Sets environment variables for database credentials and database name.
 - **networks**: Connects the container to a custom network with a specified IP address.
-
 - Prometheus Service
 
 ```yaml
@@ -629,7 +646,6 @@ prometheus:
 - **volumes**: Mounts the Prometheus configuration file from the host to the container.
 - **command**: Specifies the Prometheus startup commands and configurations.
 - **networks**: Connects the container to a custom network with a specified IP address.
-
 - Grafana Service
 
 ```yaml
@@ -655,7 +671,6 @@ grafana:
 - **environment**: Sets environment variables for Grafana admin credentials.
 - **volumes**: Mounts the Grafana configuration and provisioning files from the host to the container.
 - **networks**: Connects the container to a custom network with a specified IP address.
-
 - OWASP ZAP Service
 
 ```yaml
@@ -682,7 +697,6 @@ owasp-zap:
 - **ports**: Maps host port 8081 to container port 8081 (OWASP ZAP web UI).
 - **networks**: Connects the container to a custom network with a specified IP address.
 - **healthcheck**: Defines health check parameters to monitor the container's status.
-
 - Networks
 
 This section defines the custom network to be used by the services.
@@ -698,24 +712,266 @@ networks:
 
 - **driver: bridge**: Specifies that the network uses the bridge driver.
 - **ipam**: Configures IP address management for the network.
-   - **subnet: 192.168.1.0/24**: Defines the subnet for the custom network, allowing IP addresses from 192.168.1.1 to 192.168.1.254.
-
-
+  - **subnet: 192.168.1.0/24**: Defines the subnet for the custom network, allowing IP addresses from 192.168.1.1 to 192.168.1.254.
 
 ## Step 3: High-level setup
+
+By following these steps, you can create and store the necessary credentials required in Jenkins pipeline and use them securely in your pipeline.
 
 1) grafana-admin-pass
 2) github-token
 3) aws-credentials
 4) ssh key creation and sharing
 5) AWS related information
+
+Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
+
+### 1. GitHub Token
+
+#### Create a GitHub Token for creation of webhooks.
+
+1. **Log in to GitHub**:
+
+   - Go to [GitHub](https://github.com/) and log in to your account.
+2. **Generate a New Token**:
+
+   - Click on your profile picture in the top right corner and select `Settings`.
+   - In the left sidebar, click on `Developer settings`.
+   - Click on `Personal access tokens`.
+   - Click on `Generate new token`.
+   - Give your token a descriptive name (e.g., `Jenkins Token`).
+   - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.
+   - Select webhooks under premissions.
+   - Click on `Generate token`.
+   - Copy the token. You will need it for the next step.
+
+#### Store GitHub Token in Jenkins
+
+1. **Log in to Jenkins**:
+
+   - Navigate to your Jenkins instance.
+2. **Add the Token to Jenkins Credentials**:
+
+   - Go to `Manage Jenkins` > `Manage Credentials`.
+   - Select a domain (e.g., `Global`).
+   - Click on `Add Credentials`.
+   - Select `Secret text` as the kind.
+   - Paste the GitHub token in the `Secret` field.
+   - Give it an ID `github-token`.
+   - Click `OK`.
+3. Using GitHub Token
+
+```groovy
+environment {
+    GITHUB_TOKEN = credentials('github-token')
+}
+```
+
+### 2. AWS Credentials
+
+#### Create AWS Access Key and Secret Key
+
+1. **Log in to AWS Management Console**:
+
+   - Go to [AWS Management Console](https://aws.amazon.com/).
+2. **Generate Access Keys**:
+
+   - Click on your account name in the top right corner and select `My Security Credentials`.
+   - In the left sidebar, click on `Users`.
+   - Select the user you want to create access keys for (or create a new user with programmatic access).
+   - Click on the `Security credentials` tab.
+   - Click on `Create access key`.
+   - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.
+
+#### Store AWS Credentials in Jenkins
+
+1. **Log in to Jenkins**:
+
+   - Navigate to your Jenkins instance.
+2. **Add the AWS Credentials to Jenkins**:
+
+   - Go to `Manage Jenkins` > `Manage Credentials`.
+   - Select a domain (e.g., `Global`).
+   - Click on `Add Credentials`.
+   - Select `AWS Credentials` as the kind.
+   - Enter the `Access key ID` and `Secret access key`.
+   - Give it an ID `aws-credentials`.
+   - Click `OK`.
+3. **Using AWS Credentials**
+
+```groovy
+withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
+    // Your AWS related code here
+}
+```
+
+### 3. Grafana Admin Credentials
+
+#### Set Up Grafana Admin Credentials
+
+1. **Log in to Grafana**:
+
+   - Navigate to your Grafana instance.
+2. **Get Admin Credentials**:
+
+   - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup.
+   - Change the password if you are using the default credentials for the first time.
+
+#### Store Grafana Admin Credentials in Jenkins
+
+1. **Log in to Jenkins**:
+
+   - Navigate to your Jenkins instance.
+2. **Add the Grafana Admin Credentials to Jenkins**:
+
+   - Go to `Manage Jenkins` > `Manage Credentials`.
+   - Select a domain (e.g., `Global`).
+   - Click on `Add Credentials`.
+   - Select `Username with password` as the kind.
+   - Enter `admin` (or your admin username) in the `Username` field.
+   - Enter the admin password in the `Password` field.
+   - Give it an ID `grafana-admin-pass`.
+   - Click `OK`.
+3. Using Grafana Admin Credentials
+
+```groovy
+stage('Generate Grafana API Key') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {
+            sh """
+                apt-get update && apt-get install -y jq
+                curl -s -X POST ${GRAFANA_URL}/api/auth/keys \
+                -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \
+                -H "Content-Type: application/json" \
+                -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt
+            """
+            script {
+                env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()
+                if (!env.GRAFANA_API_KEY) {
+                    error 'Failed to generate Grafana API Key.'
+                }
+            }
+        }
+    }
+}
+```
+
+### 4. Generate SonarQube Token:
+
+- To integrate SonarQube with Jenkins, you'll need an authentication token. Here's how to generate it:
+
+  - **Log in to SonarQube**:
+
+    - Open your SonarQube instance in your browser.
+    - Log in with your user credentials.
+  - **Generate a Token**:
+
+    - Click on your user avatar in the upper-right corner.
+    - Select `My Account`.
+    - Navigate to the `Security` tab.
+    - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
+    - Copy the generated token. You will not be able to see this token again, so store it securely.
+- **Store the SonarQube Token in Jenkins Credentials**:
+
+  - **Log in to Jenkins**:
+    - Open your Jenkins instance in your browser.
+    - Log in with your admin credentials.
+  - **Add the Token to Jenkins Credentials**:
+    - Go to `Manage Jenkins` > `Manage Credentials`.
+    - Select a domain (e.g., `Global`).
+    - Click on `Add Credentials`.
+    - Select `Secret text` as the kind.
+    - Paste the SonarQube token in the `Secret` field.
+    - Give it an ID `sonarqube-token`.
+    - Click `OK`.
+
+### 5. AWS Related info for Jenkins
+
+#### Jenkins file setup
+
+Quick steps to Obtain Required AWS Configuration Information from AWS Console to be set it in the jenkinsfile to run the pipeline:
+
+#### 1. Get SSH User
+
+For an Ubuntu instance, the default SSH user is typically `ubuntu`. This user is predefined when you launch an Ubuntu AMI (Amazon Machine Image).
+
+#### 2. Get AWS Region
+
+**Step 1:** Log in to the AWS Management Console.
+
+**Step 2:** Look at the top right corner of the console page, next to your account name. You will see the current region displayed there (e.g., N. Virginia which corresponds to `us-east-1`).
+
+#### 3. Get AMI ID
+
+**Step 1:** From the AWS Management Console, navigate to the **EC2 Dashboard**.
+
+- Click on **Services** in the top-left corner.
+- Under the **Compute** category, select **EC2**.
+
+**Step 2:** Click on **Launch Instance**.
+
+**Step 3:** In the **Choose an Amazon Machine Image (AMI)** step, you can search for "Ubuntu Server 20.04 LTS" under the **Quick Start** tab.
+
+**Step 4:** The AMI ID is listed under the AMI name. For example, `ami-039a6f82dd07a541e` is one such ID for Ubuntu Server 20.04 LTS.
+
+#### 4. Get Instance Type
+
+**Step 1:** While launching an instance, after selecting an AMI, you will be prompted to choose an instance type.
+
+**Step 2:** Select `t2.micro` for a free tier-eligible instance type.
+
+#### 5. Get Key Pair Name
+
+a. Use your own keys: If you use your own keys, copy them in the key folder in the project with the name "petclinic_key_pair.pem" and "petclinic_key_pair.pem.pub".
+
+b. if you decide to use the keys generated AWS for manual setup follow the following steps.
+**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Key Pairs** under **Network & Security**.
+
+**Step 2:** If you already have a key pair, the name will be listed there. For example, `petclinic_key_pair`.
+
+**Step 3:** If you do not have a key pair, click on **Create Key Pair**.
+
+- Enter `petclinic_key_pair` as the key pair name.
+- Choose the file format (PEM for Linux/Mac, PPK for Windows).
+- Click **Create Key Pair** and download the key file.
+  **Step 4**: Download and Store the Key File
+- **Download the Key File:** Save the private key file in a secure location. You will need this file to connect to your EC2 instances.
+
+  - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
+  - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
+- In our application, you will have to store the private key in the following location on jenkins: /root/.ssh/
+
+#### 6. Get Security Group ID
+
+**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Security Groups** under **Network & Security**.
+
+**Step 2:** Select the security group you want to use or create a new one by clicking **Create Security Group**.
+
+- Enter a name and description for the security group.
+- Select the VPC (if you have multiple VPCs).
+- Add inbound rules (e.g., allow SSH, HTTP, HTTPS).
+- Click **Create Security Group**.
+
+**Step 3:** The security group ID will be listed in the **Security Groups** section (e.g., `sg-0fba393f98de9bcbe`).
+
+#### 7. Get Subnet ID
+
+**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Subnets** under **Network & Security**.
+
+**Step 2:** Select the subnet you want to use.
+
+- Ensure the subnet is in the same VPC as your security group.
+- The subnet should have auto-assign public IP enabled.
+
+**Step 3:** The subnet ID will be listed in the **Subnets** section (e.g., `subnet-0d2f18bee0a9a0ca1`).
+
 ## Step 4: Configure Jenkins Pipeline
 
 1. **Create Jenkins Pipeline**
 
    - Create a `Jenkinsfile` in the root of the forked repository:
 
-```groovy  
+```groovy
    pipeline {  
     agent any  
   
@@ -1120,14 +1376,7 @@ networks:
         }  
     }  
 } 
-```  
-
-## Step 4: Configure SonarQube
-
-1. **SonarQube Configuration**
-   - Log in to the SonarQube instance.
-   - Create a new project and generate a token.
-   - Use the generated token in the Jenkins pipeline for authentication.
+```
 
 ## Step 5: Configure Prometheus and Grafana
 
@@ -1135,83 +1384,15 @@ networks:
 
    - Update the `prometheus.yml` file to scrape metrics from Jenkins:
 
-```yaml  
-   global:scrape_interval: 15s   scrape_configs:     - job_name: 'jenkins'       static_configs:         - targets: ['jenkins:8080']    
-```  
+```yaml
+   global:scrape_interval: 15s   scrape_configs:     - job_name: 'jenkins'       static_configs:         - targets: ['jenkins:8080']  
+```
+
 2. **Grafana Configuration**
 
    - Log in to Grafana and create dashboards to visualize Jenkins metrics.
 
 ## Step 6: Set Up AWS EC2 Instance
-
-### Jenkins file setup
-
-Quick steps to Obtain Required AWS Configuration Information from AWS Console to be set it in the jenkinsfile to run the pipeline:
-
-#### 1. Get SSH User
-
-For an Ubuntu instance, the default SSH user is typically `ubuntu`. This user is predefined when you launch an Ubuntu AMI (Amazon Machine Image).
-
-#### 2. Get AWS Region
-
-**Step 1:** Log in to the AWS Management Console.
-
-**Step 2:** Look at the top right corner of the console page, next to your account name. You will see the current region displayed there (e.g., N. Virginia which corresponds to `us-east-1`).
-
-#### 3. Get AMI ID
-
-**Step 1:** From the AWS Management Console, navigate to the **EC2 Dashboard**.
-
-- Click on **Services** in the top-left corner.
-- Under the **Compute** category, select **EC2**.
-
-**Step 2:** Click on **Launch Instance**.
-
-**Step 3:** In the **Choose an Amazon Machine Image (AMI)** step, you can search for "Ubuntu Server 20.04 LTS" under the **Quick Start** tab.
-
-**Step 4:** The AMI ID is listed under the AMI name. For example, `ami-039a6f82dd07a541e` is one such ID for Ubuntu Server 20.04 LTS.
-
-#### 4. Get Instance Type
-
-**Step 1:** While launching an instance, after selecting an AMI, you will be prompted to choose an instance type.
-
-**Step 2:** Select `t2.micro` for a free tier-eligible instance type.
-
-#### 5. Get Key Pair Name
-
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Key Pairs** under **Network & Security**.
-
-**Step 2:** If you already have a key pair, the name will be listed there. For example, `petclinic_key_pair`.
-
-**Step 3:** If you do not have a key pair, click on **Create Key Pair**.
-
-- Enter `petclinic_key_pair` as the key pair name.
-- Choose the file format (PEM for Linux/Mac, PPK for Windows).
-- Click **Create Key Pair** and download the key file.
-
-#### 6. Get Security Group ID
-
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Security Groups** under **Network & Security**.
-
-**Step 2:** Select the security group you want to use or create a new one by clicking **Create Security Group**.
-
-- Enter a name and description for the security group.
-- Select the VPC (if you have multiple VPCs).
-- Add inbound rules (e.g., allow SSH, HTTP, HTTPS).
-- Click **Create Security Group**.
-
-**Step 3:** The security group ID will be listed in the **Security Groups** section (e.g., `sg-0fba393f98de9bcbe`).
-
-#### 7. Get Subnet ID
-
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Subnets** under **Network & Security**.
-
-**Step 2:** Select the subnet you want to use.
-
-- Ensure the subnet is in the same VPC as your security group.
-- The subnet should have auto-assign public IP enabled.
-
-**Step 3:** The subnet ID will be listed in the **Subnets** section (e.g., `subnet-0d2f18bee0a9a0ca1`).
 
 Here's a detailed guide to launching an EC2 instance using the AWS Management Console:
 
@@ -1268,15 +1449,15 @@ Here's a detailed guide to launching an EC2 instance using the AWS Management Co
 2. **Description:** Provide a description, such as `Security group for my EC2 instance`.
 3. **Inbound rules:**
    - Add a rule to allow SSH traffic:
-      - **Type:** SSH
-      - **Protocol:** TCP
-      - **Port Range:** 22
-      - **Source:** `My IP` (this will auto-fill your current IP address) or `Anywhere` if you want to allow SSH from any IP address.
+     - **Type:** SSH
+     - **Protocol:** TCP
+     - **Port Range:** 22
+     - **Source:** `My IP` (this will auto-fill your current IP address) or `Anywhere` if you want to allow SSH from any IP address.
    - Add a rule to allow HTTP traffic for your application:
-      - **Type:** Custom TCP
-      - **Protocol:** TCP
-      - **Port Range:** 8082
-      - **Source:** `Anywhere`
+     - **Type:** Custom TCP
+     - **Protocol:** TCP
+     - **Port Range:** 8082
+     - **Source:** `Anywhere`
 4. Click the **Review and Launch** button.
 
 ### Step 10: Review and Launch
@@ -1302,14 +1483,15 @@ Here's a detailed guide to launching an EC2 instance using the AWS Management Co
 2. Navigate to the directory where your key pair file (`my-ec2-key.pem`) is stored.
 3. Change the permissions of the key pair file to ensure it's not publicly viewable:
 
-```sh  
-   chmod 400 my-ec2-key.pem     
-```  
+```sh
+   chmod 400 my-ec2-key.pem   
+```
+
 4. Connect to your EC2 instance using SSH:
 
-```sh  
-   ssh -i "my-ec2-key.pem" ubuntu@your-ec2-public-ip     
-```  
+```sh
+   ssh -i "my-ec2-key.pem" ubuntu@your-ec2-public-ip   
+```
 
 - Replace `your-ec2-public-ip` with the Public IP address of your EC2 instance.
 
@@ -1321,7 +1503,7 @@ By following these steps, you will have successfully launched an EC2 instance, c
 
    - Create an `inventory.ini` file for Ansible:
 
-```ini  
+```ini
    [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem  ```  
 2. **Create Ansible Playbook**  
   
@@ -1340,7 +1522,7 @@ By following these steps, you will have successfully launched an EC2 instance, c
        - name: Get the public IP of the new EC2 instance         command: >           aws ec2 describe-instances           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}           --query 'Reservations[0].Instances[0].PublicIpAddress'           --output text         register: ec2_ip  
        - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost  
   
-```  
+```
 
 ## Step 8: Run Ansible Playbook
 
@@ -1348,7 +1530,7 @@ By following these steps, you will have successfully launched an EC2 instance, c
 
    - Add the following stages to the `Jenkinsfile` to run the Ansible playbook:
 
-```groovy  
+```groovy
   
            stage('Copy Ansible Playbook') {               steps {                   script {                       sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'                   }               }           }  
            stage('Update Inventory') {               steps {                   script {                       try {                       writeFile file: 'inventory.ini', text: """                               [new_ec2]                               ${env.INSTANCE_IP} ansible_ssh_user=${SSH_USER} ansible_ssh_private_key_file=${LOCAL_SSH_KEY_PATH}                       """                       } catch (Exception e) {                           echo "Error updating inventory: ${e.getMessage()}"                           currentBuild.result = 'FAILURE'                           throw e                       }                   }               }           }  
@@ -1358,7 +1540,7 @@ By following these steps, you will have successfully launched an EC2 instance, c
                                    echo "Importing SSH key to AWS."                                   sh """                                       aws ec2 import-key-pair --key-name ${KEY_NAME} --public-key-material fileb://${LOCAL_SSH_KEY_PATH}.pub --region ${AWS_REGION}                                   """                               }  
                                // Run the Ansible playbook with necessary variables                       sh """                           ansible-playbook -i inventory.ini ${WORKSPACE}/deploy-petclinic.yml \                           -e ami_id=${AMI_ID} \                           -e instance_type=${INSTANCE_TYPE} \                           -e key_name=${KEY_NAME} \                           -e security_group_id=${SECURITY_GROUP_ID} \                           -e subnet_id=${SUBNET_ID} \                           -e region=${AWS_REGION} \                           -e jar_file=${WORKSPACE}/${JAR_FILE} \                           -e ssh_key_path=${LOCAL_SSH_KEY_PATH}                       """                       } catch (Exception e) {                           echo "Error deploying to EC2 using Ansible: ${e.getMessage()}"                           currentBuild.result = 'FAILURE'                           throw e                       }                       }                   }               }           }  
   
-```  
+```
 
 ## Step 9: Verify the Setup
 
