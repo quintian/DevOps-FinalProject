@@ -8,7 +8,6 @@ pipeline {
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
-        SONARQUBE_LOGIN = 'squ_e1e70d0009e9f60a767cca521528ef557b1b0543'
         DEPLOYMENT_URL = 'http://192.168.1.2:8082'
         SSH_USER = 'ubuntu'
         AWS_REGION = 'us-east-1'
@@ -21,7 +20,6 @@ pipeline {
         JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'
         GITHUB_REPO = "akashcha/spring-petclinic"
         WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"
-        GITHUB_TOKEN = credentials('github-token')
         PROMETHEUS_URL = 'http://192.168.1.4:9090'
         GRAFANA_URL = 'http://192.168.1.5:3000'
     }
@@ -79,6 +77,7 @@ pipeline {
         stage('Create GitHub Webhook') {
             steps {
                 script {
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                     def payload = """
                     {
                       "name": "web",
@@ -91,41 +90,42 @@ pipeline {
                       }
                     }
                     """
-                    sh """
-                    curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Content-Type: application/json" \
-                    -d '${payload}' "https://api.github.com/repos/${GITHUB_REPO}/hooks"
+                        sh """#!/bin/bash
+                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \
+                        -d '$payload' "https://api.github.com/repos/${GITHUB_REPO}/hooks"
                     """
                 }
             }
         }
-
-
+        }
 
         stage('Static Analysis') {
             steps {
                 echo 'Starting static analysis...'
                 script {
+                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_LOGIN')]) {
                     try {
                         sh 'mvn clean verify'
-                                sh """
+                            sh """#!/bin/bash
                                     docker run --rm \
                             --platform linux/amd64 \
-                                    --network ${env.DOCKER_NETWORK} \
-                                    -v \$(pwd):/usr/src \
+                                --network $DOCKER_NETWORK \
+                                -v \$(pwd):/usr/src \
                                     -w /usr/src \
                                     sonarsource/sonar-scanner-cli \
                                     sonar-scanner \
                                     -Dsonar.projectKey=spring-petclinic \
                                     -Dsonar.sources=. \
                                     -Dsonar.java.binaries=target/classes \
-                                    -Dsonar.host.url=${env.SONARQUBE_URL} \
-                                    -Dsonar.login=${env.SONARQUBE_LOGIN}
+                                -Dsonar.host.url=${SONARQUBE_URL} \
+                                -Dsonar.login=$SONARQUBE_LOGIN
                                 """
                         echo 'Static analysis completed successfully.'
                     } catch (Exception e) {
                         echo "Error during static analysis: ${e}"
                         currentBuild.result = 'FAILURE'
                     }
+                }
                 }
                 echo 'Static analysis stage completed.'
             }
