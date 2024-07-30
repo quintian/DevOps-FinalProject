@@ -8,8 +8,8 @@ pipeline {
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
-        SONARQUBE_LOGIN = 'squ_e1e70d0009e9f60a767cca521528ef557b1b0543' // Authentication token for SonarQube
-        DEPLOYMENT_URL = 'http://192.168.1.2:8082' // Placeholder for the application URL
+        SONARQUBE_LOGIN = 'squ_e1e70d0009e9f60a767cca521528ef557b1b0543'
+        DEPLOYMENT_URL = 'http://192.168.1.2:8082'
         SSH_USER = 'ubuntu'
         AWS_REGION = 'us-east-1'
         AMI_ID = 'ami-039a6f82dd07a541e'
@@ -17,11 +17,13 @@ pipeline {
         KEY_NAME = 'petclinic_key_pair'
         SECURITY_GROUP_ID = 'sg-0fba393f98de9bcbe'
         SUBNET_ID ='subnet-0d2f18bee0a9a0ca1'
-        LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'  // Path to the SSH key inside the container
+        LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'
         JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'
         GITHUB_REPO = "akashcha/spring-petclinic"
         WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"
         GITHUB_TOKEN = credentials('github-token')
+        PROMETHEUS_URL = 'http://192.168.1.4:9090'
+        GRAFANA_URL = 'http://192.168.1.5:3000'
     }
 
     triggers {
@@ -29,6 +31,8 @@ pipeline {
     }
 
     stages {
+
+
         stage('Cleanup') {
             steps {
                 script {
@@ -49,6 +53,28 @@ pipeline {
                 echo 'Repository checked out successfully.'
             }
         }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package -Dmaven.test.skip=true'
+                }
+            }
+        }
+
+         stage('Test') {
+             steps {
+                 script {
+                    try {
+                        sh 'mvn test'
+                    } catch (Exception e) {
+                        echo "Error during testing: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                 }
+             }
+         }
+
 
         stage('Create GitHub Webhook') {
             steps {
@@ -73,50 +99,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                script {
-                    sh 'mvn clean package -Dmaven.test.skip=true'
-                }
-            }
-        }
 
-         stage('Test') {
-             steps {
-                 script {
-                    try {
-                     sh """
-                         mvn test
-                     """
-                    } catch (Exception e) {
-                        echo "Error during testing: ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                 }
-             }
-         }
-
-       stage('Setup Docker Network') {
-                steps {
-                script {
-                    try {
-                echo "Setting up Docker network: ${env.DOCKER_NETWORK}"
-                    sh 'docker network create ${DOCKER_NETWORK} || true'
-                    } catch (Exception e) {
-                        echo "Error setting up Docker network: ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
-           }
-        }
-
-        stage('Prepare SSH Key') {
-            steps {
-                script {
-                    sh 'chmod 600 ${LOCAL_SSH_KEY_PATH}'
-                }
-            }
-        }
 
         stage('Static Analysis') {
             steps {
@@ -186,26 +169,21 @@ pipeline {
                         echo "Error during preparing ZAP Analysis Script: ${e}"
                         currentBuild.result = 'FAILURE'
                     }
+                try {
+                    sh "docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html"
+                } catch (Exception e) {
+                    echo "Error during copying ZAP report: ${e}"
+                    currentBuild.result = 'FAILURE'
+                }
                 }
             }
         }
 
-        stage('Copy ZAP Report') {
-            steps {
-                script {
-                    try {
-                        sh "docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html"
-                    } catch (Exception e) {
-                        echo "Error during copying ZAP report: ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
-            }
-        }
 
-        stage('Verify AWS Account') {
+
+        stage('Verify AWS account, open necessary ports 443 and 8080 and look for existing EC2 instances') {
             steps {
-                withAWS(credentials: 'aws-credentials') {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     script {
                         try {
                             sh 'aws sts get-caller-identity'
@@ -213,15 +191,6 @@ pipeline {
                             echo "Error verifying AWS account: ${e}"
                             currentBuild.result = 'FAILURE'
                         }
-                    }
-                }
-            }
-        }
-
-        stage('Open Ports 443 and 8080') {
-            steps {
-                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
-                    script {
                     try {
                             def port443Exists = sh(script: """
                                 aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text
@@ -243,45 +212,39 @@ pipeline {
                                 echo "Port 8080 rule already exists"
                             }
                     } catch (Exception e) {
-                            echo "Error opening ports 443, and 8080: ${e.getMessage()}"
+                    echo "Error opening ports 443, and 8080: ${e.getMessage()}"
+                    currentBuild.result = 'FAILURE'
+                    throw e
+                    }
+
+                    try {
+                        def existingInstances = sh(script: """
+                            aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress]" --output text
+                        """, returnStdout: true).trim()
+
+                        if (existingInstances) {
+                            def instanceDetails = existingInstances.split()
+                            env.INSTANCE_ID = instanceDetails[0]
+                            env.INSTANCE_IP = instanceDetails[1]
+                            echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"
+                        } else {
+                            env.INSTANCE_ID = ''
+                            env.INSTANCE_IP = ''
+                            echo "No existing running EC2 instances found. Proceeding to create a new instance."
+                        }
+                    } catch (Exception e) {
+                        echo "Error checking for existing EC2 instances: ${e.getMessage()}"
                         currentBuild.result = 'FAILURE'
                         throw e
-                        }
+                    }
                     }
                 }
             }
         }
 
-        stage('Check Existing EC2 Instance') {
-            steps {
-                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
-                    script {
-                        try {
-                            def existingInstances = sh(script: """
-                                aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress]" --output text
-                            """, returnStdout: true).trim()
 
-                            if (existingInstances) {
-                                def instanceDetails = existingInstances.split()
-                                env.INSTANCE_ID = instanceDetails[0]
-                                env.INSTANCE_IP = instanceDetails[1]
-                                echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"
-                            } else {
-                                env.INSTANCE_ID = ''
-                                env.INSTANCE_IP = ''
-                                echo "No existing running EC2 instances found. Proceeding to create a new instance."
-                            }
-                        } catch (Exception e) {
-                            echo "Error checking for existing EC2 instances: ${e.getMessage()}"
-                            currentBuild.result = 'FAILURE'
-                            throw e
-                        }
-                    }
-                }
-            }
-        }
 
-        stage('Create EC2 Instance') {
+        stage('Create EC2 Instance if none exist') {
             when {
         expression { !env.INSTANCE_ID || env.INSTANCE_ID.trim() == "" }
             }
@@ -304,7 +267,7 @@ pipeline {
         }
 
 
-        stage('Get EC2 Instance IP') {
+        stage('Wait for EC2 Instance to be Running') {
             steps {
                 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
                     script {
@@ -344,17 +307,11 @@ pipeline {
         }
 
 
-        stage('Copy Ansible Playbook') {
-            steps {
-                script {
-                    sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'
-                }
-            }
-        }
-
         stage('Update Inventory') {
             steps {
                 script {
+                    sh 'chmod 600 ${LOCAL_SSH_KEY_PATH}'
+                    sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'
                     try {
                     writeFile file: 'inventory.ini', text: """
                             [new_ec2]
@@ -415,6 +372,70 @@ pipeline {
                         currentBuild.result = 'FAILURE'
                         throw e
                     }
+                    }
+                }
+            }
+        }
+
+        stage('Import Grafana Dashboard') {
+
+            steps {
+                    withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {
+                        sh """
+                            apt-get update && apt-get install -y jq
+                            curl -s -X POST ${GRAFANA_URL}/api/auth/keys \
+                            -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \
+                            -H "Content-Type: application/json" \
+                            -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt
+                        """
+                        script {
+                            env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()
+                            if (!env.GRAFANA_API_KEY) {
+                            error 'Failed to generate Grafana API Key.'
+                        }
+                    }
+                    }
+                script {
+                    try {
+                        echo 'Importing Grafana dashboard...'
+                        def dashboard = readFile('/opt/grafana/dashboards/dashboard.json')
+                        sh """
+                            curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${GRAFANA_API_KEY}" -d '${dashboard}' ${GRAFANA_URL}/api/dashboards/db
+                        """
+                        echo 'Grafana dashboard imported successfully.'
+                    } catch (Exception e) {
+                        echo "Error importing Grafana dashboard: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+
+        stage('Verify Prometheus and Grafana') {
+            steps {
+                script {
+                    try {
+                        echo 'Verifying Prometheus and Grafana...'
+
+                        // Check if Prometheus is running and scraping Jenkins metrics
+                        def prometheusStatus = sh(script: "curl -s ${PROMETHEUS_URL}/api/v1/targets | jq -r .data.activeTargets[].health", returnStdout: true).trim()
+                        echo "Prometheus targets health: ${prometheusStatus}"
+                        if (prometheusStatus.contains('"down"')) {
+                            error "Prometheus is not scraping targets correctly."
+                        }
+
+                        // Check if Grafana is up and can serve the dashboard
+                        def grafanaStatus = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${GRAFANA_URL}/api/health", returnStdout: true).trim()
+                        echo "Grafana status: ${grafanaStatus}"
+                        if (grafanaStatus != '200') {
+                            error "Grafana is not running correctly."
+                        }
+
+                        echo 'Prometheus and Grafana verified successfully.'
+                    } catch (Exception e) {
+                        echo "Error verifying Prometheus and Grafana: ${e}"
+                        currentBuild.result = 'FAILURE'
                     }
                 }
             }

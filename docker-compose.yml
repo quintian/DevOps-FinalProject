@@ -73,6 +73,7 @@ services:
     volumes:
       - ./grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
     networks:
       dev-network:
         ipv4_address: 192.168.1.5
