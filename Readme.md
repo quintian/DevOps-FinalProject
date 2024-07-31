@@ -938,7 +938,9 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
    - Enter the admin password in the `Password` field.
    - Give it an ID `grafana-admin-pass`.
    - Click `OK`.
-   ![[./screenshots/D03_Grafana_addToJenkins.png]] 
+    ![[./screenshots/D03_Grafana_addToJenkins.png]] 
+   - Success will look like this: 
+    ![[./screenshots/D04_Grafana_credentialSuccess.png]] 
 
 3. Using Grafana Admin Credentials
 
@@ -972,28 +974,39 @@ stage('Generate Grafana API Key') {
 
   - **Log in to SonarQube**:
 
-    - Open your SonarQube instance in your browser.
-    - Log in with your user credentials.
+    - Open your SonarQube instance in your browser. (Go to localhost:9000)
+    - You will be greeted by the welcome screen:
+    ![[./screenshots/E00SonarqubeLogin.png]] 
+    - Log in with your user credentials. If this is your first time logging in, the Login is "admin" and the password is "admin". In this case, you will need to make a new password:
+    ![[./screenshots/E01_Sonarqube_newPassword.png]] 
+
   - **Generate a Token**:
 
     - Click on your user avatar in the upper-right corner.
+    ![[./screenshots/E02_Sonarqube_landingScreen.png]] 
     - Select `My Account`.
+    ![[./screenshots/E03_Sonarqube_clickMyAccount.png]] 
     - Navigate to the `Security` tab.
-    - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
+    ![[./screenshots/E04_Sonarqube_clickSecurityTab.png]] 
+    - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and select "USer Token" for type, then click `Generate`.
+    ![[./screenshots/E05_Sonarqube_generateToken.png]] 
     - Copy the generated token. You will not be able to see this token again, so store it securely.
+    ![[./screenshots/E06_Sonarqube_copyToken.png]] 
+
 - **Store the SonarQube Token in Jenkins Credentials**:
 
   - **Log in to Jenkins**:
-    - Open your Jenkins instance in your browser.
-    - Log in with your admin credentials.
+    - Open your Jenkins instance in your browser. (See above for directions/screenshots)
+    - Log in with your admin credentials. (See above for directions/screenshots)
   - **Add the Token to Jenkins Credentials**:
-    - Go to `Manage Jenkins` > `Manage Credentials`.
+    - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
     - Select a domain (e.g., `Global`).
     - Click on `Add Credentials`.
     - Select `Secret text` as the kind.
     - Paste the SonarQube token in the `Secret` field.
     - Give it an ID `sonarqube-token`.
-    - Click `OK`.
+    ![[./screenshots/E07_Sonarqube_createCredential.png]]
+    - Click `Create`.
 
 ### 5. AWS Related info for Jenkins
 
