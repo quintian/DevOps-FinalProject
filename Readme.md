@@ -754,8 +754,14 @@ In order to have a place to store these credentials, you must instantiate your c
     ```bash
         docker compose up -d
     ```
-    This command instantiates the columes, networks, and containers required.
+    This command instantiates the volumes, networks, and containers required.
     Screenshot:  ![[./screenshots/A01_docker_compose_up_-d.png]] 
+    If this is the first time you have ever built the containers, you will see something like this as they get built: 
+    Screenshot:  ![[./screenshots/A00_docker_compose_up_-d_first_time.png]] 
+    As the Jenkins container builds for the first time, you will see something like this:
+    Screenshot:  ![[./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png]] 
+    Ultimately, the starting printouts will look the same: 
+    Screenshot: ![[./screenshots/A002_docker_compose_up_-d_first_time_start.png]]
 3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:
     Screenshot:  ![[./screenshots/A02_Jenkins_splashScreen.png]] 
 4. To get the administrative password, go to Docker Desktop, click on Jenkins
@@ -766,6 +772,10 @@ In order to have a place to store these credentials, you must instantiate your c
     Screenshot:  ![[./screenshots/A05_Jenkins_logs_copyPassword.png]] 
 7. Paste this into the Jenkins Password bar:
     Screenshot:  ![[./screenshots/A05_Jenkins_paste_password.png]] 
+8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.
+    Screenshot: ![[./screenshots/A06_Jenkins_bypassLanding.png]] 
+9. Jenkins is now setup. Click "Start using Jenkins"
+    Screenshot: ![[./screenshots/A07_Jenkins_startUsing.png]] 
 
 
 Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
@@ -802,7 +812,7 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 
 #### Store GitHub Token in Jenkins
 
-1. **Log in to Jenkins**:
+1. **Log in to Jenkins**: 
 
    - Navigate to your Jenkins instance.
 2. **Add the Token to Jenkins Credentials**:
