@@ -1,0 +1,67 @@
+### Author: Remington Ponce-Pore
+### Date: 2:05 PM, 31JUL
+
+### Description:
+This is a text dump of the interactions with the command prompt, current as of 31JUL2024. 
+
+PS C:\Users\rponc\OneDrive\Documents\CMU\Summer_24\17-636_DevOps\Final Project\DevOps-FinalProject> docker compose up -d
+
+[+] Running 65/16
+ ✔ sonarqube Pulled                                                                                              117.9s
+ ✔ db Pulled                                                                                                      81.6s
+ ✔ prometheus Pulled                                                                                              85.9s
+ ✔ owasp-zap Pulled                                                                                              205.0s
+ ✔ grafana Pulled                                                                                                 20.7s
+
+
+
+
+
+
+
+
+
+
+
+[+] Building 33.7s (25/25) FINISHED                                                                docker:desktop-linux
+ => [jenkins internal] load build definition from jenkins_dockerfile                                               0.0s
+ => => transferring dockerfile: 2.38kB                                                                             0.0s
+ => [jenkins internal] load metadata for docker.io/jenkins/jenkins:lts                                             0.7s
+ => [jenkins auth] jenkins/jenkins:pull token for registry-1.docker.io                                             0.0s
+ => [jenkins internal] load .dockerignore                                                                          0.0s
+ => => transferring context: 2B                                                                                    0.0s
+ => [jenkins  1/18] FROM docker.io/jenkins/jenkins:lts@sha256:50b22a852fa690a195453231f649ee171ee6b15a57c3b49bab4  0.0s
+ => => resolve docker.io/jenkins/jenkins:lts@sha256:50b22a852fa690a195453231f649ee171ee6b15a57c3b49bab4130dd97612  0.0s
+ => [jenkins internal] load build context                                                                          0.1s
+ => => transferring context: 43.49kB                                                                               0.0s
+ => CACHED [jenkins  2/18] RUN apt-get update       && apt-get install -y sudo       && apt-get install -y maven   0.0s
+ => CACHED [jenkins  3/18] RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers                                    0.0s
+ => CACHED [jenkins  4/18] RUN sudo apt-get update       && sudo apt-get install ca-certificates curl unzip        0.0s
+ => CACHED [jenkins  5/18] RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.as  0.0s
+ => CACHED [jenkins  6/18] RUN sudo apt-get update                                                                 0.0s
+ => CACHED [jenkins  7/18] RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin do  0.0s
+ => CACHED [jenkins  8/18] RUN sudo apt-get install iproute2 -y                                                    0.0s
+ => CACHED [jenkins  9/18] RUN sudo apt-get install ansible -y                                                     0.0s
+ => CACHED [jenkins 10/18] RUN sudo apt-get install openssh-server -y                                              0.0s
+ => CACHED [jenkins 11/18] RUN apt-get update && apt-get install -y curl gnupg apt-transport-https                 0.0s
+ => CACHED [jenkins 12/18] RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.  0.0s
+ => CACHED [jenkins 13/18] COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem                       0.0s
+ => CACHED [jenkins 14/18] COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub               0.0s
+ => CACHED [jenkins 15/18] RUN chmod 600 /root/.ssh/petclinic_key_pair.pem                                         0.0s
+ => [jenkins 16/18] COPY grafana/dashboards/dashboard.json /opt/grafana/dashboards/dashboard.json                  0.3s
+ => [jenkins 17/18] RUN jenkins-plugin-cli --plugins     trilead-api:2.147.vb_73cc728a_32e     docker-workflow    31.9s
+ => [jenkins 18/18] COPY ansible /opt/ansible                                                                      0.0s
+ => [jenkins] exporting to image                                                                                   0.5s
+ => => exporting layers                                                                                            0.5s
+ => => writing image sha256:45a04cab7ea8a50eb3a9a4181a60bb06581c9dedc3a27ec7ba8a6255c10db842                       0.0s
+ => => naming to docker.io/library/devops-finalproject-jenkins                                                     0.0s
+ => [jenkins] resolving provenance for metadata file                                                               0.0s
+[+] Running 7/7
+ ✔ Network devops-finalproject_dev-network  Created                                                                0.0s
+ ✔ Container grafana                        Started                                                                1.2s
+ ✔ Container postgres                       Started                                                                1.2s
+ ✔ Container owasp-zap                      Started                                                                0.9s
+ ✔ Container jenkins                        Started                                                                1.2s
+ ✔ Container prometheus                     Started                                                                1.2s
+ ✔ Container sonarqube                      Started                                                                1.4s
+PS C:\Users\rponc\OneDrive\Documents\CMU\Summer_24\17-636_DevOps\Final Project\DevOps-FinalProject>
