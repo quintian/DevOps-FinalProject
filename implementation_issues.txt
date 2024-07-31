@@ -1,0 +1,86 @@
+# Author Remington Ponce-Pore
+# Tested Jul2y 29, 3:45 PM EDT 2024
+
+# Test Results
+
+Issue 1. Readme step v: docker run -d --name owasp-zap --network dev-network -p 8081:8081 zaproxy/zap2docker-stable zap.sh -daemon -host 0.0.0.0 -port 8081   
+Error Description: The docker engine cannot find the image name zaproxy/zap2docker-stable. 
+Error Printout: 
+  Unable to find image 'zaproxy/zap2docker-stable:latest' locally
+  docker: Error response from daemon: pull access denied for zaproxy/zap2docker-stable, 
+  repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+Suggestion: Can we use the standard ZAP image, zaproxy/zap-stable? I am proceeding with the tests using this.
+
+
+Issue 2. Readme step vi. 
+Description: When running the Prometheus container, the provided command does not work on Windows OS (Terminal)
+Command: docker run -d --name prometheus --network dev-network -p 9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus  
+Error Printout: 
+    docker: invalid reference format.
+Fix: Run this command for windows: docker run -d --name prometheus --network dev-network -p 9090:9090 -v ${pwd}\prometheus\prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+Suggestion: This appears to be stemming from trying to bind a volume in the working directory to the prometheus container. 
+The simple windows fix is to replace "/" with "\" and "()" with "{}" but instead, we could bind it directly in the docker compose file, 
+instead of the docker run statement. Either way should be fine. 
+
+Issue 3: Sonarqube admin password not explicitly start_period
+Just state in Readme that the default password for first-time login is username: "admin" and password: "admin"
+
+
+
+Issue 4: Grafana container has same syntax issue as Prometheus on Windows:
+Problem command: docker run -d --name grafana --network dev-network -p 3000:3000 -v $(pwd)/grafana.ini:/etc/grafana/grafana.ini grafana/grafana
+Error Printout:
+    docker: invalid reference format.
+Solution: On Windows, substitute with this syntax: docker run -d --name grafana --network dev-network -p 3000:3000 -v ${pwd}\grafana.ini:/etc/grafana/grafana.ini grafana/grafana
+
+
+Issue 5: No documentation on how to create the Sonarqube Project. 
+Suggestion: Add the following lines: (Screenshots will have to be done during validation testing.)
+Click on "Security"
+Click on "users"
+Click on the "Tokens" ellipses and click "generate"
+Make it valid for 30 days
+Copy it into the Jenkinsfile as  SONARQUBE_LOGIN = [toekn goes here], i.e.,  SONARQUBE_LOGIN = 'squ_51100376892a0d8ed952520c69f3c30c73ba1feb'
+
+Issue 6: Prometheus Configuration
+Description: Step 1 says to update the Prometheus configuration by updating the prometheus.yml. Why are we doing this now,
+  instead of just modifying the prometheus.yml to read as we want it to initially? Also, the modifications seem to be removing
+  details, i.e., static IP Addresses, rather than adding details.
+
+
+Issue 7: Grafana standup
+Issue: We do not explicitly tell the user the starting username/password
+Suggestion: Like Sonarqube, explicitly state first-time login is username: "admin" and password: "admin"
+
+
+Issue 8: AWS does not explicitly state you already need an account
+Suggestion: Just explicitly state this in the Readme.
+
+Issue 8: Typo in ReadMe.
+Issue: The AMI instance is "Ubuntu Server 24.04 LTS," not the currently provided "20.04 LTS"
+Suggestion: Fix Typo to: Step 3: In the Choose an Amazon Machine Image (AMI) step, you can scroll down to "Ubuntu Server 24.04 LTS" under the Quick Start tab.
+  -> Also, we do not specify if this shoul dbe a x86 or Arm processor. It probably doesn't matter, but we should explicitly state it. I tested with x86.
+
+Issue 9: Need more Description in Security Group Creation for AWS
+Suggestion: Specify the sources that can access the instance; i.e., just the current IP, or other IP's. 
+
+Issue 10: WAs unable to find a "Subnets" component under Network & Security. 
+Change readme to: 
+Click on the blue hyperlink in the table of security groups labeled VPC's. the VPC ID associated with your subnet will be listed.
+
+Issue 11: Unclear in AWS Setup: Should we select teh security group we want before, or after instance allocation?
+Suggestion: Create security group, then create AWS instance. 
+
+Issue 12: Duplicate AWS instructions in readme are confusing. These need to be simplified to a single instruction set. 
+I'm happy to do this, but right now we do some of the same things twice, occasionally in different ways.
+
+Issue 13: Unable to SSH into AWS instance using publicKey. Will be retrying shortly.
+At the moment: Warning: Permanently added 'ec2-3-129-207-94.us-east-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+ubuntu@ec2-3-129-207-94.us-east-2.compute.amazonaws.com: Permission denied (publickey).
+
+After trying different methods for about 20 minutes, I just used the EC2 Instance Connect via the browser. This meant I could see the Ec2 instance, 
+but I wouldn't be able to deploy Ansible on it. 
+
+
+Issue 14: 
+The readme does not specify when/how to run jenkins, and any manual setup of Jenkins if required. Needs to be mentioned explicitly. I'm not sure how to proceed at the moment.
