@@ -18,6 +18,27 @@
 
 Reference: https://commandmasters.com/commands/sw_vers-osx/
 
+## Also Tested on: Windows 11 Education Edition
+    1. OS Host Details:
+        Processor	Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz   2.59 GHz
+        Installed RAM	16.0 GB (15.8 GB usable)
+        Product ID	00328-00805-52422-AA517
+        System type	64-bit operating system, x64-based processor
+
+    2. Windows Details:
+        Windows 11 Education Edition
+    
+    3. All Linux was through WSL2, (i.e., Through Docker Desktop using WSL installation.):
+        WSL version: 2.2.4.0
+        Kernel version: 5.15.153.1-2
+        WSLg version: 1.0.61
+        MSRDC version: 1.2.5326
+        Direct3D version: 1.611.1-81528511
+        DXCore version: 10.0.26091.1-240325-1447.ge-release
+        Windows version: 10.0.22631.3880
+
+
+
 ## Softwares used
 
 1. Versions:
@@ -139,17 +160,17 @@ To accomplish this assignment, follow these steps:
    7. Use recommended settings and Finish
       ![[./screenshots/7_Use_recommended_settings_and_finish.png]]
    8. Either create an account on docker or sign in using existing account.
-      ![[./screenshots/8_Either create an account on docker or sign in using existing account.png]]
-   9. Signing in using existing docker account.
-      ![[./screenshots/9_Signing in using existing docker account.png]]
+      ![[./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png]]
+   9. Signing in using existing docker account. 
+      ![[./screenshots/9_Signing_in_using_existing_docker_account.png]]
    10. Docker is installed and signed-in. Now proceed to the docker desktop app.
-       ![[./screenshots/11_Docker is installed and signed-in_proceed.png]]
+       ![[./screenshots/11_Docker_is_installed_and_signed-in_proceed.png]]
    11. Check if docker is installed by checking the docker version
-       ![[./screenshots/12_Check if docker is installed by checking the docker version.png]]
+       ![[./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png]]
    12. Run hello-world test just to make sure everything is working fine.
-       ![[./screenshots/13_Run hello-world test just to make sure everything is work fine.png]]
+       ![[./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png]]
    13. Check on the docker app if the hello-world container instance ran and exited as expected
-       ![[./screenshots/14_Check on the docker app if the hello-world container instance ran and exited as expected.png]]
+       ![[./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png]]
 
 ## Step 2: Set Up Docker Containers
 
@@ -183,11 +204,11 @@ DevOps-FinalProject-Akash
 └── Readme.md
 ```
 
-### Create a Docker Containers
+### Create Docker Containers
 
 #### Create Jenkins container
 
-Create Jenkins container using a dockerfile (Jenkinsfile) including all the plugins that may be required for accomplish the all the tasks. We use a custom script to create jenkins docker container:
+Create Jenkins container using a dockerfile (Jenkinsfile) including all the plugins that may be required for accomplish the all the tasks. We use a custom script to create jenkins docker container. Do not instantiate the container yet; this will occur later in the process. Just build the file for now:
 
 ```docker
 FROM jenkins/jenkins:lts  
@@ -424,7 +445,7 @@ ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /us
 
 #### Create docker compose for all other containers
 
-Create docker compose (docker-compose.yml) that creates all the containers with appropriate configs and custom docker network:
+Create docker compose (docker-compose.yml) that creates all the containers with appropriate configs and custom docker network. This Docker compose file will reference the Dockerfile written for Jenkins:
 
 ```bash
 services:  
@@ -716,13 +737,36 @@ networks:
 
 ## Step 3: High-level setup
 
-By following these steps, you can create and store the necessary credentials required in Jenkins pipeline and use them securely in your pipeline.
+By following these steps, you can create and store the necessary credentials required in Jenkins pipeline and use them securely in your pipeline. The necessary credentials are:
 
 1) grafana-admin-pass
 2) github-token
 3) aws-credentials
 4) ssh key creation and sharing
 5) AWS related information
+
+In order to have a place to store these credentials, you must instantiate your containers. This is the first time you will run a command. 
+
+### 0. Instantiate the containers to configure them.
+
+1. If you don't already have Docker Desktop started, start it. 
+2. Run the following command from the main project directory.
+    ```bash
+        docker compose up -d
+    ```
+    This command instantiates the columes, networks, and containers required.
+    Screenshot:  ![[./screenshots/A01_docker_compose_up_-d.png]] 
+3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:
+    Screenshot:  ![[./screenshots/A02_Jenkins_splashScreen.png]] 
+4. To get the administrative password, go to Docker Desktop, click on Jenkins
+    Screenshot:  ![[./screenshots/A03_Jenkins_openContainer.png]] 
+5. Now click on "Logs"
+    Screenshot:  ![[./screenshots/A04_Jenkins_logs.png]] 
+6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.
+    Screenshot:  ![[./screenshots/A05_Jenkins_logs_copyPassword.png]] 
+7. Paste this into the Jenkins Password bar:
+    Screenshot:  ![[./screenshots/A05_Jenkins_paste_password.png]] 
+
 
 Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
 
@@ -736,14 +780,25 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 2. **Generate a New Token**:
 
    - Click on your profile picture in the top right corner and select `Settings`.
+    ![[./screenshots/15_githubToken_select_settings.png]] 
    - In the left sidebar, click on `Developer settings`.
+    ![[./screenshots/16_githubToken_developer_settings.png]]
    - Click on `Personal access tokens`.
-   - Click on `Generate new token`.
+    ![[./screenshots/17_githubToken_fineGrainedTokens.png]] 
+   - Click on `Generate new token`. We used a fine-grained token.  
+    ![[./screenshots/18_githubToken_generateToken.png]] 
    - Give your token a descriptive name (e.g., `Jenkins Token`).
+    ![[./screenshots/19_githubToken_nameToken.png]] 
    - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.
-   - Select webhooks under premissions.
+    ![[./screenshots/20_githubToken_scopeToken.png]] 
+   - Click `Repository permissions`
+    ![[./screenshots/21_githubToken_repoClick.png]] 
+   - Select webhooks under permissions.
+    ![[./screenshots/22_githubToken_webHooks.png]] 
    - Click on `Generate token`.
-   - Copy the token. You will need it for the next step.
+    ![[./screenshots/23_githubToken_generateToken.png]] 
+   - Copy the token. You will need it for the next step. (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)
+    ![[./screenshots/24_githubToken_copyToken.png]] 
 
 #### Store GitHub Token in Jenkins
 
