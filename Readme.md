@@ -880,17 +880,23 @@ environment {
 1. **Log in to Jenkins**:
 
    - Navigate to your Jenkins instance; same as before. 
-   
+
 2. **Add the AWS Credentials to Jenkins**:
 
-   - Go to `Manage Jenkins` > `Manage Credentials`.
-   - Select a domain (e.g., `Global`).
+   - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
+   - Select a domain (e.g., `Global`). (See above for directions/screenshots)
    - Click on `Add Credentials`.
+    ![[./screenshots/C14_AWS_clickAddCredentials.png]]  
    - Select `AWS Credentials` as the kind.
-   - Enter the `Access key ID` and `Secret access key`.
-   - Give it an ID `aws-credentials`.
-   - Click `OK`.
+    ![[./screenshots/C15_AWS_selectAddCredentials.png]]  
+   - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.
+    ![[./screenshots/C16_AWS_enterAddCredentials.png]] 
+   - A successful addition will look like this:
+    ![[./screenshots/C17_AWS_addedCredentials.png]] 
+   
 3. **Using AWS Credentials**
+
+    We have entered these credentials to use them within our Jenkisfile, example below:
 
 ```groovy
 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
