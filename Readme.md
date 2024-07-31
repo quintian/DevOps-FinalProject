@@ -1006,7 +1006,8 @@ stage('Generate Grafana API Key') {
     - Paste the SonarQube token in the `Secret` field.
     - Give it an ID `sonarqube-token`.
     ![[./screenshots/E07_Sonarqube_createCredential.png]]
-    - Click `Create`.
+    - Click `Create`. Sucess will look like this:
+    ![[./screenshots/E07_Sonarqube_createCredential_success.png]]
 
 ### 5. AWS Related info for Jenkins
 
@@ -1020,7 +1021,7 @@ For an Ubuntu instance, the default SSH user is typically `ubuntu`. This user is
 
 #### 2. Get AWS Region
 
-**Step 1:** Log in to the AWS Management Console.
+**Step 1:** Log in to the AWS Management Console. (Same as outlined above.)
 
 **Step 2:** Look at the top right corner of the console page, next to your account name. You will see the current region displayed there (e.g., N. Virginia which corresponds to `us-east-1`).
 
@@ -1029,70 +1030,93 @@ For an Ubuntu instance, the default SSH user is typically `ubuntu`. This user is
 **Step 1:** From the AWS Management Console, navigate to the **EC2 Dashboard**.
 
 - Click on **Services** in the top-left corner.
-- Under the **Compute** category, select **EC2**.
+- Under the **Compute** category.
+    ![[./screenshots/F00_EC2_gotoCompute.png]]
+- Select **EC2**.
+    ![[./screenshots/F01_EC2_selectEC2.png]]
 
 **Step 2:** Click on **Launch Instance**.
+    ![[./screenshots/F02_EC2_clickLaunchInstance.png]]
 
 **Step 3:** In the **Choose an Amazon Machine Image (AMI)** step, you can search for "Ubuntu Server 20.04 LTS" under the **Quick Start** tab.
 
 **Step 4:** The AMI ID is listed under the AMI name. For example, `ami-039a6f82dd07a541e` is one such ID for Ubuntu Server 20.04 LTS.
+    - Step 3 and 4 are seen here:
+    ![[./screenshots/F03_EC2_configureInstance.png]]
 
 #### 4. Get Instance Type
 
 **Step 1:** While launching an instance, after selecting an AMI, you will be prompted to choose an instance type.
 
 **Step 2:** Select `t2.micro` for a free tier-eligible instance type.
+    ![[./screenshots/F03_EC2_pickMicro.png]]
 
 #### 5. Get Key Pair Name
 
-a. Use your own keys: If you use your own keys, copy them in the key folder in the project with the name "petclinic_key_pair.pem" and "petclinic_key_pair.pem.pub".
+**Step 1:** Click on "Create new key pair" as seen in the screenshot below while you create yourEc2 instance. If you are disconnected, you can create a key pair manually by navigating to the **EC2 Dashboard**, in the left navigation pane, click **Key Pairs** under **Network & Security**. If you already have a key pair, the name will be listed there. For example, `petclinic_key_pair`.If you do not have a key pair, click on **Create Key Pair**.
+![[./screenshots/F04_EC2_clickCreateKeyPair.png]]
 
-b. if you decide to use the keys generated AWS for manual setup follow the following steps.
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Key Pairs** under **Network & Security**.
-
-**Step 2:** If you already have a key pair, the name will be listed there. For example, `petclinic_key_pair`.
-
-**Step 3:** If you do not have a key pair, click on **Create Key Pair**.
+**Step 2:** 
 
 - Enter `petclinic_key_pair` as the key pair name.
-- Choose the file format (PEM for Linux/Mac, PPK for Windows).
+- Choose the file format Because we are using a Debian image, we used a PEM key. 
 - Click **Create Key Pair** and download the key file.
+![[./screenshots/F05_EC2_createKeyPair.png]]
   **Step 4**: Download and Store the Key File
 - **Download the Key File:** Save the private key file in a secure location. You will need this file to connect to your EC2 instances.
 
   - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
-  - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
+  - **Windows:** The file will be named something like `petclinic_key_pair.ppk`. (Use if you created a windows container; we did not. Included only for completeness.)
+
 - In our application, you will have to store the private key in the following location on jenkins: /root/.ssh/
+- This will be done during the jenkins container build process. In order to build correctly, the files "petclinic_key_pair.pem" and "petclinic_key_pair.pem.pun" need to be in a subdirectory "key" of the directory that "docker compose up -d" is executed from. In our Jenkins Dockerfile, the build process will copy these files into the Jenkins build, providing it access to the EC2 instance. For that reason, the first time the EC2 instance is configured, it must be configured and keys generated before *any other configuration of Jenkins, to include building the container* can occur.
 
 #### 6. Get Security Group ID
 
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Security Groups** under **Network & Security**.
+**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Security Groups** under **Network & Security**. Alternatively, use the builtin windows that are available in teh EC2 instance configuration, as shown in the screenshot:
+    ![[./screenshots/F06_EC2_createSecurityGroup.png]]
 
 **Step 2:** Select the security group you want to use or create a new one by clicking **Create Security Group**.
 
-- Enter a name and description for the security group.
-- Select the VPC (if you have multiple VPCs).
-- Add inbound rules (e.g., allow SSH, HTTP, HTTPS).
+- Enter a name and description for the security group. (or use the default, in our case, "launch-wizard-1")
+- Select the VPC (if you have multiple VPCs). (We do not)
+- Add inbound rules (e.g., allow SSH, HTTP, HTTPS). (Allow all three)
+It will look like this:
+    ![[./screenshots/F07_EC2_configSecurityGroup.png]] F09_EC2_choose Subnet
 - Click **Create Security Group**.
 
 **Step 3:** The security group ID will be listed in the **Security Groups** section (e.g., `sg-0fba393f98de9bcbe`).
 
-#### 7. Get Subnet ID
+#### 7. Configure Storage
 
-**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Subnets** under **Network & Security**.
+    - AWS allows up to 30GB of storage in free tier, so allocate 15 GB for this instance. (Way more than enough.).
+
+    ![[./screenshots/F08_EC2_configStorage.png]]
+    
+
+#### 8. Get Subnet ID
+
+**Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Subnets** under **Network & Security**. Again, this can be done in the wizard for a new EC2 instance, as shown in the screenshots below.
 
 **Step 2:** Select the subnet you want to use.
 
-- Ensure the subnet is in the same VPC as your security group.
-- The subnet should have auto-assign public IP enabled.
+- Ensure the subnet is in the same VPC as your security group. (In the base case, this occurs by default.)
+- The subnet should have auto-assign public IP enabled. (Again, this will be the default.) 
+    
 
-**Step 3:** The subnet ID will be listed in the **Subnets** section (e.g., `subnet-0d2f18bee0a9a0ca1`).
+**Step 3:** The subnet ID will be listed in the **Subnets** section (e.g., `subnet-004586e6912be07d4`). This may not be visible by default, so click "edit" net to "Network Settings" and then select a subnet.
+    ![[./screenshots/F09_EC2_chooseSubnet.png]] 
+
+**Step 4:** Click "Launch Instance." A successful launch will look like this: F10_EC2_launchSuccess
+    ![[./screenshots/F10_EC2_launchSuccess.png]] 
+
 
 ## Step 4: Configure Jenkins Pipeline
 
 1. **Create Jenkins Pipeline**
 
    - Create a `Jenkinsfile` in the root of the forked repository:
+   - Set the following environmental variables based on the data above.
 
 ```groovy
    pipeline {  
@@ -1628,6 +1652,7 @@ By following these steps, you will have successfully launched an EC2 instance, c
 
 ```ini
    [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem  ```  
+
 2. **Create Ansible Playbook**  
   
    - Create an `ansible/deploy-petclinic.yml` file:  
