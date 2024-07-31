@@ -845,21 +845,42 @@ environment {
 
 1. **Log in to AWS Management Console**:
 
-   - Go to [AWS Management Console](https://aws.amazon.com/).
+   - Go to [AWS Management Console](https://aws.amazon.com/console/).
+    ![[./screenshots/C01_AWS_console.png]]  
+   - Log into your account. You will land on different pages, depending on your region, but Pittsburgh points here:
+    ![[./screenshots/C02_AWS_landing.png]] 
+
 2. **Generate Access Keys**:
 
    - Click on your account name in the top right corner and select `My Security Credentials`.
+    ![[./screenshots/C03_AWS_selectSecurityCredentials.png]]  
    - In the left sidebar, click on `Users`.
+    ![[./screenshots/C04_AWS_selectUsers.png]]  
    - Select the user you want to create access keys for (or create a new user with programmatic access).
+    ![[./screenshots/C05_AWS_createNewUser.png]] 
+   - If creating a new user, name them something:
+    ![[./screenshots/C06_AWS_userName.png]]   C06_AWS_grantPermission
+   - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:
+    ![[./screenshots/C07_AWS_grantPermission.png]]   
+   - Click "create user"
+    ![[./screenshots/C08_AWS_clickCreateAWSUser.png]] 
    - Click on the `Security credentials` tab.
+    ![[./screenshots/C09_AWS_clickSecurityCredentials.png]]  
    - Click on `Create access key`.
+    ![[./screenshots/C10_AWS_clickCreateAccessKey.png]]  
+   - Select "Third-party Service" and Confirm that you understand the risks. Then click "Next"
+    ![[./screenshots/C11_AWS_accessKeyCreation.png]]  
+   - Write a description, if desired
+    ![[./screenshots/C12_AWS_accessKeyDescription.png]]  
    - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.
+    ![[./screenshots/C13_AWS_accessKeyCopy.png]]  
 
 #### Store AWS Credentials in Jenkins
 
 1. **Log in to Jenkins**:
 
-   - Navigate to your Jenkins instance.
+   - Navigate to your Jenkins instance; same as before. 
+   
 2. **Add the AWS Credentials to Jenkins**:
 
    - Go to `Manage Jenkins` > `Manage Credentials`.
