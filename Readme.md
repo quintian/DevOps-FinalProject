@@ -868,7 +868,7 @@ environment {
     ![[./screenshots/C09_AWS_clickSecurityCredentials.png]]  
    - Click on `Create access key`.
     ![[./screenshots/C10_AWS_clickCreateAccessKey.png]]  
-   - Select "Third-party Service" and Confirm that you understand the risks. Then click "Next"
+   - Select "Application Running on an AWS Compute Service" and Confirm that you understand the risks. Then click "Next"
     ![[./screenshots/C11_AWS_accessKeyCreation.png]]  
    - Write a description, if desired
     ![[./screenshots/C12_AWS_accessKeyDescription.png]]  
@@ -910,28 +910,39 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
 
 1. **Log in to Grafana**:
 
-   - Navigate to your Grafana instance.
+   - Navigate to your Grafana instance, on localhost:8080. If this is your first time or you are not logged in, you will see the following screen:
+   ![[./screenshots/D00_Grafana_landingScreen.png]] 
+
 2. **Get Admin Credentials**:
 
-   - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup.
+   - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup. You will immediately be prompted to change password.
+    ![[./screenshots/D01_Grafana_newPassword.png]] 
    - Change the password if you are using the default credentials for the first time.
+   - You will land at the Grafana homepage.
+    ![[./screenshots/D02_Grafana_homePage.png]]  
+
 
 #### Store Grafana Admin Credentials in Jenkins
 
 1. **Log in to Jenkins**:
 
-   - Navigate to your Jenkins instance.
+   - Navigate to your Jenkins instance. No change from above.
+
 2. **Add the Grafana Admin Credentials to Jenkins**:
 
-   - Go to `Manage Jenkins` > `Manage Credentials`.
-   - Select a domain (e.g., `Global`).
-   - Click on `Add Credentials`.
+   - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
+   - Select a domain (e.g., `Global`). (See above for directions/screenshots)
+   - Click on `Add Credentials`. (See above for directions/screenshots)
    - Select `Username with password` as the kind.
    - Enter `admin` (or your admin username) in the `Username` field.
    - Enter the admin password in the `Password` field.
    - Give it an ID `grafana-admin-pass`.
    - Click `OK`.
+   ![[./screenshots/D03_Grafana_addToJenkins.png]] 
+
 3. Using Grafana Admin Credentials
+
+- We did this to use Grafana via Jenkins, as shown below:
 
 ```groovy
 stage('Generate Grafana API Key') {
