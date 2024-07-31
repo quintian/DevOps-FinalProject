@@ -813,18 +813,25 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 #### Store GitHub Token in Jenkins
 
 1. **Log in to Jenkins**: 
-
-   - Navigate to your Jenkins instance.
+   - Navigate to your Jenkins instance by going to localhost:8080
+   ![[./screenshots/B01_tokenSetup_NavigateToJenkins.png]]  
 2. **Add the Token to Jenkins Credentials**:
 
    - Go to `Manage Jenkins` > `Manage Credentials`.
-   - Select a domain (e.g., `Global`).
+    ![[./screenshots/B02_tokenSetup_clickManageJenkins.png]]
    - Click on `Add Credentials`.
+    ![[./screenshots/B03_tokenSetup_clickManageCredentials.png]]  
+   - Select a domain (e.g., `Global`). 
+    ![[./screenshots/B04_tokenSetup_clickGlobal.png]] 
+   - Click "adding some credentials"
+    ![[./screenshots/B05_tokenSteup_addCredentials.png]] 
    - Select `Secret text` as the kind.
-   - Paste the GitHub token in the `Secret` field.
-   - Give it an ID `github-token`.
-   - Click `OK`.
+    ![[./screenshots/B06_tokenSteup_selectSecretText.png]] 
+   - Paste the GitHub token in the `Secret` field and give it an ID `github-token`, optionally a description, then click 'Create'
+    ![[./screenshots/B07_tokenSteup_createSecretText.png]] 
+
 3. Using GitHub Token
+   - The reason to do this is to use that token via a reference in the Jenkinsfile, i.e.:
 
 ```groovy
 environment {
