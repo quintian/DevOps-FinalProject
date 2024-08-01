@@ -2,12 +2,15 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_NAME = 'devops-finalproject-akash'
-        DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
+        PROJECT_NAME = 'devops-finalproject-team4'
+        DOCKER_NETWORK = ''
         JENKINS_URL = '10.120.64.242:8080'
         ZAP_CONTAINER_NAME = 'owasp-zap'
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
+        GRAFANA_URL = 'http://192.168.1.5:3000'
+        GRAFANA_DASHBOARD_URL = 'http://localhost:3000/d/haryan-jenkins/jenkins-performance-and-health-overview?orgId=1'
+        SONARQUBE_DASHBOARD_URL = "${SONARQUBE_URL}/dashboard?id=spring-petclinic"
         DEPLOYMENT_URL = 'http://192.168.1.2:8082'
         SSH_USER = 'ubuntu'
         AWS_REGION = 'us-east-1'
@@ -21,7 +24,6 @@ pipeline {
         GITHUB_REPO = "akashcha/spring-petclinic"
         WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"
         PROMETHEUS_URL = 'http://192.168.1.4:9090'
-        GRAFANA_URL = 'http://192.168.1.5:3000'
     }
 
     triggers {
@@ -30,12 +32,22 @@ pipeline {
 
     stages {
 
+        stage('Initialize') {
+            steps {
+                script {
+                    // Set the Docker network name based on the project name
+                    DOCKER_NETWORK = "${params.PROJECT_NAME ?: PROJECT_NAME}_dev-network"
+                }
+            }
+        }
 
         stage('Cleanup') {
             steps {
                 script {
                     try {
                     sh 'rm -f ${WORKSPACE}/zap-report.html'
+                        sh 'find ${WORKSPACE} -name "report-task.txt" -delete'
+                        sh 'find ${WORKSPACE} -name "sonarqube-report.html" -delete'
                     } catch (Exception e) {
                         echo "Error during cleanup: ${e}"
                         currentBuild.result = 'FAILURE'
@@ -43,6 +55,27 @@ pipeline {
                 }
             }
         }
+
+               stage('Setup Docker Network') {
+                        steps {
+                        script {
+                            try {
+                        echo "Setting up Docker network: ${DOCKER_NETWORK}"
+                        def networkExists = sh(script: "docker network ls --filter name=${DOCKER_NETWORK} -q", returnStdout: true).trim()
+                        if (networkExists) {
+                            echo "Docker network ${DOCKER_NETWORK} already exists."
+                        } else {
+                            sh "docker network create ${DOCKER_NETWORK}"
+                            echo "Docker network ${DOCKER_NETWORK} created."
+                        }
+                            } catch (Exception e) {
+                                echo "Error setting up Docker network: ${e}"
+                                currentBuild.result = 'FAILURE'
+                            }
+                        }
+                   }
+                }
+
 
         stage('Checkout') {
             steps {
@@ -99,43 +132,16 @@ pipeline {
         }
         }
 
-        stage('Static Analysis') {
-            steps {
-                echo 'Starting static analysis...'
-                script {
-                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_LOGIN')]) {
-                    try {
-                        sh 'mvn clean verify'
-                            sh """#!/bin/bash
-                                    docker run --rm \
-                            --platform linux/amd64 \
-                                --network $DOCKER_NETWORK \
-                                -v \$(pwd):/usr/src \
-                                    -w /usr/src \
-                                    sonarsource/sonar-scanner-cli \
-                                    sonar-scanner \
-                                    -Dsonar.projectKey=spring-petclinic \
-                                    -Dsonar.sources=. \
-                                    -Dsonar.java.binaries=target/classes \
-                                -Dsonar.host.url=${SONARQUBE_URL} \
-                                -Dsonar.login=$SONARQUBE_LOGIN
-                                """
-                        echo 'Static analysis completed successfully.'
-                    } catch (Exception e) {
-                        echo "Error during static analysis: ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
-                }
-                echo 'Static analysis stage completed.'
-            }
-        }
-
         stage('Run Test Instance') {
             steps {
                 script {
+                                try{
                     sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &'
                         sleep 10
+                                                        } catch (Exception e) {
+                                                            echo "Error during Static Analysis: ${e}"
+                                                            currentBuild.result = 'FAILURE'
+                                                        }
                 }
             }
         }
@@ -178,6 +184,37 @@ pipeline {
                 }
             }
         }
+
+        stage('Static Analysis') {
+            steps {
+                script {
+                try{
+                    def sonarScannerImage = docker.image('sonarsource/sonar-scanner-cli')
+                    sonarScannerImage.pull()
+
+                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
+                        sonarScannerImage.inside("--network=${DOCKER_NETWORK}") {
+                                sh """
+                            sonar-scanner -e \
+                                -Dsonar.host.url=${SONARQUBE_URL} \
+                                -Dsonar.token=${SONARQUBE_TOKEN} \
+                                    -Dsonar.projectKey=spring-petclinic \
+                                    -Dsonar.sources=. \
+                                    -Dsonar.exclusions=**/excluded-directory/**,**/*.tmp,**/regex-pattern-*.log \
+                                -Dsonar.java.binaries=target/classes
+                                """
+                            sh "cp .scannerwork/report-task.txt ${WORKSPACE}/report-task.txt"
+                    }
+                }
+                                } catch (Exception e) {
+                                    echo "Error during Static Analysis: ${e}"
+                                    currentBuild.result = 'FAILURE'
+                                }
+                }
+            }
+        }
+
+
 
 
 
@@ -377,40 +414,6 @@ pipeline {
             }
         }
 
-        stage('Import Grafana Dashboard') {
-
-            steps {
-                    withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {
-                        sh """
-                            apt-get update && apt-get install -y jq
-                            curl -s -X POST ${GRAFANA_URL}/api/auth/keys \
-                            -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \
-                            -H "Content-Type: application/json" \
-                            -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt
-                        """
-                        script {
-                            env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()
-                            if (!env.GRAFANA_API_KEY) {
-                            error 'Failed to generate Grafana API Key.'
-                        }
-                    }
-                    }
-                script {
-                    try {
-                        echo 'Importing Grafana dashboard...'
-                        def dashboard = readFile('/opt/grafana/dashboards/dashboard.json')
-                        sh """
-                            curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${GRAFANA_API_KEY}" -d '${dashboard}' ${GRAFANA_URL}/api/dashboards/db
-                        """
-                        echo 'Grafana dashboard imported successfully.'
-                    } catch (Exception e) {
-                        echo "Error importing Grafana dashboard: ${e}"
-                        currentBuild.result = 'FAILURE'
-                    }
-                }
-            }
-        }
-
 
         stage('Verify Prometheus and Grafana') {
             steps {
@@ -440,6 +443,62 @@ pipeline {
                 }
             }
         }
+
+        stage('Publish Reports') {
+            steps {
+                script {
+                    publishHTML(target: [
+                        reportName: 'ZAP Report',
+                        reportDir: '.',
+                        reportFiles: 'zap-report.html',
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        allowMissing: true
+                    ])
+                }
+                script {
+                    writeFile file: 'sonarqube-report.html', text: """
+                    <html>
+                            <head>
+                            <meta http-equiv="refresh" content="0; url=${SONARQUBE_DASHBOARD_URL}" />
+                            </head>
+                    <body>
+                            <p>If you are not redirected automatically, follow the <a href="${SONARQUBE_DASHBOARD_URL}">SonarQube Dashboard</a>.</p>
+                    </body>
+                    </html>
+                    """
+                                    publishHTML(target: [
+                        reportName: 'SonarQube Report',
+                                        reportDir: '.',
+                        reportFiles: 'sonarqube-report.html',
+                                        alwaysLinkToLastBuild: true,
+                                        keepAll: true,
+                                        allowMissing: true
+                                    ])
+                                }
+        script {
+            writeFile file: 'grafana-report.html', text: """
+            <html>
+                <head>
+                    <meta http-equiv="refresh" content="0; url=${GRAFANA_DASHBOARD_URL}" />
+                </head>
+                <body>
+                    <p>If you are not redirected automatically, follow the <a href="${GRAFANA_DASHBOARD_URL}">Grafana Dashboard</a>.</p>
+                </body>
+            </html>
+            """
+            publishHTML(target: [
+                reportName: 'Grafana Report',
+                reportDir: '.',
+                reportFiles: 'grafana-report.html',
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                allowMissing: true
+            ])
+            }
+        }
+}
+
     }
 
     post {
@@ -448,7 +507,6 @@ pipeline {
         }
         success {
             echo 'Pipeline completed successfully.'
-            archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true
     }
         failure {
             echo 'Pipeline failed.'

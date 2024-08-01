@@ -72,6 +72,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
       - ./grafana.ini:/etc/grafana/grafana.ini
+      - grafana-storage:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     networks:
       dev-network:
@@ -92,6 +93,9 @@ services:
       timeout: 30s
       retries: 3
       start_period: 30s
+
+volumes:
+  grafana-storage:
 
 networks:
   dev-network:
