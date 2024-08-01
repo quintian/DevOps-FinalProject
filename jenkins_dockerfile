@@ -39,7 +39,7 @@ COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub
 RUN chmod 600 /root/.ssh/petclinic_key_pair.pem
 
 # Copy the dashboard.json to a specific location in the Docker image
-COPY grafana/dashboards/dashboard.json /opt/grafana/dashboards/dashboard.json
+COPY grafana/provisioning/dashboards/dashboard.json /opt/grafana/dashboards/dashboard.json
 
 USER jenkins
 
