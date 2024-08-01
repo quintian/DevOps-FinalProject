@@ -2,6 +2,15 @@ pipeline {
     agent any
 
     environment {
+        // AWS Environmental Variables:
+        AMI_ID = 'ami-04a81a99f5ec58529'
+        SECURITY_GROUP_ID = 'sg-08c1cd700d0c96d77'
+        SUBNET_ID = 'subnet-004586e6912be07d4'
+        SSH_USER = 'ubuntu'
+        AWS_REGION = 'us-east-1'
+        INSTANCE_TYPE = 't2.micro'
+        KEY_NAME = 'petclinic_key_pair'
+        // Other Variables:
         PROJECT_NAME = 'devops-finalproject-akash'
         DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"
         JENKINS_URL = '10.120.64.242:8080'
@@ -9,13 +18,6 @@ pipeline {
         ZAP_URL = 'http://192.168.1.6:8081'
         SONARQUBE_URL = 'http://192.168.1.3:9000'
         DEPLOYMENT_URL = 'http://192.168.1.2:8082'
-        SSH_USER = 'ubuntu'
-        AWS_REGION = 'us-east-1'
-        AMI_ID = 'ami-039a6f82dd07a541e'
-        INSTANCE_TYPE = 't2.micro'
-        KEY_NAME = 'petclinic_key_pair'
-        SECURITY_GROUP_ID = 'sg-0fba393f98de9bcbe'
-        SUBNET_ID ='subnet-0d2f18bee0a9a0ca1'
         LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'
         JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'
         GITHUB_REPO = "akashcha/spring-petclinic"
