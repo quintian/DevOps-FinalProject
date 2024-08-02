@@ -824,7 +824,7 @@ environment {
     - Select the user you want to create access keys for (or create a new user with programmatic access).  
       ![image](./screenshots/C05_AWS_createNewUser.png)
     - If creating a new user, name them something:  
-      ![image](./screenshots/C06_AWS_userName.png)   C06_AWS_grantPermission
+      ![image](./screenshots/C06_AWS_userName.png)
     - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:  
       ![image](./screenshots/C07_AWS_grantPermission.png)
     - Click "create user"  
@@ -853,9 +853,9 @@ environment {
     - Click on `Add Credentials`.  
       ![image](./screenshots/C14_AWS_clickAddCredentials.png)
     - Select `AWS Credentials` as the kind.  
-      ![image](./screenshots/C15_AWS_selectAddCredentials.png)
+      ![image](./screenshots/C15_AWS_selectAWSCredentials.png)
     - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![image](./screenshots/C16_AWS_enterAddCredentials.png)
+      ![image](./screenshots/C16_AWS_enterAWSCredentials.png)
     - A successful addition will look like this:  
       ![image](./screenshots/C17_AWS_addedCredentials.png)
 
