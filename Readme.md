@@ -116,7 +116,7 @@ apt-get install -y maven
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
 
-![[zap_version.png]]
+![image](./screenshots/zap_version.png)
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
 - **Version Check**:
@@ -269,9 +269,9 @@ To accomplish this assignment, follow these steps:
 
 1. 1. Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository to your GitHub/GitLab account.
 
-![[01_fork_and_clone.png]]
-2. ![[02_fork_and_clone.png]]
-3. ![[03_fork_and_clone.png]]
+![image](./screenshots/01_fork_and_clone.png)
+2. ![image](./screenshots/02_fork_and_clone.png)
+3. ![image](./screenshots/03_fork_and_clone.png)
 4. Clone the forked repository to your local machine:
    ```bash
    git clone https://github.com/<your-username>/spring-petclinic.git
@@ -286,7 +286,7 @@ To accomplish this assignment, follow these steps:
    Resolving deltas: 100% (3762/3762), done.
 
    **Screenshot**:
-   ![[Pasted image 20240721132801.png]]
+   ![image](./screenshots/Pasted image 20240721132801.png)
 ### Project Structure
 
 Below is the text representation of the project structure shown in the image:
@@ -872,7 +872,7 @@ In order to have a place to store these credentials, you must instantiate your c
 docker compose build 
 ```
 
-![[A00_docker_compose_up_-d.png.png]]
+![image](./screenshots/A00_docker_compose_up_-d.png.png)
 
 
 3. Run the following command from the main project directory.
@@ -883,7 +883,7 @@ docker compose build
 
    This command instantiates the volumes, networks, and containers required.  
    Screenshot:  
-   ![[A01_docker_compose_up_-d.png.png]]
+   ![image](./screenshots/A01_docker_compose_up_-d.png.png)
 
    If this is the first time you have ever built the containers, you will see something like this as they get built:
 
@@ -900,7 +900,7 @@ docker compose build
 6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
    Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
 7. Paste this into the Jenkins Password bar:  
-   Screenshot:  ![[./screenshots/A05_Jenkins_paste_password.png]]
+   Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
    Screenshot: ![image](./screenshots/A06_Jenkins_bypassLanding.png)
 9. Jenkins is now setup. Click "Start using Jenkins"  
@@ -921,9 +921,9 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
     - Click on your profile picture in the top right corner and select `Settings`.  
       ![image](./screenshots/15_githubToken_select_settings.png)
     - In the left sidebar, click on `Developer settings`.  
-      ![[./screenshots/16_githubToken_developer_settings.png]]
+      ![image](./screenshots/16_githubToken_developer_settings.png)
     - Click on `Personal access tokens`.  
-      ![[./screenshots/17_githubToken_fineGrainedTokens.png]]
+      ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
     - Click on `Generate new token`. We used a fine-grained token.    
       ![image](./screenshots/18_githubToken_generateToken.png)
     - Give your token a descriptive name (e.g., `Jenkins Token`).  
@@ -1016,9 +1016,9 @@ environment {
     - Click on `Add Credentials`.  
       ![image](./screenshots/C14_AWS_clickAddCredentials.png)
     - Select `AWS Credentials` as the kind.  
-      ![[./screenshots/C15_AWS_selectAddCredentials.png]]
+      ![image](./screenshots/C15_AWS_selectAddCredentials.png)
     - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![[./screenshots/C16_AWS_enterAddCredentials.png]]
+      ![image](./screenshots/C16_AWS_enterAddCredentials.png)
     - A successful addition will look like this:  
       ![image](./screenshots/C17_AWS_addedCredentials.png)
 
@@ -1958,96 +1958,96 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
 
 1. **Docker Compose Setup - Initial Pulling of Images**
     - **Context:** This step involves pulling the required Docker images for the containers defined in the `docker-compose.yml` file.
-    - ![[01_deployment_and_verification.png]]
+    - ![image](./screenshots/01_deployment_and_verification.png)
 
 2. **Docker Compose Setup - Containers Running**
     - **Context:** After pulling the images, the containers are started. This ensures all the necessary services like Jenkins, Grafana, SonarQube, Prometheus, and OWASP ZAP are running.
-    - ![[02_deployment_and_verification.png]]
+    - ![image](./screenshots/02_deployment_and_verification.png)
 
 3. **Docker Dashboard - All Containers Running**
     - **Context:** This view from the Docker dashboard confirms that all containers required for the pipeline are up and running, showing their statuses and ports.
-    - ![[03_deployment_and_verification.png]]
+    - ![image](./screenshots/03_deployment_and_verification.png)
 
 4. **Jenkins Login Page**
     - **Context:** Accessing the Jenkins web interface requires logging in with the admin credentials.
-    - ![[04_deployment_and_verification.png]]
+    - ![image](./screenshots/04_deployment_and_verification.png)
 
 5. **Jenkins Dashboard - Welcome Page**
     - **Context:** The initial dashboard after logging into Jenkins, where you can start setting up jobs and configure the Jenkins environment.
-    - ![[05_deployment_and_verification.png]]
+    - ![image](./screenshots/05_deployment_and_verification.png)
 
 6. **Jenkins Global Credentials Configuration**
     - **Context:** Configuring global credentials in Jenkins to securely store AWS credentials, GitHub tokens, and SonarQube tokens, which are required for various stages of the pipeline.
-    - ![[06_deployment_and_verification.png]]
+    - ![image](./screenshots/06_deployment_and_verification.png)
 
 7. **Jenkins - Creating a New Pipeline Project**
     - **Context:** Setting up a new pipeline project in Jenkins for the DevOps final project. This involves entering the project name and selecting the pipeline type.
-    - ![[07_deployment_and_verification.png]]
+    - ![image](./screenshots/07_deployment_and_verification.png)
 8. **Jenkins - Pipeline Configuration**
     - **Context:** Configuring the pipeline script, environment variables, build triggers, and other settings. This script defines all the stages and steps of the CI/CD pipeline.
-    - ![[08_deployment_and_verification.png]]
+    - ![image](./screenshots/08_deployment_and_verification.png)
 
 9. **Jenkins - Initial Pipeline Setup**
     - **Context:** The view of the Jenkins project after initial setup, showing options like build now, configure, and status. No builds have been triggered yet.
-    - ![[10_deployment_and_verification.png]]
+    - ![image](./screenshots/10_deployment_and_verification.png)
 
 10. **Jenkins - Build History**
     - **Context:** This view shows the build history and allows tracking the progress and status of each build. It also provides access to console outputs and other build data.
-    - ![[11_deployment_and_verification.png]]
+    - ![image](./screenshots/11_deployment_and_verification.png)
 
 
 
 1. **Jenkins Pipeline Execution Start**
     - The pipeline is initiated, showing the build process in Jenkins, including the time the build started and the details of the Git repository used.
-    - ![[11_deployment_and_verification.png]]
+    - ![image](./screenshots/11_deployment_and_verification.png)
 
 2. **Pipeline Console Output**
     - The console output of the Jenkins pipeline execution shows detailed logs of the steps being executed, including verification messages and publishing of reports.
-    - ![[12_deployment_and_verification.png]]
+    - ![image](./screenshots/12_deployment_and_verification.png)
 
 
 3. **Git Build Data**
     - This view provides information about the Git build data, including the revision and repository details, indicating that the build process has retrieved the code from the specified repository.
-    - ![[13_deployment_and_verification.png]]
+    - ![image](./screenshots/13_deployment_and_verification.png)
 
 1. **Jenkins Blue Ocean Pipeline View**
     - The Blue Ocean view offers a visual representation of the pipeline stages and steps, showing a successful pipeline execution with all stages completed.
-    - ![[14_deployment_and_verification.png]]
+    - ![image](./screenshots/14_deployment_and_verification.png)
 
 
 
 
 1. **ZAP Scanning Report**
     - The ZAP scanning report highlights the security vulnerabilities detected during the static analysis stage of the pipeline, providing detailed information about each alert.
-    - ![[15_deployment_and_verification.png]]
+    - ![image](./screenshots/15_deployment_and_verification.png)
 
 6. **Spring PetClinic Application**
     - The Spring PetClinic application is shown running, indicating a successful deployment to the AWS EC2 instance. This view is part of the verification stage, confirming that the application is operational.
-    - ![[16_deployment_and_verification.png]]
+    - ![image](./screenshots/16_deployment_and_verification.png)
 
 7. **Spring PetClinic Veterinarian List**
     - The updated list of veterinarians in the Spring PetClinic application verifies that the changes from the `data.sql` file have been correctly applied.
-    - ![[19_deployment_and_verification.png]]
-      ![[21_deployment_and_verification.png]]
+    - ![image](./screenshots/19_deployment_and_verification.png)
+      ![image](./screenshots/21_deployment_and_verification.png)
 
 
 8. **GitHub Pull Request for Data Update**
     - The pull request in GitHub showcases the changes made to the `data.sql` file, including the insertions of new data entries for veterinarians, owners, pets, and visits.
-    - ![[17_deployment_and_verification.png]]
+    - ![image](./screenshots/17_deployment_and_verification.png)
 
 9. **GitHub Pull Request Merge Confirmation**
     - The successful merge of the pull request confirms that the updates have been integrated into the main branch, ready for the next deployment cycle.
-    - ![[18_deployment_and_verification.png]]
+    - ![image](./screenshots/18_deployment_and_verification.png)
 
 10. Build got initiated automatically for the second time after code changes
 
-    ![[22_deployment_and_verification.png]]
+    ![image](./screenshots/22_deployment_and_verification.png)
 
 11. Changes to the code verified
-    ![[23_deployment_and_verification.png]]
+    ![image](./screenshots/23_deployment_and_verification.png)
 
     12. Console output: SUCCESS for the second run
-        ![[24_deployment_and_verification.png]]
+        ![image](./screenshots/24_deployment_and_verification.png)
 1. **Final Verification**
     - A final check of the veterinarian list confirms the successful deployment and update process, completing the pipeline verification.
     -
