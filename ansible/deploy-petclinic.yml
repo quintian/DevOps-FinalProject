@@ -22,6 +22,16 @@
         owner: ubuntu
         group: ubuntu
 
+    - name: Check if the Spring PetClinic application is running
+      shell: "pgrep -f spring-petclinic-3.3.0-SNAPSHOT.jar"
+      register: pgrep_result
+      ignore_errors: yes
+
+    - name: Kill the Spring PetClinic application if it is running
+      shell: "pkill -f spring-petclinic-3.3.0-SNAPSHOT.jar || true"
+      when: pgrep_result.rc == 0
+      ignore_errors: yes
+
     - name: Run the Spring PetClinic application
       shell: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"
       args:
@@ -37,4 +47,3 @@
 
     - debug:
         msg: "Process Status: {{ ps_result }}"
-
