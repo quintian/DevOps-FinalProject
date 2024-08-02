@@ -7,7 +7,7 @@
     2. Build version: 23F79
     3. Chipset: Apple M1 Pro
 2. Screenshot :  
-   ![image](./screenshots/macversion%201.png)
+   ![image](./screenshots/macversion_1.png)
 
 
 ## Also Tested on: Windows 11 Education Edition
@@ -26,20 +26,18 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
   docker run jenkins/jenkins:lts --version
   ```
 - **Version**: 2.452.3
+- **Jenkin's Underlying OS release**:
+  -# docker exec -it sonarqube cat /etc/os-release
+  PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+  NAME="Debian GNU/Linux"
+  VERSION_ID="12"
+  VERSION="12 (bookworm)"
+  VERSION_CODENAME=bookworm
+  ID=debian
+  HOME_URL="https://www.debian.org/"
+  SUPPORT_URL="https://www.debian.org/support"
+  BUG_REPORT_URL="https://bugs.debian.org/"
 
-### 2. Jenkin's Underlying OS release:
-```sh
-# docker exec -it sonarqube cat /etc/os-release
-PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
-NAME="Debian GNU/Linux"
-VERSION_ID="12"
-VERSION="12 (bookworm)"
-VERSION_CODENAME=bookworm
-ID=debian
-HOME_URL="https://www.debian.org/"
-SUPPORT_URL="https://www.debian.org/support"
-BUG_REPORT_URL="https://bugs.debian.org/"
-```
 ### 2. **Maven**
 **Commands**:
 ```sh
@@ -130,6 +128,8 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
   BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
+![[zap_version.png]]
+
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
 - **Version Check**:
@@ -189,7 +189,7 @@ Version: aws-cli/2.16.4 Python/3.11.9 Darwin/23.5.0 source/arm64
   Java 17.0.11 Alpine (64-bit)
 - OS Version: Linux 6.6.32-linuxkit amd64
 
-## 13. Plugins:
+### 13. **Jenkins Plugins**
 
 command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f1c8814cc397f6142ab0eed8e9 list-plugins
 
@@ -280,13 +280,34 @@ To accomplish this assignment, follow these steps:
     13. Check on the docker app if the hello-world container instance ran and exited as expected  
         ![image](./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png)
 
-## Step 2: Set Up Docker Containers
+## Step 2: Configure Docker Containers
 
 ### Fork and Clone Repository
 
 - Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository on GitHub/GitLab.
 - Clone the forked repository to your local machine.
 
+
+1. 1. Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository to your GitHub/GitLab account.
+
+![[01_fork_and_clone.png]]
+2. ![[02_fork_and_clone.png]]
+3. ![[03_fork_and_clone.png]]
+4. Clone the forked repository to your local machine:
+   ```bash
+   git clone https://github.com/<your-username>/spring-petclinic.git
+   cd spring-petclinic
+   ```
+   **output**:
+   sreeakash@KP-QNPHXDYRW1 DevOps-FinalProject-Akash % git clone https://github.com/akashcha/spring-petclinic.git
+   Cloning into 'spring-petclinic'...
+   remote: Enumerating objects: 9967, done.
+   remote: Total 9967 (delta 0), reused 0 (delta 0), pack-reused 9967
+   Receiving objects: 100% (9967/9967), 7.55 MiB | 15.43 MiB/s, done.
+   Resolving deltas: 100% (3762/3762), done.
+
+   **Screenshot**:
+   ![[Pasted image 20240721132801.png]]
 ### Project Structure
 
 Below is the text representation of the project structure shown in the image:
@@ -393,7 +414,7 @@ RUN jenkins-plugin-cli --plugins \
   
 COPY ansible /opt/ansible  
   
-ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "] # Override the default entrypoint  
+ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "] # Override the default entrypoint 
   
 ```  
 
@@ -551,62 +572,140 @@ ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /us
 Create docker compose (docker-compose.yml) that creates all the containers with appropriate configs and custom docker network. This Docker compose file will reference the Dockerfile written for Jenkins:
 
 ```bash  
-services:  jenkins:    
-  container_name: jenkinsbuild:    
-    context: .dockerfile: jenkins_dockerfileuser: rootprivileged: trueports:    
-    - "8080:8080"- "50000:50000"- "8082:8082" # For spring-petclinic app- "8084:8084" # For OWASP-ZAP exposurevolumes:    
-    - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socketnetworks:    
-    dev-network:    
-      ipv4_address: 192.168.1.2entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]    
-sonarqube:    
-  image: sonarqube:latestcontainer_name: sonarqubedepends_on:    
-    - dbports:    
-    - "9000:9000"environment:    
-    - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar- SONAR_JDBC_USERNAME=sonar- SONAR_JDBC_PASSWORD=sonarnetworks:    
-    dev-network:    
-      ipv4_address: 192.168.1.3    
-db:    
-  image: postgres:13container_name: postgresenvironment:    
-    - POSTGRES_USER=sonar- POSTGRES_PASSWORD=sonar- POSTGRES_DB=sonarnetworks:    
-    dev-network:    
-      ipv4_address: 192.168.1.7    
-  
-prometheus:    
-  image: prom/prometheus:latestcontainer_name: prometheusports:    
-    - "9090:9090"volumes:    
-    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.ymlcommand:    
-    - '--config.file=/etc/prometheus/prometheus.yml'- '--storage.tsdb.path=/prometheus'- '--web.console.libraries=/etc/prometheus/console_libraries'- '--web.console.templates=/etc/prometheus/consoles'- '--web.enable-lifecycle'networks:    
-    dev-network:    
-      ipv4_address: 192.168.1.4    
-grafana:    
-  image: grafana/grafana:latestcontainer_name: grafanaports:    
-    - "3000:3000"environment:    
-    - GF_SECURITY_ADMIN_USER=admin- GF_SECURITY_ADMIN_PASSWORD=adminvolumes:    
-    - ./grafana.ini:/etc/grafana/grafana.ini- ./grafana/provisioning:/etc/grafana/provisioningnetworks:    
-    dev-network:    
-      ipv4_address: 192.168.1.5    
-owasp-zap:    
-  image: zaproxy/zap-weeklycontainer_name: owasp-zapentrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]ports:    
-    - "8081:8081"networks:    
-    dev-network:    
-      ipv4_address: 192.168.1.6healthcheck:    
-    test: ["CMD", "zap-cli", "status", "-t", "60"]interval: 1mtimeout: 30sretries: 3start_period: 30s    
-networks:  dev-network:    
-  driver: bridgeipam:    
-    config:    
-      - subnet: 192.168.1.0/24```  
-  
-##### Explanation of `docker-compose.yml` Commands  
-  
-- Services  
-  
-This section defines the different services (containers) to be run by Docker Compose.  
-  
-- Jenkins Service  
-  
+services:
+  jenkins:
+    container_name: jenkins
+    build:
+      context: .
+      dockerfile: jenkins_dockerfile
+    user: root
+    privileged: true
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+      - "8082:8082" # For spring-petclinic app
+      - "8084:8084" # For OWASP-ZAP exposure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.2
+    entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    depends_on:
+      - db
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.3
+
+  db:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.7
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.4
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.5
+
+  owasp-zap:
+    image: zaproxy/zap-weekly
+    container_name: owasp-zap
+    entrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]
+    ports:
+      - "8081:8081"
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.6
+    healthcheck:
+      test: ["CMD", "zap-cli", "status", "-t", "60"]
+      interval: 1m
+      timeout: 30s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  grafana-storage:
+
+networks:
+  dev-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+```  
+
+##### Explanation of `docker-compose.yml` Commands
+
+- Services
+
+This section defines the different services (containers) to be run by Docker Compose.
+
+- Jenkins Service
+
 ```yaml  
-jenkins:  
-  container_name: jenkins  build:    context: .    dockerfile: jenkins_dockerfile  user: root  privileged: true  ports:    - "8080:8080"    - "50000:50000"    - "8082:8082" # For spring-petclinic app    - "8084:8084" # For OWASP-ZAP exposure  volumes:    - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket  networks:    dev-network:      ipv4_address: 192.168.1.2  entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
+  jenkins:
+    container_name: jenkins
+    build:
+      context: .
+      dockerfile: jenkins_dockerfile
+    user: root
+    privileged: true
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+      - "8082:8082" # For spring-petclinic app
+      - "8084:8084" # For OWASP-ZAP exposure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.2
+    entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
 ```  
 
 - **container_name**: Assigns a name to the container.
@@ -628,8 +727,22 @@ jenkins:
 - SonarQube Service
 
 ```yaml  
-sonarqube:  
-  image: sonarqube:latest  container_name: sonarqube  depends_on:    - db  ports:    - "9000:9000"  environment:    - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar    - SONAR_JDBC_USERNAME=sonar    - SONAR_JDBC_PASSWORD=sonar  networks:    dev-network:      ipv4_address: 192.168.1.3  
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    depends_on:
+      - db
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.3
+
+
 ```  
 
 - **image**: Uses the latest SonarQube image from Docker Hub.
@@ -641,8 +754,16 @@ sonarqube:
 - Database Service (PostgreSQL)
 
 ```yaml  
-db:  
-  image: postgres:13  container_name: postgres  environment:    - POSTGRES_USER=sonar    - POSTGRES_PASSWORD=sonar    - POSTGRES_DB=sonar  networks:    dev-network:      ipv4_address: 192.168.1.7  
+  db:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.7 
 ```  
 
 - **image**: Uses PostgreSQL version 13 image from Docker Hub.
@@ -652,8 +773,24 @@ db:
 - Prometheus Service
 
 ```yaml  
-prometheus:  
-  image: prom/prometheus:latest  container_name: prometheus  ports:    - "9090:9090"  volumes:    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  command:    - '--config.file=/etc/prometheus/prometheus.yml'    - '--storage.tsdb.path=/prometheus'    - '--web.console.libraries=/etc/prometheus/console_libraries'    - '--web.console.templates=/etc/prometheus/consoles'    - '--web.enable-lifecycle'  networks:    dev-network:      ipv4_address: 192.168.1.4  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.4
+
+
 ```  
 
 - **image**: Uses the latest Prometheus image from Docker Hub.
@@ -665,8 +802,26 @@ prometheus:
 - Grafana Service
 
 ```yaml  
-grafana:  
-  image: grafana/grafana:latest  container_name: grafana  ports:    - "3000:3000"  environment:    - GF_SECURITY_ADMIN_USER=admin    - GF_SECURITY_ADMIN_PASSWORD=admin  volumes:    - ./grafana.ini:/etc/grafana/grafana.ini    - ./grafana/provisioning:/etc/grafana/provisioning  networks:    dev-network:      ipv4_address: 192.168.1.5  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.5
+
+
+
+  volumes:
+    grafana-storage:
 ```  
 
 - **image**: Uses the latest Grafana image from Docker Hub.
@@ -678,8 +833,21 @@ grafana:
 - OWASP ZAP Service
 
 ```yaml  
-owasp-zap:  
-  image: zaproxy/zap-weekly  container_name: owasp-zap  entrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]  ports:    - "8081:8081"  networks:    dev-network:      ipv4_address: 192.168.1.6  healthcheck:    test: ["CMD", "zap-cli", "status", "-t", "60"]    interval: 1m    timeout: 30s    retries: 3    start_period: 30s  
+  owasp-zap:
+    image: zaproxy/zap-weekly
+    container_name: owasp-zap
+    entrypoint: ["zap.sh", "-daemon", "-host", "0.0.0.0", "-port", "8081"]
+    ports:
+      - "8081:8081"
+    networks:
+      dev-network:
+        ipv4_address: 192.168.1.6
+    healthcheck:
+      test: ["CMD", "zap-cli", "status", "-t", "60"]
+      interval: 1m
+      timeout: 30s
+      retries: 3
+      start_period: 30s
 ```  
 
 - **image**: Uses the latest OWASP ZAP weekly image from Docker Hub.
@@ -693,41 +861,58 @@ owasp-zap:
 This section defines the custom network to be used by the services.
 
 ```yaml  
-networks:  
-  dev-network:    driver: bridge    ipam:      config:        - subnet: 192.168.1.0/24  
+networks:
+  dev-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
 ```  
 
 - **driver: bridge**: Specifies that the network uses the bridge driver.
 - **ipam**: Configures IP address management for the network.
     - **subnet: 192.168.1.0/24**: Defines the subnet for the custom network, allowing IP addresses from 192.168.1.1 to 192.168.1.254.
 
-## Step 3: High-level setup
+## Step 3: Running Containers and Initial Setup
 
 By following these steps, you can create and store the necessary credentials required in Jenkins pipeline and use them securely in your pipeline. The necessary credentials are:
 
-1) grafana-admin-pass
-2) github-token
-3) aws-credentials
-4) ssh key creation and sharing
-5) AWS related information
+0) Instantiate the containers
+1) Github Token (github-token)
+2) AWS Crednentials (aws-credentials )
+3) ssh key creation and sharing for AWS
+4) AWS related information
 
 In order to have a place to store these credentials, you must instantiate your containers. This is the first time you will run a command.
 
 ### 0. Instantiate the containers to configure them.
 
 1. If you don't already have Docker Desktop started, start it.
-2. Run the following command from the main project directory.
+2. Build he container using the following command:
+```sh
+docker compose build 
+```
+
+![[A00_docker_compose_up_-d.png.png]]
+
+
+3. Run the following command from the main project directory.
     ```bash  
-        docker compose up -d  
+        docker compose -p devops-finalproject-team4 up -d 
     ```
-    This command instantiates the volumes, networks, and containers required.
-    Screenshot:  ![image](./screenshots/A01_docker_compose_up_-d.png)   
-    If this is the first time you have ever built the containers, you will see something like this as they get built:   
-    Screenshot:  ![image](./screenshots/A00_docker_compose_up_-d_first_time.png)   
-    As the Jenkins container builds for the first time, you will see something like this:  
-    Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)   
-    Ultimately, the starting printouts will look the same:   
-    Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)  
+    
+   NOTE: The project name should be passed or it will take the project directory name as the default name which might cause issues with the network setup.
+
+   This command instantiates the volumes, networks, and containers required.  
+   Screenshot:  ![[A01_docker_compose_up_-d.png.png]]
+
+   If this is the first time you have ever built the containers, you will see something like this as they get built:
+
+   As the Jenkins container builds for the first time, you will see something like this:  
+   Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)
+   Ultimately, the starting printouts will look the same:   
+   Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)
+
 3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:  
    Screenshot:  ![image](./screenshots/A02_Jenkins_splashScreen.png)
 4. To get the administrative password, go to Docker Desktop, click on Jenkins  
@@ -740,6 +925,7 @@ In order to have a place to store these credentials, you must instantiate your c
 ```sh
 docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 ```
+
 7. Paste this into the Jenkins Password bar:  
    Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
@@ -913,7 +1099,7 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
 - We did this to use Grafana via Jenkins, as shown below:
 
 ```groovy  
-stage('Generate Grafana API Key') {  
+stage('Generate Grafana API Key') {
     steps {        withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {            sh """                apt-get update && apt-get install -y jq                curl -s -X POST ${GRAFANA_URL}/api/auth/keys \                -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \                -H "Content-Type: application/json" \                -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt            """            script {                env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()                if (!env.GRAFANA_API_KEY) {                    error 'Failed to generate Grafana API Key.'                }            }        }    }}  
 ```  
 
@@ -928,9 +1114,9 @@ stage('Generate Grafana API Key') {
     - **Generate a Token**:
 
         - Click on your user avatar in the upper-right corner.
-        - Select `My Account`.
-        - Navigate to the `Security` tab.
-        - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
+        - Select `My Account`.
+        - Navigate to the `Security` tab.
+        - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
         - Copy the generated token. You will not be able to see this token again, so store it securely.
 - **Store the SonarQube Token in Jenkins Credentials**:
 
@@ -938,13 +1124,13 @@ stage('Generate Grafana API Key') {
         - Open your Jenkins instance in your browser.
         - Log in with your admin credentials.
     - **Add the Token to Jenkins Credentials**:
-        - Go to `Manage Jenkins` > `Manage Credentials`.
-        - Select a domain (e.g., `Global`).
-        - Click on `Add Credentials`.
-        - Select `Secret text` as the kind.
-        - Paste the SonarQube token in the `Secret` field.
+        - Go to `Manage Jenkins` > `Manage Credentials`.
+        - Select a domain (e.g., `Global`).
+        - Click on `Add Credentials`.
+        - Select `Secret text` as the kind.
+        - Paste the SonarQube token in the `Secret` field.
         - Give it an ID `sonarqube-token`.
-        - Click `OK`.
+        - Click `OK`.
 
 ### 5. AWS Related info for Jenkins
 
@@ -996,10 +1182,10 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
 - Choose the file format (PEM for Linux/Mac, PPK for Windows).
 - Click **Create Key Pair** and download the key file.  
   **Step 4**: Download and Store the Key File
-- **Download the Key File:** Save the private key file in a secure location. You will need this file to connect to your EC2 instances.
+- **Download the Key File:** Save the private key file in a secure location. You will need this file to connect to your EC2 instances.
 
-    - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
-    - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
+    - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
+    - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
 - In our application, you will have to store the private key in the following location on jenkins: /root/.ssh/
 
 #### 6. Get Security Group ID
@@ -1026,588 +1212,1007 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
 
 **Step 3:** The subnet ID will be listed in the **Subnets** section (e.g., `subnet-0d2f18bee0a9a0ca1`).
 
-## Step 4: Configure Jenkins Pipeline
+### 6. Configure Jenkins Pipeline
 
 1. **Create Jenkins Pipeline**
 
     - Create a `Jenkinsfile` in the root of the forked repository:
 
 ```groovy  
-   pipeline {    agent any    
-    
-    environment {    
-        PROJECT_NAME = 'devops-finalproject-akash'    
-        DOCKER_NETWORK = "${PROJECT_NAME}_dev-network"    
-        JENKINS_URL = '10.120.64.242:8080'    
-        ZAP_CONTAINER_NAME = 'owasp-zap'    
-        ZAP_URL = 'http://192.168.1.6:8081'    
-        SONARQUBE_URL = 'http://192.168.1.3:9000'    
-        SONARQUBE_LOGIN = 'squ_e1e70d0009e9f60a767cca521528ef557b1b0543'    
-        DEPLOYMENT_URL = 'http://192.168.1.2:8082'    
-        SSH_USER = 'ubuntu'    
-        AWS_REGION = 'us-east-1'    
-        AMI_ID = 'ami-039a6f82dd07a541e'    
-        INSTANCE_TYPE = 't2.micro'    
-        KEY_NAME = 'petclinic_key_pair'    
-        SECURITY_GROUP_ID = 'sg-0fba393f98de9bcbe'    
-        SUBNET_ID ='subnet-0d2f18bee0a9a0ca1'    
-        LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'    
-        JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'    
-        GITHUB_REPO = "akashcha/spring-petclinic"    
-        WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"    
-        GITHUB_TOKEN = credentials('github-token')    
-        PROMETHEUS_URL = 'http://192.168.1.4:9090'    
-        GRAFANA_URL = 'http://192.168.1.5:3000'    
-    }    
-    
-    triggers {    
-        pollSCM('* * * * *')    
-    }    
-    
-    stages {    
-    
-    
-        stage('Cleanup') {    
-            steps {    
-                script {    
-                    try {    
-                    sh 'rm -f ${WORKSPACE}/zap-report.html'    
-                    } catch (Exception e) {    
-                        echo "Error during cleanup: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                }    
-            }    
-        }    
-    
-        stage('Checkout') {    
-            steps {    
-                echo 'Checking out the repository...'    
-                git branch: 'main', url: 'https://github.com/akashcha/spring-petclinic.git'    
-                echo 'Repository checked out successfully.'    
-            }    
-        }    
-    
-        stage('Build') {    
-            steps {    
-                script {    
-                    sh 'mvn clean package -Dmaven.test.skip=true'    
-                }    
-            }    
-        }    
-    
-         stage('Test') {    
-             steps {    
-                 script {    
-                    try {    
-                        sh 'mvn test'    
-                    } catch (Exception e) {    
-                        echo "Error during testing: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                 }    
-             }    
-         }    
-    
-    
-        stage('Create GitHub Webhook') {    
-            steps {    
-                script {    
-                    def payload = """    
-                    {                      "name": "web",                      "active": true,                      "events": ["push", "pull_request"],                      "config": {                        "url": "${WEBHOOK_URL}",    
-                        "content_type": "json",                        "insecure_ssl": "0"                      }                    }                    """                    sh """    
-                    curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" -H "Content-Type: application/json" \    
-                    -d '${payload}' "https://api.github.com/repos/${GITHUB_REPO}/hooks"    
-                    """                }    
-            }    
-        }    
-    
-    
-    
-        stage('Static Analysis') {    
-            steps {    
-                echo 'Starting static analysis...'    
-                script {    
-                    try {    
-                        sh 'mvn clean verify'    
-                                sh """    
-                                    docker run --rm \                            --platform linux/amd64 \                                    --network ${env.DOCKER_NETWORK} \                                    -v \$(pwd):/usr/src \    
-                                    -w /usr/src \                                    sonarsource/sonar-scanner-cli \                                    sonar-scanner \                                    -Dsonar.projectKey=spring-petclinic \                                    -Dsonar.sources=. \                                    -Dsonar.java.binaries=target/classes \                                    -Dsonar.host.url=${env.SONARQUBE_URL} \                                    -Dsonar.login=${env.SONARQUBE_LOGIN}    
-                                """    
-                        echo 'Static analysis completed successfully.'    
-                    } catch (Exception e) {    
-                        echo "Error during static analysis: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                }    
-                echo 'Static analysis stage completed.'    
-            }    
-        }    
-    
-        stage('Run Test Instance') {    
-            steps {    
-                script {    
-                    sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &'    
-                        sleep 10    
-                }    
-            }    
-        }    
-    
-        stage('Prepare ZAP Analysis using socket') {    
-            steps {    
-                script {    
-                    try {    
-                def serviceAccessible = false    
-                for (int i = 0; i < 5; i++) {    
-                    try {    
-                        sh "curl -s -o /dev/null -w '%{http_code}' http://192.168.1.2:8082"    
-                        serviceAccessible = true    
-                        break    
-                    } catch (Exception e) {    
-                        echo "Service not accessible yet, retrying in 30 seconds..."    
-                        sleep(5)    
-                    }    
-                }    
-    
-                if (!serviceAccessible) {    
-                    error("Service not accessible at http://192.168.1.2:8082")    
-                }    
-    
-                echo "ZAP_CONTAINER_NAME: ${env.ZAP_CONTAINER_NAME}"    
-                echo "DEPLOYMENT_URL: ${env.DEPLOYMENT_URL}"    
-    
-                sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk"                sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py -t ${env.DEPLOYMENT_URL} -r zap-report.html -I"                    } catch (Exception e) {    
-                        echo "Error during preparing ZAP Analysis Script: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                try {    
-                    sh "docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html"    
-                } catch (Exception e) {    
-                    echo "Error during copying ZAP report: ${e}"    
-                    currentBuild.result = 'FAILURE'    
-                }    
-                }    
-            }    
-        }    
-    
-    
-    
-        stage('Verify AWS account, open necessary ports 443 and 8080 and look for existing EC2 instances') {    
-            steps {    
-                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {    
-                    script {    
-                        try {    
-                            sh 'aws sts get-caller-identity'    
-                        } catch (Exception e) {    
-                            echo "Error verifying AWS account: ${e}"    
-                            currentBuild.result = 'FAILURE'    
-                        }    
-                    try {    
-                            def port443Exists = sh(script: """    
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text                            """, returnStdout: true).trim()    
-    
-                            def port8080Exists = sh(script: """    
-                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`8080` && ToPort==`8080` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text                            """, returnStdout: true).trim()    
-    
-                            if (!port443Exists) {    
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 443 --cidr 0.0.0.0/0"                            } else {    
-                                echo "Port 443 rule already exists"    
-                            }    
-    
-                            if (!port8080Exists) {    
-                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 8080 --cidr 0.0.0.0/0"                            } else {    
-                                echo "Port 8080 rule already exists"    
-                            }    
-                    } catch (Exception e) {    
-                    echo "Error opening ports 443, and 8080: ${e.getMessage()}"    
-                    currentBuild.result = 'FAILURE'    
-                    throw e    
-                    }    
-    
-                    try {    
-                        def existingInstances = sh(script: """    
-                            aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress]" --output text                        """, returnStdout: true).trim()    
-    
-                        if (existingInstances) {    
-                            def instanceDetails = existingInstances.split()    
-                            env.INSTANCE_ID = instanceDetails[0]    
-                            env.INSTANCE_IP = instanceDetails[1]    
-                            echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"    
-                        } else {    
-                            env.INSTANCE_ID = ''    
-                            env.INSTANCE_IP = ''    
-                            echo "No existing running EC2 instances found. Proceeding to create a new instance."    
-                        }    
-                    } catch (Exception e) {    
-                        echo "Error checking for existing EC2 instances: ${e.getMessage()}"    
-                        currentBuild.result = 'FAILURE'    
-                        throw e    
-                    }    
-                    }    
-                }    
-            }    
-        }    
-    
-    
-    
-        stage('Create EC2 Instance if none exist') {    
-            when {    
-        expression { !env.INSTANCE_ID || env.INSTANCE_ID.trim() == "" }    
-            }    
-            steps {    
-                withAWS(credentials: 'aws-credentials') {    
-                    script {    
-                        try {    
-                            env.INSTANCE_ID = sh(script: """    
-                                aws ec2 run-instances --image-id ${AMI_ID} --count 1 --instance-type ${INSTANCE_TYPE} --key-name ${KEY_NAME} --security-group-ids ${SECURITY_GROUP_ID} --subnet-id ${SUBNET_ID} --region ${AWS_REGION} --query 'Instances[0].InstanceId' --output text                            """, returnStdout: true).trim()    
-                            echo "EC2 Instance ID: ${env.INSTANCE_ID}"    
-                        } catch (Exception e) {    
-                            echo "Error creating EC2 instance: ${e.getMessage()}"    
-                            currentBuild.result = 'FAILURE'    
-                            throw e    
-                        }    
-                    }    
-                }    
-            }    
-        }    
-    
-    
-        stage('Wait for EC2 Instance to be Running') {    
-            steps {    
-                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {    
-                    script {    
-                        def retries = 5    
-                        def waitTime = 60    
-    
-                        for (int i = 0; i < retries; i++) {    
-                        try {    
-                                sh "aws ec2 wait instance-running --instance-ids ${env.INSTANCE_ID} --region ${AWS_REGION}"    
-                                break    
-                            } catch (Exception e) {    
-                                echo "Attempt ${i + 1} failed: ${e.getMessage()}"    
-                                if (i == retries - 1) {    
-                                    echo "Max attempts reached. Exiting..."    
-                                    currentBuild.result = 'FAILURE'    
-                                    throw e    
-                                }    
-                                echo "Waiting ${waitTime} seconds before retrying..."                                sleep(waitTime)    
-                            }    
-                        }    
-    
-                try {    
-                        env.INSTANCE_IP = sh(script: """    
-                                aws ec2 describe-instances --instance-ids ${env.INSTANCE_ID} --region ${AWS_REGION} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text                        """, returnStdout: true).trim()    
-    
-                        echo "EC2 Instance IP: ${env.INSTANCE_IP}"    
-                        } catch (Exception e) {    
-                            echo "Error getting EC2 instance IP: ${e.getMessage()}"    
-                            currentBuild.result = 'FAILURE'    
-                            throw e    
-                        }    
-                    }    
-                }    
-            }    
-        }    
-    
-    
-        stage('Update Inventory') {    
-            steps {    
-                script {    
-                    sh 'chmod 600 ${LOCAL_SSH_KEY_PATH}'    
-                    sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'    
-                    try {    
-                    writeFile file: 'inventory.ini', text: """    
-                            [new_ec2]                            ${env.INSTANCE_IP} ansible_ssh_user=${SSH_USER} ansible_ssh_private_key_file=${LOCAL_SSH_KEY_PATH}    
-                    """    
-                    } catch (Exception e) {    
-                        echo "Error updating inventory: ${e.getMessage()}"    
-                        currentBuild.result = 'FAILURE'    
-                        throw e    
-                    }    
-                }    
-            }    
-        }    
-    
-        stage('Deploy to EC2 using Ansible') {    
-            steps {    
-                withAWS(credentials: 'aws-credentials') {    
-                script {    
-                    try {    
-                            writeFile file: 'ansible.cfg', text: """    
-                                [defaults]                                host_key_checking = False                            """    
-                            def keyExists = sh(script: """    
-                                ssh -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5 -i ${LOCAL_SSH_KEY_PATH} ${SSH_USER}@${env.INSTANCE_IP} "echo 'Key exists'"                            """, returnStatus: true) == 0    
-    
-                            if (keyExists) {    
-                                echo "SSH key already exists in AWS."    
-                            } else {    
-                                echo "Deleting existing key from AWS if it exists."    
-                                sh """    
-                                    aws ec2 delete-key-pair --key-name ${KEY_NAME} --region ${AWS_REGION} || true                                """    
-                                echo "Importing SSH key to AWS."    
-                                sh """    
-                                    aws ec2 import-key-pair --key-name ${KEY_NAME} --public-key-material fileb://${LOCAL_SSH_KEY_PATH}.pub --region ${AWS_REGION}    
-                                """    
-                            }    
-    
-                    sh """    
-                        ansible-playbook -i inventory.ini ${WORKSPACE}/deploy-petclinic.yml \    
-                        -e ami_id=${AMI_ID} \                        -e instance_type=${INSTANCE_TYPE} \                        -e key_name=${KEY_NAME} \                        -e security_group_id=${SECURITY_GROUP_ID} \                        -e subnet_id=${SUBNET_ID} \                        -e region=${AWS_REGION} \                        -e jar_file=${WORKSPACE}/${JAR_FILE} \                        -e ssh_key_path=${LOCAL_SSH_KEY_PATH} \                        -e instance_id=${env.INSTANCE_ID} \                        -e instance_ip=${env.INSTANCE_IP}    
-                    """    
-                    } catch (Exception e) {    
-                        echo "Error deploying to EC2 using Ansible: ${e.getMessage()}"    
-                        currentBuild.result = 'FAILURE'    
-                        throw e    
-                    }    
-                    }    
-                }    
-            }    
-        }    
-    
-        stage('Import Grafana Dashboard') {    
-    
-            steps {    
-                    withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {    
-                        sh """    
-                            apt-get update && apt-get install -y jq                            curl -s -X POST ${GRAFANA_URL}/api/auth/keys \    
-                            -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \                            -H "Content-Type: application/json" \                            -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt                        """                        script {    
-                            env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()    
-                            if (!env.GRAFANA_API_KEY) {    
-                            error 'Failed to generate Grafana API Key.'    
-                        }    
-                    }    
-                    }    
-                script {    
-                    try {    
-                        echo 'Importing Grafana dashboard...'    
-                        def dashboard = readFile('/opt/grafana/dashboards/dashboard.json')    
-                        sh """    
-                            curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${GRAFANA_API_KEY}" -d '${dashboard}' ${GRAFANA_URL}/api/dashboards/db    
-                        """                        echo 'Grafana dashboard imported successfully.'    
-                    } catch (Exception e) {    
-                        echo "Error importing Grafana dashboard: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                }    
-            }    
-        }    
-    
-    
-        stage('Verify Prometheus and Grafana') {    
-            steps {    
-                script {    
-                    try {    
-                        echo 'Verifying Prometheus and Grafana...'    
-    
-                        // Check if Prometheus is running and scraping Jenkins metrics    
-                        def prometheusStatus = sh(script: "curl -s ${PROMETHEUS_URL}/api/v1/targets | jq -r .data.activeTargets[].health", returnStdout: true).trim()    
-                        echo "Prometheus targets health: ${prometheusStatus}"    
-                        if (prometheusStatus.contains('"down"')) {    
-                            error "Prometheus is not scraping targets correctly."    
-                        }    
-    
-                        // Check if Grafana is up and can serve the dashboard    
-                        def grafanaStatus = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${GRAFANA_URL}/api/health", returnStdout: true).trim()    
-                        echo "Grafana status: ${grafanaStatus}"    
-                        if (grafanaStatus != '200') {    
-                            error "Grafana is not running correctly."    
-                        }    
-    
-                        echo 'Prometheus and Grafana verified successfully.'    
-                    } catch (Exception e) {    
-                        echo "Error verifying Prometheus and Grafana: ${e}"    
-                        currentBuild.result = 'FAILURE'    
-                    }    
-                }    
-            }    
-        }    
-    }    
-    
-    post {    
-        always {    
-            echo 'Pipeline execution completed.'    
-        }    
-        success {    
-            echo 'Pipeline completed successfully.'    
-            archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: true    
-    }    
-        failure {    
-            echo 'Pipeline failed.'    
-        }    
-}  }   
+   pipeline {
+    agent any
+
+    environment {
+        PROJECT_NAME = 'devops-finalproject-team4'
+        DOCKER_NETWORK = ''
+        JENKINS_URL = '10.120.64.242:8080'
+        ZAP_CONTAINER_NAME = 'owasp-zap'
+        ZAP_URL = 'http://192.168.1.6:8081'
+        SONARQUBE_URL = 'http://192.168.1.3:9000'
+        GRAFANA_URL = 'http://192.168.1.5:3000'
+        GRAFANA_DASHBOARD_URL = 'http://localhost:3000/d/haryan-jenkins/jenkins-performance-and-health-overview?orgId=1'
+        SONARQUBE_DASHBOARD_URL = "${SONARQUBE_URL}/dashboard?id=spring-petclinic"
+        DEPLOYMENT_URL = 'http://192.168.1.2:8082'
+        SSH_USER = 'ubuntu'
+        AWS_REGION = 'us-east-1'
+        AMI_ID = 'ami-039a6f82dd07a541e'
+        INSTANCE_TYPE = 't2.micro'
+        KEY_NAME = 'petclinic_key_pair'
+        SECURITY_GROUP_ID = 'sg-0fba393f98de9bcbe'
+        SUBNET_ID ='subnet-0d2f18bee0a9a0ca1'
+        LOCAL_SSH_KEY_PATH = '/root/.ssh/petclinic_key_pair.pem'
+        JAR_FILE = '/target/spring-petclinic-3.3.0-SNAPSHOT.jar'
+        GITHUB_REPO = "akashcha/spring-petclinic"
+        WEBHOOK_URL = "http://${JENKINS_URL}/github-webhook/"
+        PROMETHEUS_URL = 'http://192.168.1.4:9090'
+    }
+
+    triggers {
+        pollSCM('* * * * *')
+    }
+
+    stages {
+
+        stage('Initialize') {
+            steps {
+                script {
+                    // Set the Docker network name based on the project name  
+                    DOCKER_NETWORK = "${params.PROJECT_NAME ?: PROJECT_NAME}_dev-network"
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    try {
+                        sh 'rm -f ${WORKSPACE}/zap-report.html'
+                        sh 'find ${WORKSPACE} -name "report-task.txt" -delete'
+                        sh 'find ${WORKSPACE} -name "sonarqube-report.html" -delete'
+                    } catch (Exception e) {
+                        echo "Error during cleanup: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+        stage('Setup Docker Network') {
+            steps {
+                script {
+                    try {
+                        echo "Setting up Docker network: ${DOCKER_NETWORK}"
+                        def networkExists = sh(script: "docker network ls --filter name=${DOCKER_NETWORK} -q", returnStdout: true).trim()
+                        if (networkExists) {
+                            echo "Docker network ${DOCKER_NETWORK} already exists."
+                        } else {
+                            sh "docker network create ${DOCKER_NETWORK}"
+                            echo "Docker network ${DOCKER_NETWORK} created."
+                        }
+                    } catch (Exception e) {
+                        echo "Error setting up Docker network: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+
+        stage('Checkout') {
+            steps {
+                echo 'Checking out the repository...'
+                git branch: 'main', url: 'https://github.com/akashcha/spring-petclinic.git'
+                echo 'Repository checked out successfully.'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh 'mvn clean package -Dmaven.test.skip=true'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    try {
+                        sh 'mvn test'
+                    } catch (Exception e) {
+                        echo "Error during testing: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+
+        stage('Create GitHub Webhook') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                        def payload = """  
+                    {  
+                      "name": "web",  
+                      "active": true,  
+                      "events": ["push", "pull_request"],  
+                      "config": {  
+                        "url": "${WEBHOOK_URL}",  
+                        "content_type": "json",  
+                        "insecure_ssl": "0"  
+                      }  
+                    }  
+                    """
+                        sh """#!/bin/bash  
+                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \  
+                        -d '$payload' "https://api.github.com/repos/${GITHUB_REPO}/hooks"  
+                    """                }
+                }
+            }
+        }
+
+        stage('Run Test Instance') {
+            steps {
+                script {
+                    try{
+                        sh 'nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 &'
+                        sleep 10
+                    } catch (Exception e) {
+                        echo "Error during Static Analysis: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+        stage('Prepare ZAP Analysis using socket') {
+            steps {
+                script {
+                    try {
+                        def serviceAccessible = false
+                        for (int i = 0; i < 5; i++) {
+                            try {
+                                sh "curl -s -o /dev/null -w '%{http_code}' http://192.168.1.2:8082"
+                                serviceAccessible = true
+                                break
+                            } catch (Exception e) {
+                                echo "Service not accessible yet, retrying in 30 seconds..."
+                                sleep(5)
+                            }
+                        }
+
+                        if (!serviceAccessible) {
+                            error("Service not accessible at http://192.168.1.2:8082")
+                        }
+
+                        echo "ZAP_CONTAINER_NAME: ${env.ZAP_CONTAINER_NAME}"
+                        echo "DEPLOYMENT_URL: ${env.DEPLOYMENT_URL}"
+
+                        sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} mkdir -p /zap/wrk"
+                        sh "docker exec --privileged --user root ${env.ZAP_CONTAINER_NAME} zap-baseline.py -t ${env.DEPLOYMENT_URL} -r zap-report.html -I"
+                    } catch (Exception e) {
+                        echo "Error during preparing ZAP Analysis Script: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                    try {
+                        sh "docker cp ${env.ZAP_CONTAINER_NAME}:/zap/wrk/zap-report.html ${env.WORKSPACE}/zap-report.html"
+                    } catch (Exception e) {
+                        echo "Error during copying ZAP report: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+        stage('Static Analysis') {
+            steps {
+                script {
+                    try{
+                        def sonarScannerImage = docker.image('sonarsource/sonar-scanner-cli')
+                        sonarScannerImage.pull()
+
+                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
+                            sonarScannerImage.inside("--network=${DOCKER_NETWORK}") {
+                                sh """  
+                            apt-get update && apt-get install -y curl  
+                            sonar-scanner -e \  
+                                -Dsonar.host.url=${SONARQUBE_URL} \  
+                                -Dsonar.token=${SONARQUBE_TOKEN} \  
+                                    -Dsonar.projectKey=spring-petclinic \  
+                                    -Dsonar.sources=. \  
+                                    -Dsonar.exclusions=**/excluded-directory/**,**/*.tmp,**/regex-pattern-*.log \  
+                                -Dsonar.java.binaries=target/classes  
+                                """
+                                sh "cp .scannerwork/report-task.txt ${WORKSPACE}/report-task.txt"
+                            }
+                        }
+                    } catch (Exception e) {
+                        echo "Error during Static Analysis: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        stage('Verify AWS account, open necessary ports 443 and 8080 and look for existing EC2 instances') {
+            steps {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
+                    script {
+                        try {
+                            sh 'aws sts get-caller-identity'
+                        } catch (Exception e) {
+                            echo "Error verifying AWS account: ${e}"
+                            currentBuild.result = 'FAILURE'
+                        }
+                        try {
+                            def port443Exists = sh(script: """  
+                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`443` && ToPort==`443` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text  
+                            """, returnStdout: true).trim()
+
+                            def port8080Exists = sh(script: """  
+                                aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --query 'SecurityGroups[*].IpPermissions[?FromPort==`8080` && ToPort==`8080` && IpProtocol==`tcp` && IpRanges[?CidrIp==`0.0.0.0/0`]]' --output text  
+                            """, returnStdout: true).trim()
+
+                            if (!port443Exists) {
+                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 443 --cidr 0.0.0.0/0"
+                            } else {
+                                echo "Port 443 rule already exists"
+                            }
+
+                            if (!port8080Exists) {
+                                sh "aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 8080 --cidr 0.0.0.0/0"
+                            } else {
+                                echo "Port 8080 rule already exists"
+                            }
+                        } catch (Exception e) {
+                            echo "Error opening ports 443, and 8080: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+
+                        try {
+                            def existingInstances = sh(script: """  
+                            aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress]" --output text  
+                        """, returnStdout: true).trim()
+
+                            if (existingInstances) {
+                                def instanceDetails = existingInstances.split()
+                                env.INSTANCE_ID = instanceDetails[0]
+                                env.INSTANCE_IP = instanceDetails[1]
+                                echo "Using existing EC2 Instance ID: ${env.INSTANCE_ID} with IP: ${env.INSTANCE_IP}"
+                            } else {
+                                env.INSTANCE_ID = ''
+                                env.INSTANCE_IP = ''
+                                echo "No existing running EC2 instances found. Proceeding to create a new instance."
+                            }
+                        } catch (Exception e) {
+                            echo "Error checking for existing EC2 instances: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        stage('Create EC2 Instance if none exist') {
+            when {
+                expression { !env.INSTANCE_ID || env.INSTANCE_ID.trim() == "" }
+            }
+            steps {
+                withAWS(credentials: 'aws-credentials') {
+                    script {
+                        try {
+                            env.INSTANCE_ID = sh(script: """  
+                                aws ec2 run-instances --image-id ${AMI_ID} --count 1 --instance-type ${INSTANCE_TYPE} --key-name ${KEY_NAME} --security-group-ids ${SECURITY_GROUP_ID} --subnet-id ${SUBNET_ID} --region ${AWS_REGION} --query 'Instances[0].InstanceId' --output text  
+                            """, returnStdout: true).trim()
+                            echo "EC2 Instance ID: ${env.INSTANCE_ID}"
+                        } catch (Exception e) {
+                            echo "Error creating EC2 instance: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage('Wait for EC2 Instance to be Running') {
+            steps {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
+                    script {
+                        def retries = 5
+                        def waitTime = 60
+
+                        for (int i = 0; i < retries; i++) {
+                            try {
+                                sh "aws ec2 wait instance-running --instance-ids ${env.INSTANCE_ID} --region ${AWS_REGION}"
+                                break
+                            } catch (Exception e) {
+                                echo "Attempt ${i + 1} failed: ${e.getMessage()}"
+                                if (i == retries - 1) {
+                                    echo "Max attempts reached. Exiting..."
+                                    currentBuild.result = 'FAILURE'
+                                    throw e
+                                }
+                                echo "Waiting ${waitTime} seconds before retrying..."
+                                sleep(waitTime)
+                            }
+                        }
+
+                        try {
+                            env.INSTANCE_IP = sh(script: """  
+                                aws ec2 describe-instances --instance-ids ${env.INSTANCE_ID} --region ${AWS_REGION} --query 'Reservations[0].Instances[0].PublicIpAddress' --output text  
+                        """, returnStdout: true).trim()
+
+                            echo "EC2 Instance IP: ${env.INSTANCE_IP}"
+                        } catch (Exception e) {
+                            echo "Error getting EC2 instance IP: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage('Update Inventory') {
+            steps {
+                script {
+                    sh 'chmod 600 ${LOCAL_SSH_KEY_PATH}'
+                    sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'
+                    try {
+                        writeFile file: 'inventory.ini', text: """  
+                            [new_ec2]  
+                            ${env.INSTANCE_IP} ansible_ssh_user=${SSH_USER} ansible_ssh_private_key_file=${LOCAL_SSH_KEY_PATH}  
+                    """
+                    } catch (Exception e) {
+                        echo "Error updating inventory: ${e.getMessage()}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to EC2 using Ansible') {
+            steps {
+                withAWS(credentials: 'aws-credentials') {
+                    script {
+                        try {
+                            writeFile file: 'ansible.cfg', text: """  
+                                [defaults]  
+                                host_key_checking = False  
+                            """
+
+                            def keyExists = sh(script: """  
+                                ssh -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5 -i ${LOCAL_SSH_KEY_PATH} ${SSH_USER}@${env.INSTANCE_IP} "echo 'Key exists'"  
+                            """, returnStatus: true) == 0
+                            if (keyExists) {
+                                echo "SSH key already exists in AWS."
+                            } else {
+                                echo "Deleting existing key from AWS if it exists."
+                                sh """  
+                                    aws ec2 delete-key-pair --key-name ${KEY_NAME} --region ${AWS_REGION} || true  
+                                """
+
+                                echo "Importing SSH key to AWS."
+                                sh """  
+                                    aws ec2 import-key-pair --key-name ${KEY_NAME} --public-key-material fileb://${LOCAL_SSH_KEY_PATH}.pub --region ${AWS_REGION}  
+                                """
+                            }
+
+                            sh """  
+                        ansible-playbook -i inventory.ini ${WORKSPACE}/deploy-petclinic.yml \  
+                        -e ami_id=${AMI_ID} \  
+                        -e instance_type=${INSTANCE_TYPE} \  
+                        -e key_name=${KEY_NAME} \  
+                        -e security_group_id=${SECURITY_GROUP_ID} \  
+                        -e subnet_id=${SUBNET_ID} \  
+                        -e region=${AWS_REGION} \  
+                        -e jar_file=${WORKSPACE}/${JAR_FILE} \  
+                        -e ssh_key_path=${LOCAL_SSH_KEY_PATH} \  
+                        -e instance_id=${env.INSTANCE_ID} \  
+                        -e instance_ip=${env.INSTANCE_IP}  
+                    """
+                        } catch (Exception e) {
+                            echo "Error deploying to EC2 using Ansible: ${e.getMessage()}"
+                            currentBuild.result = 'FAILURE'
+                            throw e
+                        }
+                    }
+                }
+            }
+        }
+
+
+        stage('Verify Prometheus and Grafana') {
+            steps {
+                script {
+                    try {
+                        echo 'Verifying Prometheus and Grafana...'
+
+                        // Check if Prometheus is running and scraping Jenkins metrics  
+                        def prometheusStatus = sh(script: "curl -s ${PROMETHEUS_URL}/api/v1/targets | jq -r .data.activeTargets[].health", returnStdout: true).trim()
+                        echo "Prometheus targets health: ${prometheusStatus}"
+                        if (prometheusStatus.contains('"down"')) {
+                            error "Prometheus is not scraping targets correctly."
+                        }
+
+                        // Check if Grafana is up and can serve the dashboard  
+                        def grafanaStatus = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${GRAFANA_URL}/api/health", returnStdout: true).trim()
+                        echo "Grafana status: ${grafanaStatus}"
+                        if (grafanaStatus != '200') {
+                            error "Grafana is not running correctly."
+                        }
+
+                        echo 'Prometheus and Grafana verified successfully.'
+                    } catch (Exception e) {
+                        echo "Error verifying Prometheus and Grafana: ${e}"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            }
+        }
+
+        stage('Publish Reports') {
+            steps {
+                script {
+                    publishHTML(target: [
+                            reportName: 'ZAP Report',
+                            reportDir: '.',
+                            reportFiles: 'zap-report.html',
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            allowMissing: true
+                    ])
+                }
+                script {
+                    writeFile file: 'sonarqube-report.html', text: """  
+                    <html>  
+                            <head>  
+                            <meta http-equiv="refresh" content="0; url=${SONARQUBE_DASHBOARD_URL}" />  
+                            </head>  
+                    <body>  
+                            <p>If you are not redirected automatically, follow the <a href="${SONARQUBE_DASHBOARD_URL}">SonarQube Dashboard</a>.</p>  
+                    </body>  
+                    </html>  
+                    """
+                    publishHTML(target: [
+                            reportName: 'SonarQube Report',
+                            reportDir: '.',
+                            reportFiles: 'sonarqube-report.html',
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            allowMissing: true
+                    ])
+                }
+                script {
+                    writeFile file: 'grafana-report.html', text: """  
+            <html>  
+                <head>  
+                    <meta http-equiv="refresh" content="0; url=${GRAFANA_DASHBOARD_URL}" />  
+                </head>  
+                <body>  
+                    <p>If you are not redirected automatically, follow the <a href="${GRAFANA_DASHBOARD_URL}">Grafana Dashboard</a>.</p>  
+                </body>  
+            </html>  
+            """
+                    publishHTML(target: [
+                            reportName: 'Grafana Report',
+                            reportDir: '.',
+                            reportFiles: 'grafana-report.html',
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            allowMissing: true
+                    ])
+                }
+            }
+        }
+
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+} 
 ```  
 
 ## Step 5: Configure Prometheus and Grafana
 
-1. **Prometheus Configuration**
+### **Prometheus Configuration**
 
-    - Update the `prometheus.yml` file to scrape metrics from Jenkins:
+- Update the `prometheus.yml` file to scrape metrics from Jenkins:
 
 ```yaml  
-   global:scrape_interval: 15s   scrape_configs:     - job_name: 'jenkins'       static_configs:         - targets: ['jenkins:8080']    
+   global:
+   scrape_interval: 15s
+
+   scrape_configs:
+     - job_name: 'jenkins'
+       metrics_path: /prometheus
+       scheme: http
+       static_configs:
+         - targets: ['192.168.1.2:8080']
+
+     - job_name: 'prometheus'
+       static_configs:
+         - targets: ['192.168.1.4:9090']  
 ```  
 
-2. **Grafana Configuration**
+Explanation:
 
-    - Log in to Grafana and create dashboards to visualize Jenkins metrics.
+This Prometheus configuration file sets up the global scrape interval and defines specific scrape jobs to collect metrics from Jenkins and Prometheus instances. Here’s a detailed explanation of each section:
 
-## Step 6: Set Up AWS EC2 Instance
-
-Here's a detailed guide to launching an EC2 instance using the AWS Management Console:
-
-### Step 1: Log in to the AWS Management Console
-
-1. Open a web browser and navigate to the [AWS Management Console](https://aws.amazon.com/console/).
-2. Sign in with your AWS account credentials.
-
-### Step 2: Navigate to the EC2 Dashboard
-
-1. From the AWS Management Console, click on **Services** in the top-left corner.
-2. Under the **Compute** category, select **EC2**.
-
-### Step 3: Launch an Instance
-
-1. On the EC2 Dashboard, click the **Launch Instance** button.
-
-### Step 4: Choose an Amazon Machine Image (AMI)
-
-1. Select an AMI based on your requirements. For this guide, we'll use **Ubuntu Server 20.04 LTS**.
-    - You can find this AMI by searching for "Ubuntu Server 20.04 LTS" in the **Quick Start** tab.
-2. Click the **Select** button next to your chosen AMI.
-
-### Step 5: Choose an Instance Type
-
-1. Select an instance type based on your needs. For most purposes, the **t2.micro** instance type is sufficient and falls under the Free Tier eligibility.
-2. Click the **Next: Configure Instance Details** button.
-
-### Step 6: Configure Instance Details
-
-1. **Number of instances:** Keep it as 1.
-2. **Network:** Select the VPC you want to launch your instance in. If you don't have a VPC, the default VPC will be selected.
-3. **Subnet:** Choose a subnet within your VPC. Ensure that the subnet has auto-assign public IP enabled, or select **Enable** under the **Auto-assign Public IP** dropdown.
-4. **Auto-assign Public IP:** Ensure that this is set to **Enable** if it is not already enabled.
-5. **IAM role:** If you have an IAM role you want to attach to this instance, select it here. Otherwise, you can leave it as **None**.
-6. Leave all other settings as default unless you have specific requirements.
-7. Click the **Next: Add Storage** button.
-
-### Step 7: Add Storage
-
-1. The default storage configuration should suffice, but you can adjust the storage size and type if necessary.
-    - For example, you might want to increase the storage size from the default 8 GB to 20 GB.
-2. Click the **Next: Add Tags** button.
-
-### Step 8: Add Tags
-
-1. (Optional) Add tags to help identify your instance. Tags are key-value pairs.
-    - For example, you could add a tag with **Key:** `Name` and **Value:** `MyFirstEC2Instance`.
-2. Click the **Next: Configure Security Group** button.
-
-### Step 9: Configure Security Group
-
-1. **Security group name:** Provide a name for your security group, such as `MyEC2SecurityGroup`.
-2. **Description:** Provide a description, such as `Security group for my EC2 instance`.
-3. **Inbound rules:**
-    - Add a rule to allow SSH traffic:
-        - **Type:** SSH
-        - **Protocol:** TCP
-        - **Port Range:** 22
-        - **Source:** `My IP` (this will auto-fill your current IP address) or `Anywhere` if you want to allow SSH from any IP address.
-    - Add a rule to allow HTTP traffic for your application:
-        - **Type:** Custom TCP
-        - **Protocol:** TCP
-        - **Port Range:** 8082
-        - **Source:** `Anywhere`
-4. Click the **Review and Launch** button.
-
-### Step 10: Review and Launch
-
-1. Review your instance configuration.
-2. Click the **Launch** button.
-
-### Step 11: Select an Existing Key Pair or Create a New Key Pair
-
-1. In the **Select an existing key pair or create a new key pair** dialog box, choose **Create a new key pair**.
-2. Provide a name for the key pair, such as `my-ec2-key`.
-3. Click the **Download Key Pair** button to download the `.pem` file (e.g., `my-ec2-key.pem`). **Note:** Keep this file secure as it is required to SSH into your instance.
-4. Click the **Launch Instances** button.
-
-### Step 12: View Your Instances
-
-1. Click the **View Instances** button to return to the EC2 Dashboard.
-2. Your new instance will be listed. Initially, the instance state will be **Pending**. Wait for the instance state to change to **Running**.
-
-### Step 13: SSH into Your EC2 Instance
-
-1. Open a terminal on your local machine.
-2. Navigate to the directory where your key pair file (`my-ec2-key.pem`) is stored.
-3. Change the permissions of the key pair file to ensure it's not publicly viewable:
-
-```sh  
-   chmod 400 my-ec2-key.pem     
-```  
-
-4. Connect to your EC2 instance using SSH:
-
-```sh  
-   ssh -i "my-ec2-key.pem" ubuntu@your-ec2-public-ip     
-```  
-
-- Replace `your-ec2-public-ip` with the Public IP address of your EC2 instance.
-
-By following these steps, you will have successfully launched an EC2 instance, configured it with necessary security groups, and connected to it via SSH.
-
-## Step 7: Configure Ansible for Deployment
-
-1. **Create Ansible Inventory File**
-
-    - Create an `inventory.ini` file for Ansible:
-
-```ini  
-   [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem
+- Global Configuration
+```yaml
+global:
+  scrape_interval: 15s
 ```
-2. **Create Ansible Playbook**
-    
-   - Create an `ansible/deploy-petclinic.yml` file:    
-    
-```yaml    
-   ---   - name: Deploy Spring PetClinic Application     hosts: new_ec2     become: yes     vars:       jar_file: "/home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar"     tasks:       - name: Update the package list         apt:           update_cache: yes    
-       - name: Install OpenJDK 17         apt:           name: openjdk-17-jdk           state: present    
-       - name: Copy the Spring PetClinic JAR file to the EC2 instance         copy:           src: "{{ jar_file }}"           dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar           mode: '0755'           owner: ubuntu           group: ubuntu    
-       - name: Run the Spring PetClinic application         shell: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"         args:           chdir: /home/ubuntu         register: run_result    
-       - name: Debug - Check if the application is running         shell: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"         register: ps_result    
-       - debug:           msg: "Run Result: {{ run_result }}"    
-       - debug:           msg: "Process Status: {{ ps_result }}"    
-   - name: Create and Configure EC2 Instance     hosts: localhost     tasks:       - name: Create a new EC2 instance         command: >           aws ec2 run-instances           --image-id {{ ami_id }}           --count 1           --instance-type {{ instance_type }}           --key-name {{ key_name }}           --security-group-ids {{ security_group_id }}           --subnet-id {{ subnet_id }}           --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-ec2-instance}]'           --region {{ region }}           --query 'Instances[0].InstanceId'           --output text         register: ec2_instance    
-       - name: Wait for the EC2 instance to be running         command: >           aws ec2 wait instance-running           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}    
-       - name: Get the public IP of the new EC2 instance         command: >           aws ec2 describe-instances           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}           --query 'Reservations[0].Instances[0].PublicIpAddress'           --output text         register: ec2_ip    
-       - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost     
+- **scrape_interval: 15s**: This sets the default time interval between each scrape of targets (i.e., how frequently Prometheus will collect metrics) to 15 seconds.
+
+- Scrape Configurations
+  This section defines the individual jobs for scraping metrics from different targets.
+
+- Job: Jenkins
+```yaml
+scrape_configs:
+  - job_name: 'jenkins'
+    metrics_path: /prometheus
+    scheme: http
+    static_configs:
+      - targets: ['192.168.1.2:8080']
+```
+- **job_name: 'jenkins'**: This names the scrape job as "jenkins".
+- **metrics_path: /prometheus**: This specifies the path on the target where metrics are exposed. For Jenkins, it’s often `/prometheus` if the Prometheus plugin is used.
+- **scheme: http**: This defines the protocol to be used for scraping metrics. Here, it's HTTP.
+- **static_configs**: This specifies the static configuration for the targets.
+    - **targets: ['192.168.1.2:8080']**: This is the list of targets to be scraped. In this case, it's the Jenkins server running on `192.168.1.2` at port `8080`.
+
+- Job: Prometheus
+```yaml
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['192.168.1.4:9090']
+```
+- **job_name: 'prometheus'**: This names the scrape job as "prometheus".
+- **static_configs**: This specifies the static configuration for the targets.
+    - **targets: ['192.168.1.4:9090']**: This is the list of targets to be scraped. In this case, it's the Prometheus server itself running on `192.168.1.4` at port `9090`.
+
+
+### **Grafana Configuration**
+
+- ### Grafana Configuration Files Explanation
+
+1. `datasources.yml`
+   This file defines the data sources for Grafana.
+
+```yaml
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://192.168.1.4:9090
+    isDefault: true
+    editable: true
 ```
 
-## Step 8: Run Ansible Playbook
+- **apiVersion**: Specifies the version of the Grafana data source provisioning format.
+- **datasources**: Lists the data sources to be configured in Grafana.
+    - **name**: The name of the data source. Here, it is "Prometheus".
+    - **type**: The type of data source, which is "prometheus".
+    - **access**: Defines how Grafana will access the data source. "proxy" means Grafana will act as a proxy.
+    - **url**: The URL where the Prometheus data source is accessible.
+    - **isDefault**: Indicates if this data source should be the default one. It is set to `true`.
+    - **editable**: If `true`, allows editing the data source settings via the Grafana UI.
 
-1. **Execute the Playbook from Jenkins**
+2. `dashboards.yml`
+   This file defines the dashboard providers for Grafana.
 
-    - Add the following stages to the `Jenkinsfile` to run the Ansible playbook:
+```yaml
+apiVersion: 1
 
-```groovy  
-             stage('Copy Ansible Playbook') {               steps {                   script {                       sh 'cp /opt/ansible/deploy-petclinic.yml ${WORKSPACE}/deploy-petclinic.yml'                   }               }           }    
-           stage('Update Inventory') {               steps {                   script {                       try {                       writeFile file: 'inventory.ini', text: """                               [new_ec2]                               ${env.INSTANCE_IP} ansible_ssh_user=${SSH_USER} ansible_ssh_private_key_file=${LOCAL_SSH_KEY_PATH}                       """                       } catch (Exception e) {                           echo "Error updating inventory: ${e.getMessage()}"                           currentBuild.result = 'FAILURE'                           throw e                       }                   }               }           }    
-           stage('Deploy to EC2 using Ansible') {               steps {                   withAWS(credentials: 'aws-credentials') {                   script {                       try {                               writeFile file: 'ansible.cfg', text: """                                   [defaults]                                   host_key_checking = False                               """    
-                               def keyExists = sh(script: """                                   ssh -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=5 -i ${LOCAL_SSH_KEY_PATH} ${SSH_USER}@${env.INSTANCE_IP} "echo 'Key exists'"                               """, returnStatus: true) == 0    
-                               if (keyExists) {                                   echo "SSH key already exists in AWS."                               } else {                                   echo "Deleting existing key from AWS if it exists."                                   sh """                                       aws ec2 delete-key-pair --key-name ${KEY_NAME} --region ${AWS_REGION} || true                                   """    
-                                   echo "Importing SSH key to AWS."                                   sh """                                       aws ec2 import-key-pair --key-name ${KEY_NAME} --public-key-material fileb://${LOCAL_SSH_KEY_PATH}.pub --region ${AWS_REGION}                                   """                               }    
-                               // Run the Ansible playbook with necessary variables                       sh """                           ansible-playbook -i inventory.ini ${WORKSPACE}/deploy-petclinic.yml \                           -e ami_id=${AMI_ID} \                           -e instance_type=${INSTANCE_TYPE} \                           -e key_name=${KEY_NAME} \                           -e security_group_id=${SECURITY_GROUP_ID} \                           -e subnet_id=${SUBNET_ID} \                           -e region=${AWS_REGION} \                           -e jar_file=${WORKSPACE}/${JAR_FILE} \                           -e ssh_key_path=${LOCAL_SSH_KEY_PATH}                       """                       } catch (Exception e) {                           echo "Error deploying to EC2 using Ansible: ${e.getMessage()}"                           currentBuild.result = 'FAILURE'                           throw e                       }                       }                   }               }           }    
-  
-```  
+providers:
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10 # how often Grafana will scan for changed dashboards
+    options:
+      path: /etc/grafana/provisioning/dashboards
+```
 
-## Step 9: Verify the Setup
+- **apiVersion**: Specifies the version of the Grafana dashboard provisioning format.
+- **providers**: Lists the dashboard providers to be configured in Grafana.
+    - **name**: The name of the provider. Here, it is "default".
+    - **orgId**: The organization ID to which this provider belongs. It is set to `1`.
+    - **folder**: The folder within Grafana where the dashboards will be stored. An empty string means the root folder.
+    - **type**: The type of provider, which is "file", meaning it reads dashboards from the file system.
+    - **disableDeletion**: If `false`, allows deletion of dashboards via the Grafana UI.
+    - **updateIntervalSeconds**: How often (in seconds) Grafana will scan the specified path for updated dashboards. It is set to `10` seconds.
+    - **options**: Additional options for the provider.
+        - **path**: The file system path where Grafana will look for dashboard definitions. Here, it is `/etc/grafana/provisioning/dashboards`.
 
-1. **Verify Application Deployment**
+These files are essential for configuring Grafana to connect to Prometheus and to manage dashboards efficiently through automated provisioning.
 
-    - Ensure the spring-petclinic application is running on the EC2 instance and accessible at `http://ec2-public-dns:8082`.
-2. **Test Automated Build and Deployment**
+3. dashboard.json: This file is typically used to define a Grafana dashboard in a JSON format. This file contains all the configuration details for a Grafana dashboard, including:
 
-    - Make and push a code change to the GitHub repository.
-    - Verify Jenkins automatically builds, tests, and deploys the new version, and the content change is reflected in the deployed application.
+- **Panels**: Each visualization or graph on the dashboard.
+- **Rows and Layouts**: How the panels are arranged.
+- **Queries**: The data queries that fetch the data to be displayed.
+- **Settings**: Various settings like time ranges, refresh intervals, and template variables.
 
-# Issues
+
+## Step 6: Configure Ansible for Deployment
+
+### `deploy-petclinic.yml`
+
+The `deploy-petclinic.yml` file is an Ansible playbook used to deploy the Spring PetClinic application on an EC2 instance. Below is a detailed explanation of the file:
+
+```yml
+---
+- name: Deploy Spring PetClinic Application
+  hosts: new_ec2
+  become: yes
+  vars:
+    jar_file: "/home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar"
+  tasks:
+    - name: Update the package list
+      apt:
+        update_cache: yes
+
+    - name: Install OpenJDK 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Copy the Spring PetClinic JAR file to the EC2 instance
+      copy:
+        src: "{{ jar_file }}"
+        dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar
+        mode: '0755'
+        owner: ubuntu
+        group: ubuntu
+
+    - name: Run the Spring PetClinic application
+      shell: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"
+      args:
+        chdir: /home/ubuntu
+      register: run_result
+
+    - name: Debug - Check if the application is running
+      shell: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"
+      register: ps_result
+
+    - debug:
+        msg: "Run Result: {{ run_result }}"
+
+    - debug:
+        msg: "Process Status: {{ ps_result }}"
+```
+#### Playbook Structure
+- **Name:** Deploy Spring PetClinic Application
+- **Hosts:** new_ec2 (refers to the group of hosts specified in the `inventory.ini` file)
+- **Become:** yes (gives root privileges for the tasks)
+- **Vars:**
+    - `jar_file`: Path to the Spring PetClinic JAR file
+
+#### Tasks
+1. **Update the package list**
+    - **Module:** `apt`
+    - **Parameters:**
+        - `update_cache: yes` (updates the list of available packages and their versions)
+
+2. **Install OpenJDK 17**
+    - **Module:** `apt`
+    - **Parameters:**
+        - `name: openjdk-17-jdk` (name of the package to be installed)
+        - `state: present` (ensures the package is installed)
+
+3. **Copy the Spring PetClinic JAR file to the EC2 instance**
+    - **Module:** `copy`
+    - **Parameters:**
+        - `src: "{{ jar_file }}"` (source path of the JAR file on the control node)
+        - `dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar` (destination path on the EC2 instance)
+        - `mode: '0755'` (permissions of the copied file)
+        - `owner: ubuntu` (owner of the copied file)
+        - `group: ubuntu` (group of the copied file)
+
+4. **Run the Spring PetClinic application**
+    - **Module:** `shell`
+    - **Parameters:**
+        - `cmd: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"` (command to run the JAR file in the background and redirect output to a log file)
+        - `args: chdir: /home/ubuntu` (changes directory to `/home/ubuntu` before running the command)
+    - **Register:** `run_result` (stores the result of the command execution)
+
+5. **Debug - Check if the application is running**
+    - **Module:** `shell`
+    - **Parameters:**
+        - `cmd: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"` (command to check if the JAR file is running)
+    - **Register:** `ps_result` (stores the result of the command execution)
+
+6. **Debug: Output the run result**
+    - **Module:** `debug`
+    - **Parameters:**
+        - `msg: "Run Result: {{ run_result }}"` (displays the result of the run command)
+
+7. **Debug: Output the process status**
+    - **Module:** `debug`
+    - **Parameters:**
+        - `msg: "Process Status: {{ ps_result }}"` (displays the status of the running process)
+
+---
+
+### `inventory.ini`
+
+The `inventory.ini` file specifies the hosts that Ansible will manage. Below is a detailed explanation of the file:
+
+```ini
+[new_ec2]  
+3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/root/.ssh/petclinic_key_pair.pem
+```
+#### Inventory Structure
+- **Group:** new_ec2
+    - **Host:** IP address of the EC2 instance
+    - **Parameters:**
+        - `ansible_ssh_user=ubuntu` (specifies the SSH user to connect as)
+        - `ansible_ssh_private_key_file=/root/.ssh/petclinic_key_pair.pem` (path to the SSH private key file)
+
+
+## Step 8: Execution and Verification
+
+
+
+1. **Docker Compose Setup - Initial Pulling of Images**
+    - **Context:** This step involves pulling the required Docker images for the containers defined in the `docker-compose.yml` file.
+    - ![[01_deployment_and_verification.png]]
+
+2. **Docker Compose Setup - Containers Running**
+    - **Context:** After pulling the images, the containers are started. This ensures all the necessary services like Jenkins, Grafana, SonarQube, Prometheus, and OWASP ZAP are running.
+    - ![[02_deployment_and_verification.png]]
+
+3. **Docker Dashboard - All Containers Running**
+    - **Context:** This view from the Docker dashboard confirms that all containers required for the pipeline are up and running, showing their statuses and ports.
+    - ![[03_deployment_and_verification.png]]
+
+4. **Jenkins Login Page**
+    - **Context:** Accessing the Jenkins web interface requires logging in with the admin credentials.
+    - ![[04_deployment_and_verification.png]]
+
+5. **Jenkins Dashboard - Welcome Page**
+    - **Context:** The initial dashboard after logging into Jenkins, where you can start setting up jobs and configure the Jenkins environment.
+    - ![[05_deployment_and_verification.png]]
+
+6. **Jenkins Global Credentials Configuration**
+    - **Context:** Configuring global credentials in Jenkins to securely store AWS credentials, GitHub tokens, and SonarQube tokens, which are required for various stages of the pipeline.
+    - ![[06_deployment_and_verification.png]]
+
+7. **Jenkins - Creating a New Pipeline Project**
+    - **Context:** Setting up a new pipeline project in Jenkins for the DevOps final project. This involves entering the project name and selecting the pipeline type.
+    - ![[07_deployment_and_verification.png]]
+8. **Jenkins - Pipeline Configuration**
+    - **Context:** Configuring the pipeline script, environment variables, build triggers, and other settings. This script defines all the stages and steps of the CI/CD pipeline.
+    - ![[08_deployment_and_verification.png]]
+
+9. **Jenkins - Initial Pipeline Setup**
+    - **Context:** The view of the Jenkins project after initial setup, showing options like build now, configure, and status. No builds have been triggered yet.
+    - ![[10_deployment_and_verification.png]]
+
+10. **Jenkins - Build History**
+    - **Context:** This view shows the build history and allows tracking the progress and status of each build. It also provides access to console outputs and other build data.
+    - ![[11_deployment_and_verification.png]]
+
+
+
+11. **Jenkins Pipeline Execution Start**
+    - The pipeline is initiated, showing the build process in Jenkins, including the time the build started and the details of the Git repository used.
+    - ![[11_deployment_and_verification.png]]
+
+12. **Pipeline Console Output**
+    - The console output of the Jenkins pipeline execution shows detailed logs of the steps being executed, including verification messages and publishing of reports.
+    - ![[12_deployment_and_verification.png]]
+
+
+13. **Git Build Data**
+    - This view provides information about the Git build data, including the revision and repository details, indicating that the build process has retrieved the code from the specified repository.
+    - ![[13_deployment_and_verification.png]]
+
+14. **Jenkins Blue Ocean Pipeline View**
+    - The Blue Ocean view offers a visual representation of the pipeline stages and steps, showing a successful pipeline execution with all stages completed.
+    - ![[14_deployment_and_verification.png]]
+
+
+15. **ZAP Scanning Report**
+    - The ZAP scanning report highlights the security vulnerabilities detected during the static analysis stage of the pipeline, providing detailed information about each alert.
+    - ![[15_deployment_and_verification.png]]
+
+16. **Spring PetClinic Application**
+    - The Spring PetClinic application is shown running, indicating a successful deployment to the AWS EC2 instance. This view is part of the verification stage, confirming that the application is operational.
+    - ![[16_deployment_and_verification.png]]
+
+17. **Spring PetClinic Veterinarian List**
+    - The updated list of veterinarians in the Spring PetClinic application verifies that the changes from the `data.sql` file have been correctly applied.
+    - ![[19_deployment_and_verification.png]]
+      ![[21_deployment_and_verification.png]]
+
+
+18. **GitHub Pull Request for Data Update**
+    - The pull request in GitHub showcases the changes made to the `data.sql` file, including the insertions of new data entries for veterinarians, owners, pets, and visits.
+    - ![[17_deployment_and_verification.png]]
+
+19. **GitHub Pull Request Merge Confirmation**
+    - The successful merge of the pull request confirms that the updates have been integrated into the main branch, ready for the next deployment cycle.
+    - ![[18_deployment_and_verification.png]]
+
+20. Build got initiated automatically for the second time after code changes
+
+    ![[22_deployment_and_verification.png]]
+
+21. Changes to the code verified
+    ![[23_deployment_and_verification.png]]
+
+22. Console output: SUCCESS for the second run
+        ![[24_deployment_and_verification.png]]
+23. **Final Verification**
+    - A final check of the veterinarian list confirms the successful deployment and update process, completing the pipeline verification.
+    -
+
+# Journal
+
+
+1. **Maven Installation Issue on Jenkins:**
+    - **Context:** During the initial setup of the Jenkins pipeline.
+    - **Problem:** `Tool type "maven" does not have an install of "Maven 3.6.3" configured`.
+    - **Solution:** Ensured Maven was correctly configured in Jenkins or used a Docker image with Maven pre-installed to avoid configuration issues.
+
+2. **SonarQube Configuration:**
+    - **Context:** Setting up SonarQube for static analysis in the Jenkins pipeline.
+    - **Problem:** `No SonarQube installation assigned for this job`.
+    - **Solution:** Configured SonarQube correctly in Jenkins, ensuring the proper connection and authentication setup.
+
+3. **Static Analysis Failure:**
+    - **Context:** Running static analysis using SonarQube in the Jenkins pipeline.
+    - **Problem:** `Error during static analysis: hudson.AbortException: script returned exit code 125`.
+    - **Solution:** Verified Docker daemon was running and accessible. Ensured SonarQube scanner was properly configured and had necessary permissions.
+
+4. **Docker Platform Compatibility:**
+    - **Context:** Building Docker images for the pipeline.
+    - **Problem:** `docker: no matching manifest for linux/arm64/v8`.
+    - **Solution:** Ensured compatible Docker images were used, appropriate for the target platform.
+
+5. **General Pipeline Failures:**
+    - **Context:** Various stages in the Jenkins pipeline.
+    - **Problem:** Stages failing due to incorrect configurations or missing files.
+    - **Solution:** Added error handling and validation steps, ensured all required files were in place, and verified configurations before execution.
+
+6. **Permissions for Docker Socket Binding:**
+    - **Context:** Running Docker commands from Jenkins.
+    - **Problem:** "Docker: permission denied" error when binding Docker socket.
+    - **Solution:** Ran the container as root or added the container user to the Docker group. Adjusted Docker socket permissions on the host.
+
+7. **SSH Key Issues:**
+    - **Context:** Connecting to EC2 instances from Jenkins.
+    - **Problem:** SSH key-related errors when connecting to EC2 instances.
+    - **Solution:** Generated a new key pair if necessary, and ensured the correct key was used and properly configured in Jenkins and AWS.
+
+8. **File Copying and Path Issues in Jenkins Pipeline:**
+    - **Context:** Copying SSH key file in the Jenkins pipeline.
+    - **Problem:** Errors while copying the SSH key file.
+    - **Solution:** Ensured correct paths and permissions. Used absolute paths and ensured the file existed at the specified location.
+
+9. **ZAP Container Issues:**
+    - **Context:** Running ZAP analysis in the Jenkins pipeline.
+    - **Problem:** `Failed to access summary file /home/zap/zap_out.json`.
+    - **Solution:** Ensured proper directory creation and file access permissions within the ZAP container.
+
+10. **Accessing Application URL:**
+    - **Context:** After deploying the application.
+    - **Problem:** Unable to access the application at `http://192.168.1.2:8082`.
+    - **Solution:** Ensured the application was correctly deployed and running, and verified network configurations to allow access.
+
+11. **AWS EC2 Instance Creation and Configuration:**
+    - **Context:** Creating and configuring EC2 instances in the Jenkins pipeline.
+    - **Problem:** Various errors in creating and configuring EC2 instances, including invalid AMI IDs, security group issues, and SSH connection problems.
+    - **Solution:** Verified AMI IDs, security group configurations, and ensured correct credentials. Added retries and proper error handling in the Jenkins pipeline.
+
+12. **Java Version Compatibility:**
+    - **Context:** Running the Spring PetClinic application on the EC2 instance.
+    - **Problem:** Java runtime version mismatch on the EC2 instance.
+    - **Solution:** Installed the correct version of Java (OpenJDK 17) using Ansible in the deployment playbook.
+
+13. **Ansible Playbook Failures:**
+    - **Context:** Deploying the application using Ansible.
+    - **Problem:** Errors during various Ansible tasks, including adding repositories and copying files.
+    - **Solution:** Fixed syntax issues, ensured correct permissions, and used appropriate Ansible modules and parameters.
+
+14. **Grafana Data Source Provisioning Error:**
+    - **Context:** Setting up Grafana data sources.
+    - **Problem:** `Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default`.
+    - **Solution:** Ensured only one data source was marked as default in the `datasource.yml` file.
+
+15. **No Such File Exception for Grafana Dashboard:**
+    - **Context:** Importing Grafana dashboards in Jenkins.
+    - **Problem:** `java.nio.file.NoSuchFileException: /var/jenkins_home/workspace/bbbb/grafana/dashboards/dashboard.json`.
+    - **Solution:** Ensured the correct path was used and the file existed. Placed the `dashboard.json` file in the correct directory and verified the path in the Jenkins pipeline.
+
+16. **Prometheus Targets Not Being Scraped:**
+    - **Context:** Setting up Prometheus for monitoring.
+    - **Problem:** `Prometheus is not scraping targets correctly`.
+    - **Solution:** Verified Prometheus configuration and ensured targets were correctly defined. Checked network connectivity between Prometheus and the targets.
+
+17. **Jenkins Job Failure:**
+    - **Context:** Running Jenkins jobs.
+    - **Problem:** Jenkins job failed with a `hudson.AbortException`.
+    - **Cause:** Multiple potential causes, including the non-availability of `curl` in the Docker container used for the Jenkins job.
+    - **Solution:** Ensured `curl` was available in the Docker container by installing it or using a pre-configured container.
+
+18. **Grafana API Key Issue:**
+    - **Context:** Importing Grafana dashboards.
+    - **Problem:** Invalid API key error.
+    - **Solution:** Successfully generated and used a service account token instead of a direct API key.
+
+19. **Grafana Organization Creation:**
+    - **Context:** Creating Grafana organizations.
+    - **Problem:** Attempted to create an organization with a name that was already taken, resulting in an error.
+    - **Solution:** Handled the error gracefully by checking the response and skipping organization creation if it already existed.
+
+20. **SonarQube Report Redirect:**
+    - **Context:** Generating SonarQube reports.
+    - **Problem:** The SonarQube report did not automatically redirect to the SonarQube dashboard URL.
+    - **Solution:** Created an HTML file with a meta-refresh tag to handle the redirection properly.
+
+21. **Jenkins Pipeline Insecure Interpolation Warning:**
+    - **Context:** Passing sensitive variables in Jenkins.
+    - **Problem:** Sensitive variables such as `GITHUB_TOKEN`, `SONARQUBE_LOGIN`, and `GRAFANA_ADMIN_PASS` were passed insecurely.
+    - **Solution:** Used the `withCredentials` block to handle sensitive information securely.
+
+22. **SonarQube Authentication Token Management:**
+    - **Context:** Managing SonarQube authentication tokens.
+    - **Problem:** Hardcoded SonarQube login tokens.
+    - **Solution:** Used Jenkins credentials to securely store and access the SonarQube authentication token.
+
+23. **SSH Service Issues:**
+    - **Context:** Starting SSH service in different environments.
+    - **Problem:** Errors when trying to start SSH service.
+    - **Solution:** Used appropriate commands to start SSH service based on the environment.
+
+24. **Running Docker Commands from Jenkins:**
+    - **Context:** Running Docker commands from Jenkins.
+    - **Problem:** `docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock`.
+    - **Solution:** Mounted Docker socket in Jenkins container or ran Docker commands from the host.
+
+25. **Resource Usage Concerns:**
+    - **Context:** Managing AWS resources.
+    - **Problem:** High resource usage and potential costs from AWS.
+    - **Solution:** Implemented checks to reuse existing instances and monitored resource usage.
+
+26. **Grafana Initial Password Setup:**
+    - **Context:** Setting up initial Grafana password.
+    - **Problem:** Grafana prompts for initial password setup.
+    - **Solution:** Configured the initial admin user and password in the `grafana.ini` file or via environment variables.
+
+
+
+
+
+
