@@ -7,7 +7,7 @@
     2. Build version: 23F79
     3. Chipset: Apple M1 Pro
 2. Screenshot :  
-   ![image](./screenshots/macversion 1.png)
+   ![image](./screenshots/macversion%201.png)
 
 
 ## Also Tested on: Windows 11 Education Edition
@@ -28,7 +28,8 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
 - **Version**: 2.452.3
 
 ### 2. Jenkin's Underlying OS release:
--# docker exec -it sonarqube cat /etc/os-release
+```sh
+# docker exec -it sonarqube cat /etc/os-release
 PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
 NAME="Debian GNU/Linux"
 VERSION_ID="12"
@@ -38,6 +39,7 @@ ID=debian
 HOME_URL="https://www.debian.org/"
 SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
+```
 ### 2. **Maven**
 **Commands**:
 ```sh
@@ -62,7 +64,9 @@ apt-get install -y maven
 ### 4. **Prometheus**
 **Docker Image**: `prom/prometheus:latest`
 - **Version Check**: docker run prom/prometheus:latest --version
-- **Version**: prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
+- **Version**: 
+```
+prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
   build user:       root@9f8e5b6970da
   build date:       20240710-10:18:44
   go version:       go1.22.5
@@ -70,17 +74,21 @@ apt-get install -y maven
   tags:             netgo,builtinassets,stringlabels
     - OS ==Version==: Linux ed68bcdd096b 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
     - command used:  /prometheus $ uname -a
+```
 ### 5. **Grafana**
 **Docker Image**: `docker run grafana/grafana:latest --version`
 - **Version Check**: Check the version via the web interface at `http://localhost:3000`.
 - **Configuration File**: `grafana.ini`, `datasources.yml`, `dashboards.yml`
-- Version : Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
+- Version : 
+```
+Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 - OS Version: NAME="Alpine Linux"
   ID=alpine
   VERSION_ID=3.19.1
   PRETTY_NAME="Alpine Linux v3.19"
   HOME_URL="https://alpinelinux.org/"
   BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+```
 
 ### 6. **SonarQube**
 **Docker Image**: `sonarqube:latest`
@@ -89,6 +97,7 @@ apt-get install -y maven
 - Under lying OS:
     - Command: docker exec -it sonarqube cat /etc/os-release
     - Version:
+```
       PRETTY_NAME="Ubuntu 22.04.4 LTS"
       NAME="Ubuntu"
       VERSION_ID="22.04"
@@ -101,13 +110,16 @@ apt-get install -y maven
       BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
       PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
       UBUNTU_CODENAME=jammy
+```
 
 
 ### 7. **OWASP ZAP**
 **Docker Image**: `zaproxy/zap-weekly`
 - **Version Check**: Check the version via the web interface at `http://<zap-server-ip>:8081`.
 - **Version**: ZAP D-2024-07-22
-- OS Version : PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+- OS Version : 
+```
+  PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
   NAME="Debian GNU/Linux"
   VERSION_ID="11"
   VERSION="11 (bullseye)"
@@ -116,6 +128,7 @@ apt-get install -y maven
   HOME_URL="https://www.debian.org/"
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
+```
 
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
@@ -123,8 +136,10 @@ apt-get install -y maven
   ```sh
   docker run postgres:13 --version
   ```
+```
 Version: postgres (PostgreSQL) 13.15 (Debian 13.15-1.pgdg120+1)
 OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
+```
 
 ### 9. **Ansible**
 **Commands**:
@@ -135,7 +150,9 @@ sudo apt-get install ansible -y
   ```sh
   ansible --version
   ```
-- Version : ansible [core 2.14.3]
+- Version :
+```
+  ansible [core 2.14.3]
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python3/dist-packages/ansible
@@ -144,6 +161,7 @@ sudo apt-get install ansible -y
   python version = 3.11.2 (main, May  2 2024, 11:59:08) [GCC 12.2.0] (/usr/bin/python3)
   jinja version = 3.1.2
   libyaml = True
+```
 ### 10. **AWS CLI**
 
 **Version Check**:
@@ -195,10 +213,13 @@ command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f
 
 ### Additional Tools and Libraries
 1. **curl**:
-    1. Version: curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
+    1. Version: 
+    ```
+    curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
        Release-Date: 2023-02-20, security patched: 7.88.1-10+deb12u6
        Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
        Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
+    ```
 2. **sudo**:
     1. Version: Sudo version 1.9.13p3
 
@@ -698,7 +719,8 @@ In order to have a place to store these credentials, you must instantiate your c
 2. Run the following command from the main project directory.
     ```bash  
         docker compose up -d  
-    ```    This command instantiates the volumes, networks, and containers required.  
+    ```
+    This command instantiates the volumes, networks, and containers required.
     Screenshot:  ![image](./screenshots/A01_docker_compose_up_-d.png)   
     If this is the first time you have ever built the containers, you will see something like this as they get built:   
     Screenshot:  ![image](./screenshots/A00_docker_compose_up_-d_first_time.png)   
