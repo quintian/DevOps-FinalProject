@@ -26,7 +26,7 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
   docker run jenkins/jenkins:lts --version
   ```
 - **Version**: 2.452.3
-- **Jenkin's Underlying OS release**:
+- Jenkin's Underlying OS release:
   -# docker exec -it sonarqube cat /etc/os-release
   PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
   NAME="Debian GNU/Linux"
@@ -37,7 +37,6 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
   HOME_URL="https://www.debian.org/"
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
-
 ### 2. **Maven**
 **Commands**:
 ```sh
@@ -62,7 +61,8 @@ apt-get install -y maven
 ### 4. **Prometheus**
 **Docker Image**: `prom/prometheus:latest`
 - **Version Check**: docker run prom/prometheus:latest --version
-- **Version**: 
+- **Version**:
+
 ```
 prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
   build user:       root@9f8e5b6970da
@@ -77,7 +77,7 @@ prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8
 **Docker Image**: `docker run grafana/grafana:latest --version`
 - **Version Check**: Check the version via the web interface at `http://localhost:3000`.
 - **Configuration File**: `grafana.ini`, `datasources.yml`, `dashboards.yml`
-- Version : 
+- Version :
 ```
 Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 - OS Version: NAME="Alpine Linux"
@@ -115,7 +115,7 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 **Docker Image**: `zaproxy/zap-weekly`
 - **Version Check**: Check the version via the web interface at `http://<zap-server-ip>:8081`.
 - **Version**: ZAP D-2024-07-22
-- OS Version : 
+- OS Version :
 ```
   PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
   NAME="Debian GNU/Linux"
@@ -128,8 +128,7 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
   BUG_REPORT_URL="https://bugs.debian.org/"
 ```
 
-![[zap_version.png]]
-
+![image](./screenshots/zap_version.png)
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
 - **Version Check**:
@@ -147,12 +146,11 @@ OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 20
 sudo apt-get install ansible -y
 ```
 - **Version Check**:
-  ```sh
+```sh
   ansible --version
-  ```
-- Version :
 ```
-  ansible [core 2.14.3]
+```
+- Version : ansible [core 2.14.3]
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python3/dist-packages/ansible
@@ -162,7 +160,9 @@ sudo apt-get install ansible -y
   jinja version = 3.1.2
   libyaml = True
 ```
+
 ### 10. **AWS CLI**
+
 
 **Version Check**:
   ```sh
@@ -213,13 +213,10 @@ command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f
 
 ### Additional Tools and Libraries
 1. **curl**:
-    1. Version: 
-    ```
-    curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
+    1. Version: curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
        Release-Date: 2023-02-20, security patched: 7.88.1-10+deb12u6
        Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
        Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
-    ```
 2. **sudo**:
     1. Version: Sudo version 1.9.13p3
 
@@ -253,7 +250,7 @@ To accomplish this assignment, follow these steps:
 
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
-    1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==  
+    1. Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)  
        ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
     2. Download complete  
        ![image](./screenshots/2_download_complete.png)
@@ -289,10 +286,9 @@ To accomplish this assignment, follow these steps:
 
 
 1. 1. Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository to your GitHub/GitLab account.
-
-![[01_fork_and_clone.png]]
-2. ![[02_fork_and_clone.png]]
-3. ![[03_fork_and_clone.png]]
+      ![image](./screenshots/01_fork_and_clone.png)
+2. ![image](./screenshots/02_fork_and_clone.png)
+3. ![image](./screenshots/03_fork_and_clone.png)
 4. Clone the forked repository to your local machine:
    ```bash
    git clone https://github.com/<your-username>/spring-petclinic.git
@@ -307,7 +303,7 @@ To accomplish this assignment, follow these steps:
    Resolving deltas: 100% (3762/3762), done.
 
    **Screenshot**:
-   ![[Pasted image 20240721132801.png]]
+   ![image](./screenshots/Pasted image 20240721132801.png)
 ### Project Structure
 
 Below is the text representation of the project structure shown in the image:
@@ -889,22 +885,22 @@ In order to have a place to store these credentials, you must instantiate your c
 
 1. If you don't already have Docker Desktop started, start it.
 2. Build he container using the following command:
-```sh
-docker compose build 
-```
+    ```sh
+    docker compose build 
+    ```
 
-![[A00_docker_compose_up_-d.png.png]]
+   ![image](./screenshots/A00_docker_compose_up_-d.png.png)
 
 
 3. Run the following command from the main project directory.
     ```bash  
         docker compose -p devops-finalproject-team4 up -d 
-    ```
-    
+    ```    
    NOTE: The project name should be passed or it will take the project directory name as the default name which might cause issues with the network setup.
 
    This command instantiates the volumes, networks, and containers required.  
-   Screenshot:  ![[A01_docker_compose_up_-d.png.png]]
+   Screenshot:  
+   ![image](./screenshots/A01_docker_compose_up_-d.png.png)
 
    If this is the first time you have ever built the containers, you will see something like this as they get built:
 
@@ -912,20 +908,14 @@ docker compose build
    Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)
    Ultimately, the starting printouts will look the same:   
    Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)
-
 3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:  
    Screenshot:  ![image](./screenshots/A02_Jenkins_splashScreen.png)
 4. To get the administrative password, go to Docker Desktop, click on Jenkins  
    Screenshot:  ![image](./screenshots/A03_Jenkins_openContainer.png)
 5. Now click on "Logs"  
    Screenshot:  ![image](./screenshots/A04_Jenkins_logs.png)
-6. And copy the provided password. Alternatively, this will be printed to the terminal if you ran the docker compose up command *without* the -d flag.
+6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
    Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
-   You can also run the following command on the host to extract the password (will disappear after getting into Jenkins dashboard for the first time):
-```sh
-docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-```
-
 7. Paste this into the Jenkins Password bar:  
    Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
@@ -948,9 +938,9 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
     - Click on your profile picture in the top right corner and select `Settings`.  
       ![image](./screenshots/15_githubToken_select_settings.png)
     - In the left sidebar, click on `Developer settings`.  
-      ![image](./screenshots/17_githubToken_developer_settings.png)
+      ![image](./screenshots/16_githubToken_developer_settings.png)
     - Click on `Personal access tokens`.  
-      ![image](./screenshots/16_githubToken_fineGrainedToken.png)
+      ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
     - Click on `Generate new token`. We used a fine-grained token.    
       ![image](./screenshots/18_githubToken_generateToken.png)
     - Give your token a descriptive name (e.g., `Jenkins Token`).  
@@ -1043,9 +1033,9 @@ environment {
     - Click on `Add Credentials`.  
       ![image](./screenshots/C14_AWS_clickAddCredentials.png)
     - Select `AWS Credentials` as the kind.  
-      ![image](./screenshots/C15_AWS_selectAWSCredentials.png)
+      ![image](./screenshots/C15_AWS_selectAddCredentials.png)
     - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![image](./screenshots/C16_AWS_enterAWSCredentials.png)
+      ![image](./screenshots/C16_AWS_enterAddCredentials.png)
     - A successful addition will look like this:  
       ![image](./screenshots/C17_AWS_addedCredentials.png)
 
@@ -1985,97 +1975,103 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
 
 1. **Docker Compose Setup - Initial Pulling of Images**
     - **Context:** This step involves pulling the required Docker images for the containers defined in the `docker-compose.yml` file.
-    - ![[01_deployment_and_verification.png]]
+    - ![image](./screenshots/01_deployment_and_verification.png)
 
 2. **Docker Compose Setup - Containers Running**
     - **Context:** After pulling the images, the containers are started. This ensures all the necessary services like Jenkins, Grafana, SonarQube, Prometheus, and OWASP ZAP are running.
-    - ![[02_deployment_and_verification.png]]
+    - ![image](./screenshots/02_deployment_and_verification.png)
 
 3. **Docker Dashboard - All Containers Running**
     - **Context:** This view from the Docker dashboard confirms that all containers required for the pipeline are up and running, showing their statuses and ports.
-    - ![[03_deployment_and_verification.png]]
+    - ![image](./screenshots/03_deployment_and_verification.png)
 
 4. **Jenkins Login Page**
     - **Context:** Accessing the Jenkins web interface requires logging in with the admin credentials.
-    - ![[04_deployment_and_verification.png]]
+    - ![image](./screenshots/04_deployment_and_verification.png)
 
 5. **Jenkins Dashboard - Welcome Page**
     - **Context:** The initial dashboard after logging into Jenkins, where you can start setting up jobs and configure the Jenkins environment.
-    - ![[05_deployment_and_verification.png]]
+    - ![image](./screenshots/05_deployment_and_verification.png)
 
 6. **Jenkins Global Credentials Configuration**
     - **Context:** Configuring global credentials in Jenkins to securely store AWS credentials, GitHub tokens, and SonarQube tokens, which are required for various stages of the pipeline.
-    - ![[06_deployment_and_verification.png]]
+    - ![image](./screenshots/06_deployment_and_verification.png)
 
 7. **Jenkins - Creating a New Pipeline Project**
     - **Context:** Setting up a new pipeline project in Jenkins for the DevOps final project. This involves entering the project name and selecting the pipeline type.
-    - ![[07_deployment_and_verification.png]]
+    - ![image](./screenshots/07_deployment_and_verification.png)
 8. **Jenkins - Pipeline Configuration**
     - **Context:** Configuring the pipeline script, environment variables, build triggers, and other settings. This script defines all the stages and steps of the CI/CD pipeline.
-    - ![[08_deployment_and_verification.png]]
+    - ![image](./screenshots/08_deployment_and_verification.png)
 
 9. **Jenkins - Initial Pipeline Setup**
     - **Context:** The view of the Jenkins project after initial setup, showing options like build now, configure, and status. No builds have been triggered yet.
-    - ![[10_deployment_and_verification.png]]
+    - ![image](./screenshots/10_deployment_and_verification.png)
 
 10. **Jenkins - Build History**
     - **Context:** This view shows the build history and allows tracking the progress and status of each build. It also provides access to console outputs and other build data.
-    - ![[11_deployment_and_verification.png]]
+    - ![image](./screenshots/11_deployment_and_verification.png)
 
 
 
-11. **Jenkins Pipeline Execution Start**
+1. **Jenkins Pipeline Execution Start**
     - The pipeline is initiated, showing the build process in Jenkins, including the time the build started and the details of the Git repository used.
-    - ![[11_deployment_and_verification.png]]
+    - ![image](./screenshots/11_deployment_and_verification.png)
 
-12. **Pipeline Console Output**
+2. **Pipeline Console Output**
     - The console output of the Jenkins pipeline execution shows detailed logs of the steps being executed, including verification messages and publishing of reports.
-    - ![[12_deployment_and_verification.png]]
+    - ![image](./screenshots/12_deployment_and_verification.png)
 
 
-13. **Git Build Data**
+3. **Git Build Data**
     - This view provides information about the Git build data, including the revision and repository details, indicating that the build process has retrieved the code from the specified repository.
-    - ![[13_deployment_and_verification.png]]
+    - ![image](./screenshots/13_deployment_and_verification.png)
 
-14. **Jenkins Blue Ocean Pipeline View**
+1. **Jenkins Blue Ocean Pipeline View**
     - The Blue Ocean view offers a visual representation of the pipeline stages and steps, showing a successful pipeline execution with all stages completed.
-    - ![[14_deployment_and_verification.png]]
+    - ![image](./screenshots/14_deployment_and_verification.png)
 
 
-15. **ZAP Scanning Report**
+
+
+1. **ZAP Scanning Report**
     - The ZAP scanning report highlights the security vulnerabilities detected during the static analysis stage of the pipeline, providing detailed information about each alert.
-    - ![[15_deployment_and_verification.png]]
+    - ![image](./screenshots/15_deployment_and_verification.png)
 
-16. **Spring PetClinic Application**
+6. **Spring PetClinic Application**
     - The Spring PetClinic application is shown running, indicating a successful deployment to the AWS EC2 instance. This view is part of the verification stage, confirming that the application is operational.
-    - ![[16_deployment_and_verification.png]]
+    - ![image](./screenshots/16_deployment_and_verification.png)
 
-17. **Spring PetClinic Veterinarian List**
+7. **Spring PetClinic Veterinarian List**
     - The updated list of veterinarians in the Spring PetClinic application verifies that the changes from the `data.sql` file have been correctly applied.
-    - ![[19_deployment_and_verification.png]]
-      ![[21_deployment_and_verification.png]]
+    - ![image](./screenshots/19_deployment_and_verification.png)
+      ![image](./screenshots/21_deployment_and_verification.png)
 
 
-18. **GitHub Pull Request for Data Update**
+8. **GitHub Pull Request for Data Update**
     - The pull request in GitHub showcases the changes made to the `data.sql` file, including the insertions of new data entries for veterinarians, owners, pets, and visits.
-    - ![[17_deployment_and_verification.png]]
+    - ![image](./screenshots/17_deployment_and_verification.png)
 
-19. **GitHub Pull Request Merge Confirmation**
+9. **GitHub Pull Request Merge Confirmation**
     - The successful merge of the pull request confirms that the updates have been integrated into the main branch, ready for the next deployment cycle.
-    - ![[18_deployment_and_verification.png]]
+    - ![image](./screenshots/18_deployment_and_verification.png)
 
-20. Build got initiated automatically for the second time after code changes
+10. Build got initiated automatically for the second time after code changes
 
-    ![[22_deployment_and_verification.png]]
+    ![image](./screenshots/22_deployment_and_verification.png)
 
-21. Changes to the code verified
-    ![[23_deployment_and_verification.png]]
+11. Changes to the code verified
 
-22. Console output: SUCCESS for the second run
-        ![[24_deployment_and_verification.png]]
-23. **Final Verification**
+    ![image](./screenshots/23_deployment_and_verification.png)
+
+12. Console output: SUCCESS for the second run
+
+    ![image](./screenshots/24_deployment_and_verification.png)
+
+1. Final Verification
     - A final check of the veterinarian list confirms the successful deployment and update process, completing the pipeline verification.
-    -
+
+
 
 # Journal
 
@@ -2210,6 +2206,12 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
     - **Context:** Setting up initial Grafana password.
     - **Problem:** Grafana prompts for initial password setup.
     - **Solution:** Configured the initial admin user and password in the `grafana.ini` file or via environment variables.
+
+
+
+
+
+
 
 
 
