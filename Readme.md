@@ -734,8 +734,12 @@ In order to have a place to store these credentials, you must instantiate your c
    Screenshot:  ![image](./screenshots/A03_Jenkins_openContainer.png)
 5. Now click on "Logs"  
    Screenshot:  ![image](./screenshots/A04_Jenkins_logs.png)
-6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
+6. And copy the provided password. Alternatively, this will be printed to the terminal if you ran the docker compose up command *without* the -d flag.
    Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
+   You can also run the following command on the host to extract the password (will disappear after getting into Jenkins dashboard for the first time):
+```sh
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
 7. Paste this into the Jenkins Password bar:  
    Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
