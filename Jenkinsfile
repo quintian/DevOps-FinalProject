@@ -195,12 +195,13 @@ pipeline {
                     withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                         sonarScannerImage.inside("--network=${DOCKER_NETWORK}") {
                                 sh """
+                            apt-get update && apt-get install -y curl
                             sonar-scanner -e \
                                 -Dsonar.host.url=${SONARQUBE_URL} \
                                 -Dsonar.token=${SONARQUBE_TOKEN} \
                                     -Dsonar.projectKey=spring-petclinic \
                                     -Dsonar.sources=. \
-                                    -Dsonar.exclusions=**/excluded-directory/**,**/*.tmp,**/regex-pattern-*.log \
+                                    -Dsonar.exclusions=**/excluded-directory/**,**/*.tmp,**/*.log,**/zap-report.html,**/grafana-report.html \
                                 -Dsonar.java.binaries=target/classes
                                 """
                             sh "cp .scannerwork/report-task.txt ${WORKSPACE}/report-task.txt"
