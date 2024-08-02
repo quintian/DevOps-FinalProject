@@ -7,7 +7,7 @@
     2. Build version: 23F79
     3. Chipset: Apple M1 Pro
 2. Screenshot :  
-   ![[./screenshots/macversion 1.png]]
+   ![image](./screenshots/macversion 1.png)
 
 
 ## Also Tested on: Windows 11 Education Edition
@@ -117,7 +117,6 @@ apt-get install -y maven
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
 
-![[Pasted image 20240801173804.png]]
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
 - **Version Check**:
@@ -234,31 +233,31 @@ To accomplish this assignment, follow these steps:
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
     1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==  
-       ![[./screenshots/1_download_docker_file_for_apple_silicon_chip.png]]
+       ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
     2. Download complete  
-       ![[./screenshots/2_download_complete.png]]
+       ![image](./screenshots/2_download_complete.png)
     3. Copy Docker.app to Applications folder  
-       ![./screenshots/3_Copy_Docker.app_to_Applications_folder.png]
+       ![image](./screenshots/3_Copy_Docker.app_to_Applications_folder.png)
     4. Copying to applications folder on my mac in progress  
-       ![[./screenshots/4_Copying_in_progress.png]]
+       ![image](./screenshots/4_Copying_in_progress.png)
     5. Open the copied docker file  
-       ![[./screenshots/5_Open_the_copied_Docker_app.png]]
+       ![image](./screenshots/5_Open_the_copied_Docker_app.png)
     6. Accept Docker service agreement  
-       ![[./screenshots/6_Accept_the_terms_before_docker_starts.png]]
+       ![image](./screenshots/6_Accept_the_terms_before_docker_starts.png)
     7. Use recommended settings and Finish  
-       ![[./screenshots/7_Use_recommended_settings_and_finish.png]]
+       ![image](./screenshots/7_Use_recommended_settings_and_finish.png)
     8. Either create an account on docker or sign in using existing account.  
-       ![[./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png]]
+       ![image](./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png)
     9. Signing in using existing docker account.   
-       ![[./screenshots/9_Signing_in_using_existing_docker_account.png]]
+       ![image](./screenshots/9_Signing_in_using_existing_docker_account.png)
     10. Docker is installed and signed-in. Now proceed to the docker desktop app.  
-        ![[./screenshots/11_Docker_is_installed_and_signed-in_proceed.png]]
+        ![image](./screenshots/11_Docker_is_installed_and_signed-in_proceed.png)
     11. Check if docker is installed by checking the docker version  
-        ![[./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png]]
+        ![image](./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png)
     12. Run hello-world test just to make sure everything is working fine.  
-        ![[./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png]]
+        ![image](./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png)
     13. Check on the docker app if the hello-world container instance ran and exited as expected  
-        ![[./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png]]
+        ![image](./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png)
 
 ## Step 2: Set Up Docker Containers
 
@@ -700,27 +699,27 @@ In order to have a place to store these credentials, you must instantiate your c
     ```bash  
         docker compose up -d  
     ```    This command instantiates the volumes, networks, and containers required.  
-    Screenshot:  ![[./screenshots/A01_docker_compose_up_-d.png]]   
+    Screenshot:  ![image](./screenshots/A01_docker_compose_up_-d.png)   
     If this is the first time you have ever built the containers, you will see something like this as they get built:   
-    Screenshot:  ![[./screenshots/A00_docker_compose_up_-d_first_time.png]]   
+    Screenshot:  ![image](./screenshots/A00_docker_compose_up_-d_first_time.png)   
     As the Jenkins container builds for the first time, you will see something like this:  
-    Screenshot:  ![[./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png]]   
+    Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)   
     Ultimately, the starting printouts will look the same:   
-    Screenshot: ![[./screenshots/A002_docker_compose_up_-d_first_time_start.png]]  
+    Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)  
 3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:  
-   Screenshot:  ![[./screenshots/A02_Jenkins_splashScreen.png]]
+   Screenshot:  ![image](./screenshots/A02_Jenkins_splashScreen.png)
 4. To get the administrative password, go to Docker Desktop, click on Jenkins  
-   Screenshot:  ![[./screenshots/A03_Jenkins_openContainer.png]]
+   Screenshot:  ![image](./screenshots/A03_Jenkins_openContainer.png)
 5. Now click on "Logs"  
-   Screenshot:  ![[./screenshots/A04_Jenkins_logs.png]]
+   Screenshot:  ![image](./screenshots/A04_Jenkins_logs.png)
 6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
-   Screenshot:  ![[./screenshots/A05_Jenkins_logs_copyPassword.png]]
+   Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
 7. Paste this into the Jenkins Password bar:  
-   Screenshot:  ![[./screenshots/A05_Jenkins_paste_password.png]]
+   Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
-   Screenshot: ![[./screenshots/A06_Jenkins_bypassLanding.png]]
+   Screenshot: ![image](./screenshots/A06_Jenkins_bypassLanding.png)
 9. Jenkins is now setup. Click "Start using Jenkins"  
-   Screenshot: ![[./screenshots/A07_Jenkins_startUsing.png]]
+   Screenshot: ![image](./screenshots/A07_Jenkins_startUsing.png)
 
 
 Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
@@ -735,45 +734,45 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 2. **Generate a New Token**:
 
     - Click on your profile picture in the top right corner and select `Settings`.  
-      ![[./screenshots/15_githubToken_select_settings.png]]
+      ![image](./screenshots/15_githubToken_select_settings.png)
     - In the left sidebar, click on `Developer settings`.  
-      ![[./screenshots/16_githubToken_developer_settings.png]]
+      ![image](./screenshots/16_githubToken_developer_settings.png)
     - Click on `Personal access tokens`.  
-      ![[./screenshots/17_githubToken_fineGrainedTokens.png]]
+      ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
     - Click on `Generate new token`. We used a fine-grained token.    
-      ![[./screenshots/18_githubToken_generateToken.png]]
+      ![image](./screenshots/18_githubToken_generateToken.png)
     - Give your token a descriptive name (e.g., `Jenkins Token`).  
-      ![[./screenshots/19_githubToken_nameToken.png]]
+      ![image](./screenshots/19_githubToken_nameToken.png)
     - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.  
-      ![[./screenshots/20_githubToken_scopeToken.png]]
+      ![image](./screenshots/20_githubToken_scopeToken.png)
     - Click `Repository permissions`  
-      ![[./screenshots/21_githubToken_repoClick.png]]
+      ![image](./screenshots/21_githubToken_repoClick.png)
     - Select webhooks under permissions.  
-      ![[./screenshots/22_githubToken_webHooks.png]]
+      ![image](./screenshots/22_githubToken_webHooks.png)
     - Click on `Generate token`.  
-      ![[./screenshots/23_githubToken_generateToken.png]]
+      ![image](./screenshots/23_githubToken_generateToken.png)
     - Copy the token. You will need it for the next step. (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)  
-      ![[./screenshots/24_githubToken_copyToken.png]]
+      ![image](./screenshots/24_githubToken_copyToken.png)
 
 #### Store GitHub Token in Jenkins
 
 1. **Log in to Jenkins**:
     - Navigate to your Jenkins instance by going to localhost:8080  
-      ![[./screenshots/B01_tokenSetup_NavigateToJenkins.png]]
+      ![image](./screenshots/B01_tokenSetup_NavigateToJenkins.png)
 2. **Add the Token to Jenkins Credentials**:
 
     - Go to `Manage Jenkins` > `Manage Credentials`.  
-      ![[./screenshots/B02_tokenSetup_clickManageJenkins.png]]
+      ![image](./screenshots/B02_tokenSetup_clickManageJenkins.png)
     - Click on `Add Credentials`.  
-      ![[./screenshots/B03_tokenSetup_clickManageCredentials.png]]
+      ![image](./screenshots/B03_tokenSetup_clickManageCredentials.png)
     - Select a domain (e.g., `Global`).   
-      ![[./screenshots/B04_tokenSetup_clickGlobal.png]]
+      ![image](./screenshots/B04_tokenSetup_clickGlobal.png)
     - Click "adding some credentials"  
-      ![[./screenshots/B05_tokenSteup_addCredentials.png]]
+      ![image](./screenshots/B05_tokenSteup_addCredentials.png)
     - Select `Secret text` as the kind.  
-      ![[./screenshots/B06_tokenSteup_selectSecretText.png]]
+      ![image](./screenshots/B06_tokenSteup_selectSecretText.png)
     - Paste the GitHub token in the `Secret` field and give it an ID `github-token`, optionally a description, then click 'Create'  
-      ![[./screenshots/B07_tokenSteup_createSecretText.png]]
+      ![image](./screenshots/B07_tokenSteup_createSecretText.png)
 
 3. Using GitHub Token
     - The reason to do this is to use that token via a reference in the Jenkinsfile, i.e.:
@@ -790,34 +789,34 @@ environment {
 1. **Log in to AWS Management Console**:
 
     - Go to [AWS Management Console](https://aws.amazon.com/console/).  
-      ![[./screenshots/C01_AWS_console.png]]
+      ![image](./screenshots/C01_AWS_console.png)
     - Log into your account. You will land on different pages, depending on your region, but Pittsburgh points here:  
-      ![[./screenshots/C02_AWS_landing.png]]
+      ![image](./screenshots/C02_AWS_landing.png)
 
 2. **Generate Access Keys**:
 
     - Click on your account name in the top right corner and select `My Security Credentials`.  
-      ![[./screenshots/C03_AWS_selectSecurityCredentials.png]]
+      ![image](./screenshots/C03_AWS_selectSecurityCredentials.png)
     - In the left sidebar, click on `Users`.  
-      ![[./screenshots/C04_AWS_selectUsers.png]]
+      ![image](./screenshots/C04_AWS_selectUsers.png)
     - Select the user you want to create access keys for (or create a new user with programmatic access).  
-      ![[./screenshots/C05_AWS_createNewUser.png]]
+      ![image](./screenshots/C05_AWS_createNewUser.png)
     - If creating a new user, name them something:  
-      ![[./screenshots/C06_AWS_userName.png]]   C06_AWS_grantPermission
+      ![image](./screenshots/C06_AWS_userName.png)   C06_AWS_grantPermission
     - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:  
-      ![[./screenshots/C07_AWS_grantPermission.png]]
+      ![image](./screenshots/C07_AWS_grantPermission.png)
     - Click "create user"  
-      ![[./screenshots/C08_AWS_clickCreateAWSUser.png]]
+      ![image](./screenshots/C08_AWS_clickCreateAWSUser.png)
     - Click on the `Security credentials` tab.  
-      ![[./screenshots/C09_AWS_clickSecurityCredentials.png]]
+      ![image](./screenshots/C09_AWS_clickSecurityCredentials.png)
     - Click on `Create access key`.  
-      ![[./screenshots/C10_AWS_clickCreateAccessKey.png]]
+      ![image](./screenshots/C10_AWS_clickCreateAccessKey.png)
     - Select "Application Running on an AWS Compute Service" and Confirm that you understand the risks. Then click "Next"  
-      ![[./screenshots/C11_AWS_accessKeyCreation.png]]
+      ![image](./screenshots/C11_AWS_accessKeyCreation.png)
     - Write a description, if desired  
-      ![[./screenshots/C12_AWS_accessKeyDescription.png]]
+      ![image](./screenshots/C12_AWS_accessKeyDescription.png)
     - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.  
-      ![[./screenshots/C13_AWS_accessKeyCopy.png]]
+      ![image](./screenshots/C13_AWS_accessKeyCopy.png)
 
 #### Store AWS Credentials in Jenkins
 
@@ -830,13 +829,13 @@ environment {
     - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
     - Select a domain (e.g., `Global`). (See above for directions/screenshots)
     - Click on `Add Credentials`.  
-      ![[./screenshots/C14_AWS_clickAddCredentials.png]]
+      ![image](./screenshots/C14_AWS_clickAddCredentials.png)
     - Select `AWS Credentials` as the kind.  
-      ![[./screenshots/C15_AWS_selectAddCredentials.png]]
+      ![image](./screenshots/C15_AWS_selectAddCredentials.png)
     - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![[./screenshots/C16_AWS_enterAddCredentials.png]]
+      ![image](./screenshots/C16_AWS_enterAddCredentials.png)
     - A successful addition will look like this:  
-      ![[./screenshots/C17_AWS_addedCredentials.png]]
+      ![image](./screenshots/C17_AWS_addedCredentials.png)
 
 3. **Using AWS Credentials**
 
@@ -854,15 +853,15 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
 1. **Log in to Grafana**:
 
     - Navigate to your Grafana instance, on localhost:8080. If this is your first time or you are not logged in, you will see the following screen:  
-      ![[./screenshots/D00_Grafana_landingScreen.png]]
+      ![image](./screenshots/D00_Grafana_landingScreen.png)
 
 2. **Get Admin Credentials**:
 
     - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup. You will immediately be prompted to change password.  
-      ![[./screenshots/D01_Grafana_newPassword.png]]
+      ![image](./screenshots/D01_Grafana_newPassword.png)
     - Change the password if you are using the default credentials for the first time.
     - You will land at the Grafana homepage.  
-      ![[./screenshots/D02_Grafana_homePage.png]]
+      ![image](./screenshots/D02_Grafana_homePage.png)
 
 
 #### Store Grafana Admin Credentials in Jenkins
@@ -881,7 +880,7 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
     - Enter the admin password in the `Password` field.
     - Give it an ID `grafana-admin-pass`.
     - Click `OK`.  
-      ![[./screenshots/D03_Grafana_addToJenkins.png]]
+      ![image](./screenshots/D03_Grafana_addToJenkins.png)
 
 3. Using Grafana Admin Credentials
 
