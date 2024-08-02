@@ -758,9 +758,9 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
     - Click on your profile picture in the top right corner and select `Settings`.  
       ![image](./screenshots/15_githubToken_select_settings.png)
     - In the left sidebar, click on `Developer settings`.  
-      ![image](./screenshots/16_githubToken_developer_settings.png)
+      ![image](./screenshots/17_githubToken_developer_settings.png)
     - Click on `Personal access tokens`.  
-      ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
+      ![image](./screenshots/16_githubToken_fineGrainedToken.png)
     - Click on `Generate new token`. We used a fine-grained token.    
       ![image](./screenshots/18_githubToken_generateToken.png)
     - Give your token a descriptive name (e.g., `Jenkins Token`).  
@@ -1559,7 +1559,9 @@ By following these steps, you will have successfully launched an EC2 instance, c
     - Create an `inventory.ini` file for Ansible:
 
 ```ini  
-   [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem  ```  2. **Create Ansible Playbook**    
+   [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem
+```
+2. **Create Ansible Playbook**
     
    - Create an `ansible/deploy-petclinic.yml` file:    
     
@@ -1574,9 +1576,8 @@ By following these steps, you will have successfully launched an EC2 instance, c
    - name: Create and Configure EC2 Instance     hosts: localhost     tasks:       - name: Create a new EC2 instance         command: >           aws ec2 run-instances           --image-id {{ ami_id }}           --count 1           --instance-type {{ instance_type }}           --key-name {{ key_name }}           --security-group-ids {{ security_group_id }}           --subnet-id {{ subnet_id }}           --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-ec2-instance}]'           --region {{ region }}           --query 'Instances[0].InstanceId'           --output text         register: ec2_instance    
        - name: Wait for the EC2 instance to be running         command: >           aws ec2 wait instance-running           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}    
        - name: Get the public IP of the new EC2 instance         command: >           aws ec2 describe-instances           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}           --query 'Reservations[0].Instances[0].PublicIpAddress'           --output text         register: ec2_ip    
-       - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost    
-    
-```  
+       - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost     
+```
 
 ## Step 8: Run Ansible Playbook
 
