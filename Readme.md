@@ -7,7 +7,7 @@
     2. Build version: 23F79
     3. Chipset: Apple M1 Pro
 2. Screenshot :  
-   ![image](./screenshots/macversion 1.png)
+   ![image](./screenshots/macversion_1.png)
 
 
 ## Also Tested on: Windows 11 Education Edition
