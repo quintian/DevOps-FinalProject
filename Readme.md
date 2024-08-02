@@ -7,7 +7,7 @@
     2. Build version: 23F79
     3. Chipset: Apple M1 Pro
 2. Screenshot :  
-   ![[./screenshots/macversion 1.png]]
+   ![image](./screenshots/macversion%201.png)
 
 
 ## Also Tested on: Windows 11 Education Edition
@@ -28,7 +28,8 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
 - **Version**: 2.452.3
 
 ### 2. Jenkin's Underlying OS release:
--# docker exec -it sonarqube cat /etc/os-release
+```sh
+# docker exec -it sonarqube cat /etc/os-release
 PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
 NAME="Debian GNU/Linux"
 VERSION_ID="12"
@@ -38,6 +39,7 @@ ID=debian
 HOME_URL="https://www.debian.org/"
 SUPPORT_URL="https://www.debian.org/support"
 BUG_REPORT_URL="https://bugs.debian.org/"
+```
 ### 2. **Maven**
 **Commands**:
 ```sh
@@ -62,7 +64,9 @@ apt-get install -y maven
 ### 4. **Prometheus**
 **Docker Image**: `prom/prometheus:latest`
 - **Version Check**: docker run prom/prometheus:latest --version
-- **Version**: prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
+- **Version**: 
+```
+prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
   build user:       root@9f8e5b6970da
   build date:       20240710-10:18:44
   go version:       go1.22.5
@@ -70,17 +74,21 @@ apt-get install -y maven
   tags:             netgo,builtinassets,stringlabels
     - OS ==Version==: Linux ed68bcdd096b 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
     - command used:  /prometheus $ uname -a
+```
 ### 5. **Grafana**
 **Docker Image**: `docker run grafana/grafana:latest --version`
 - **Version Check**: Check the version via the web interface at `http://localhost:3000`.
 - **Configuration File**: `grafana.ini`, `datasources.yml`, `dashboards.yml`
-- Version : Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
+- Version : 
+```
+Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 - OS Version: NAME="Alpine Linux"
   ID=alpine
   VERSION_ID=3.19.1
   PRETTY_NAME="Alpine Linux v3.19"
   HOME_URL="https://alpinelinux.org/"
   BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+```
 
 ### 6. **SonarQube**
 **Docker Image**: `sonarqube:latest`
@@ -89,6 +97,7 @@ apt-get install -y maven
 - Under lying OS:
     - Command: docker exec -it sonarqube cat /etc/os-release
     - Version:
+```
       PRETTY_NAME="Ubuntu 22.04.4 LTS"
       NAME="Ubuntu"
       VERSION_ID="22.04"
@@ -101,13 +110,16 @@ apt-get install -y maven
       BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
       PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
       UBUNTU_CODENAME=jammy
+```
 
 
 ### 7. **OWASP ZAP**
 **Docker Image**: `zaproxy/zap-weekly`
 - **Version Check**: Check the version via the web interface at `http://<zap-server-ip>:8081`.
 - **Version**: ZAP D-2024-07-22
-- OS Version : PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+- OS Version : 
+```
+  PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
   NAME="Debian GNU/Linux"
   VERSION_ID="11"
   VERSION="11 (bullseye)"
@@ -116,16 +128,18 @@ apt-get install -y maven
   HOME_URL="https://www.debian.org/"
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
+```
 
-![[Pasted image 20240801173804.png]]
 ### 8. **PostgreSQL**
 **Docker Image**: `postgres:13`
 - **Version Check**:
   ```sh
   docker run postgres:13 --version
   ```
+```
 Version: postgres (PostgreSQL) 13.15 (Debian 13.15-1.pgdg120+1)
 OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
+```
 
 ### 9. **Ansible**
 **Commands**:
@@ -136,7 +150,9 @@ sudo apt-get install ansible -y
   ```sh
   ansible --version
   ```
-- Version : ansible [core 2.14.3]
+- Version :
+```
+  ansible [core 2.14.3]
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
   ansible python module location = /usr/lib/python3/dist-packages/ansible
@@ -145,6 +161,7 @@ sudo apt-get install ansible -y
   python version = 3.11.2 (main, May  2 2024, 11:59:08) [GCC 12.2.0] (/usr/bin/python3)
   jinja version = 3.1.2
   libyaml = True
+```
 ### 10. **AWS CLI**
 
 **Version Check**:
@@ -196,10 +213,13 @@ command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f
 
 ### Additional Tools and Libraries
 1. **curl**:
-    1. Version: curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
+    1. Version: 
+    ```
+    curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
        Release-Date: 2023-02-20, security patched: 7.88.1-10+deb12u6
        Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
        Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
+    ```
 2. **sudo**:
     1. Version: Sudo version 1.9.13p3
 
@@ -234,31 +254,31 @@ To accomplish this assignment, follow these steps:
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
     1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==  
-       ![[./screenshots/1_download_docker_file_for_apple_silicon_chip.png]]
+       ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
     2. Download complete  
-       ![[./screenshots/2_download_complete.png]]
+       ![image](./screenshots/2_download_complete.png)
     3. Copy Docker.app to Applications folder  
-       ![./screenshots/3_Copy_Docker.app_to_Applications_folder.png]
+       ![image](./screenshots/3_Copy_Docker.app_to_Applications_folder.png)
     4. Copying to applications folder on my mac in progress  
-       ![[./screenshots/4_Copying_in_progress.png]]
+       ![image](./screenshots/4_Copying_in_progress.png)
     5. Open the copied docker file  
-       ![[./screenshots/5_Open_the_copied_Docker_app.png]]
+       ![image](./screenshots/5_Open_the_copied_Docker_app.png)
     6. Accept Docker service agreement  
-       ![[./screenshots/6_Accept_the_terms_before_docker_starts.png]]
+       ![image](./screenshots/6_Accept_the_terms_before_docker_starts.png)
     7. Use recommended settings and Finish  
-       ![[./screenshots/7_Use_recommended_settings_and_finish.png]]
+       ![image](./screenshots/7_Use_recommended_settings_and_finish.png)
     8. Either create an account on docker or sign in using existing account.  
-       ![[./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png]]
+       ![image](./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png)
     9. Signing in using existing docker account.   
-       ![[./screenshots/9_Signing_in_using_existing_docker_account.png]]
+       ![image](./screenshots/9_Signing_in_using_existing_docker_account.png)
     10. Docker is installed and signed-in. Now proceed to the docker desktop app.  
-        ![[./screenshots/11_Docker_is_installed_and_signed-in_proceed.png]]
+        ![image](./screenshots/11_Docker_is_installed_and_signed-in_proceed.png)
     11. Check if docker is installed by checking the docker version  
-        ![[./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png]]
+        ![image](./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png)
     12. Run hello-world test just to make sure everything is working fine.  
-        ![[./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png]]
+        ![image](./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png)
     13. Check on the docker app if the hello-world container instance ran and exited as expected  
-        ![[./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png]]
+        ![image](./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png)
 
 ## Step 2: Set Up Docker Containers
 
@@ -699,28 +719,33 @@ In order to have a place to store these credentials, you must instantiate your c
 2. Run the following command from the main project directory.
     ```bash  
         docker compose up -d  
-    ```    This command instantiates the volumes, networks, and containers required.  
-    Screenshot:  ![[./screenshots/A01_docker_compose_up_-d.png]]   
+    ```
+    This command instantiates the volumes, networks, and containers required.
+    Screenshot:  ![image](./screenshots/A01_docker_compose_up_-d.png)   
     If this is the first time you have ever built the containers, you will see something like this as they get built:   
-    Screenshot:  ![[./screenshots/A00_docker_compose_up_-d_first_time.png]]   
+    Screenshot:  ![image](./screenshots/A00_docker_compose_up_-d_first_time.png)   
     As the Jenkins container builds for the first time, you will see something like this:  
-    Screenshot:  ![[./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png]]   
+    Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)   
     Ultimately, the starting printouts will look the same:   
-    Screenshot: ![[./screenshots/A002_docker_compose_up_-d_first_time_start.png]]  
+    Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)  
 3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:  
-   Screenshot:  ![[./screenshots/A02_Jenkins_splashScreen.png]]
+   Screenshot:  ![image](./screenshots/A02_Jenkins_splashScreen.png)
 4. To get the administrative password, go to Docker Desktop, click on Jenkins  
-   Screenshot:  ![[./screenshots/A03_Jenkins_openContainer.png]]
+   Screenshot:  ![image](./screenshots/A03_Jenkins_openContainer.png)
 5. Now click on "Logs"  
-   Screenshot:  ![[./screenshots/A04_Jenkins_logs.png]]
-6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
-   Screenshot:  ![[./screenshots/A05_Jenkins_logs_copyPassword.png]]
+   Screenshot:  ![image](./screenshots/A04_Jenkins_logs.png)
+6. And copy the provided password. Alternatively, this will be printed to the terminal if you ran the docker compose up command *without* the -d flag.
+   Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
+   You can also run the following command on the host to extract the password (will disappear after getting into Jenkins dashboard for the first time):
+```sh
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
 7. Paste this into the Jenkins Password bar:  
-   Screenshot:  ![[./screenshots/A05_Jenkins_paste_password.png]]
+   Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
 8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
-   Screenshot: ![[./screenshots/A06_Jenkins_bypassLanding.png]]
+   Screenshot: ![image](./screenshots/A06_Jenkins_bypassLanding.png)
 9. Jenkins is now setup. Click "Start using Jenkins"  
-   Screenshot: ![[./screenshots/A07_Jenkins_startUsing.png]]
+   Screenshot: ![image](./screenshots/A07_Jenkins_startUsing.png)
 
 
 Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
@@ -735,45 +760,45 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 2. **Generate a New Token**:
 
     - Click on your profile picture in the top right corner and select `Settings`.  
-      ![[./screenshots/15_githubToken_select_settings.png]]
+      ![image](./screenshots/15_githubToken_select_settings.png)
     - In the left sidebar, click on `Developer settings`.  
-      ![[./screenshots/16_githubToken_developer_settings.png]]
+      ![image](./screenshots/17_githubToken_developer_settings.png)
     - Click on `Personal access tokens`.  
-      ![[./screenshots/17_githubToken_fineGrainedTokens.png]]
+      ![image](./screenshots/16_githubToken_fineGrainedToken.png)
     - Click on `Generate new token`. We used a fine-grained token.    
-      ![[./screenshots/18_githubToken_generateToken.png]]
+      ![image](./screenshots/18_githubToken_generateToken.png)
     - Give your token a descriptive name (e.g., `Jenkins Token`).  
-      ![[./screenshots/19_githubToken_nameToken.png]]
+      ![image](./screenshots/19_githubToken_nameToken.png)
     - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.  
-      ![[./screenshots/20_githubToken_scopeToken.png]]
+      ![image](./screenshots/20_githubToken_scopeToken.png)
     - Click `Repository permissions`  
-      ![[./screenshots/21_githubToken_repoClick.png]]
+      ![image](./screenshots/21_githubToken_repoClick.png)
     - Select webhooks under permissions.  
-      ![[./screenshots/22_githubToken_webHooks.png]]
+      ![image](./screenshots/22_githubToken_webHooks.png)
     - Click on `Generate token`.  
-      ![[./screenshots/23_githubToken_generateToken.png]]
+      ![image](./screenshots/23_githubToken_generateToken.png)
     - Copy the token. You will need it for the next step. (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)  
-      ![[./screenshots/24_githubToken_copyToken.png]]
+      ![image](./screenshots/24_githubToken_copyToken.png)
 
 #### Store GitHub Token in Jenkins
 
 1. **Log in to Jenkins**:
     - Navigate to your Jenkins instance by going to localhost:8080  
-      ![[./screenshots/B01_tokenSetup_NavigateToJenkins.png]]
+      ![image](./screenshots/B01_tokenSetup_NavigateToJenkins.png)
 2. **Add the Token to Jenkins Credentials**:
 
     - Go to `Manage Jenkins` > `Manage Credentials`.  
-      ![[./screenshots/B02_tokenSetup_clickManageJenkins.png]]
+      ![image](./screenshots/B02_tokenSetup_clickManageJenkins.png)
     - Click on `Add Credentials`.  
-      ![[./screenshots/B03_tokenSetup_clickManageCredentials.png]]
+      ![image](./screenshots/B03_tokenSetup_clickManageCredentials.png)
     - Select a domain (e.g., `Global`).   
-      ![[./screenshots/B04_tokenSetup_clickGlobal.png]]
+      ![image](./screenshots/B04_tokenSetup_clickGlobal.png)
     - Click "adding some credentials"  
-      ![[./screenshots/B05_tokenSteup_addCredentials.png]]
+      ![image](./screenshots/B05_tokenSteup_addCredentials.png)
     - Select `Secret text` as the kind.  
-      ![[./screenshots/B06_tokenSteup_selectSecretText.png]]
+      ![image](./screenshots/B06_tokenSteup_selectSecretText.png)
     - Paste the GitHub token in the `Secret` field and give it an ID `github-token`, optionally a description, then click 'Create'  
-      ![[./screenshots/B07_tokenSteup_createSecretText.png]]
+      ![image](./screenshots/B07_tokenSteup_createSecretText.png)
 
 3. Using GitHub Token
     - The reason to do this is to use that token via a reference in the Jenkinsfile, i.e.:
@@ -790,34 +815,34 @@ environment {
 1. **Log in to AWS Management Console**:
 
     - Go to [AWS Management Console](https://aws.amazon.com/console/).  
-      ![[./screenshots/C01_AWS_console.png]]
+      ![image](./screenshots/C01_AWS_console.png)
     - Log into your account. You will land on different pages, depending on your region, but Pittsburgh points here:  
-      ![[./screenshots/C02_AWS_landing.png]]
+      ![image](./screenshots/C02_AWS_landing.png)
 
 2. **Generate Access Keys**:
 
     - Click on your account name in the top right corner and select `My Security Credentials`.  
-      ![[./screenshots/C03_AWS_selectSecurityCredentials.png]]
+      ![image](./screenshots/C03_AWS_selectSecurityCredentials.png)
     - In the left sidebar, click on `Users`.  
-      ![[./screenshots/C04_AWS_selectUsers.png]]
+      ![image](./screenshots/C04_AWS_selectUsers.png)
     - Select the user you want to create access keys for (or create a new user with programmatic access).  
-      ![[./screenshots/C05_AWS_createNewUser.png]]
+      ![image](./screenshots/C05_AWS_createNewUser.png)
     - If creating a new user, name them something:  
-      ![[./screenshots/C06_AWS_userName.png]]   C06_AWS_grantPermission
+      ![image](./screenshots/C06_AWS_userName.png)
     - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:  
-      ![[./screenshots/C07_AWS_grantPermission.png]]
+      ![image](./screenshots/C07_AWS_grantPermission.png)
     - Click "create user"  
-      ![[./screenshots/C08_AWS_clickCreateAWSUser.png]]
+      ![image](./screenshots/C08_AWS_clickCreateAWSUser.png)
     - Click on the `Security credentials` tab.  
-      ![[./screenshots/C09_AWS_clickSecurityCredentials.png]]
+      ![image](./screenshots/C09_AWS_clickSecurityCredentials.png)
     - Click on `Create access key`.  
-      ![[./screenshots/C10_AWS_clickCreateAccessKey.png]]
+      ![image](./screenshots/C10_AWS_clickCreateAccessKey.png)
     - Select "Application Running on an AWS Compute Service" and Confirm that you understand the risks. Then click "Next"  
-      ![[./screenshots/C11_AWS_accessKeyCreation.png]]
+      ![image](./screenshots/C11_AWS_accessKeyCreation.png)
     - Write a description, if desired  
-      ![[./screenshots/C12_AWS_accessKeyDescription.png]]
+      ![image](./screenshots/C12_AWS_accessKeyDescription.png)
     - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.  
-      ![[./screenshots/C13_AWS_accessKeyCopy.png]]
+      ![image](./screenshots/C13_AWS_accessKeyCopy.png)
 
 #### Store AWS Credentials in Jenkins
 
@@ -830,13 +855,13 @@ environment {
     - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
     - Select a domain (e.g., `Global`). (See above for directions/screenshots)
     - Click on `Add Credentials`.  
-      ![[./screenshots/C14_AWS_clickAddCredentials.png]]
+      ![image](./screenshots/C14_AWS_clickAddCredentials.png)
     - Select `AWS Credentials` as the kind.  
-      ![[./screenshots/C15_AWS_selectAddCredentials.png]]
+      ![image](./screenshots/C15_AWS_selectAWSCredentials.png)
     - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![[./screenshots/C16_AWS_enterAddCredentials.png]]
+      ![image](./screenshots/C16_AWS_enterAWSCredentials.png)
     - A successful addition will look like this:  
-      ![[./screenshots/C17_AWS_addedCredentials.png]]
+      ![image](./screenshots/C17_AWS_addedCredentials.png)
 
 3. **Using AWS Credentials**
 
@@ -854,15 +879,15 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
 1. **Log in to Grafana**:
 
     - Navigate to your Grafana instance, on localhost:8080. If this is your first time or you are not logged in, you will see the following screen:  
-      ![[./screenshots/D00_Grafana_landingScreen.png]]
+      ![image](./screenshots/D00_Grafana_landingScreen.png)
 
 2. **Get Admin Credentials**:
 
     - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup. You will immediately be prompted to change password.  
-      ![[./screenshots/D01_Grafana_newPassword.png]]
+      ![image](./screenshots/D01_Grafana_newPassword.png)
     - Change the password if you are using the default credentials for the first time.
     - You will land at the Grafana homepage.  
-      ![[./screenshots/D02_Grafana_homePage.png]]
+      ![image](./screenshots/D02_Grafana_homePage.png)
 
 
 #### Store Grafana Admin Credentials in Jenkins
@@ -881,7 +906,7 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
     - Enter the admin password in the `Password` field.
     - Give it an ID `grafana-admin-pass`.
     - Click `OK`.  
-      ![[./screenshots/D03_Grafana_addToJenkins.png]]
+      ![image](./screenshots/D03_Grafana_addToJenkins.png)
 
 3. Using Grafana Admin Credentials
 
@@ -1538,7 +1563,9 @@ By following these steps, you will have successfully launched an EC2 instance, c
     - Create an `inventory.ini` file for Ansible:
 
 ```ini  
-   [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem  ```  2. **Create Ansible Playbook**    
+   [new_ec2]3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/key/petclinic_key_pair.pem
+```
+2. **Create Ansible Playbook**
     
    - Create an `ansible/deploy-petclinic.yml` file:    
     
@@ -1553,9 +1580,8 @@ By following these steps, you will have successfully launched an EC2 instance, c
    - name: Create and Configure EC2 Instance     hosts: localhost     tasks:       - name: Create a new EC2 instance         command: >           aws ec2 run-instances           --image-id {{ ami_id }}           --count 1           --instance-type {{ instance_type }}           --key-name {{ key_name }}           --security-group-ids {{ security_group_id }}           --subnet-id {{ subnet_id }}           --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=my-ec2-instance}]'           --region {{ region }}           --query 'Instances[0].InstanceId'           --output text         register: ec2_instance    
        - name: Wait for the EC2 instance to be running         command: >           aws ec2 wait instance-running           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}    
        - name: Get the public IP of the new EC2 instance         command: >           aws ec2 describe-instances           --instance-ids {{ ec2_instance.stdout }}           --region {{ region }}           --query 'Reservations[0].Instances[0].PublicIpAddress'           --output text         register: ec2_ip    
-       - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost    
-    
-```  
+       - name: Update the Ansible inventory with the new EC2 instance         lineinfile:           path: ./inventory.ini           regexp: '^new_ec2'           line: "new_ec2 ansible_host={{ ec2_ip.stdout }} ansible_user=ubuntu ansible_ssh_private_key_file={{ ssh_key_path }}"         delegate_to: localhost     
+```
 
 ## Step 8: Run Ansible Playbook
 
