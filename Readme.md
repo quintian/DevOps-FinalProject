@@ -61,7 +61,10 @@ apt-get install -y maven
 ### 4. **Prometheus**
 **Docker Image**: `prom/prometheus:latest`
 - **Version Check**: docker run prom/prometheus:latest --version
-- **Version**: prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
+- **Version**:
+
+```
+prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8d4211d32bab4)
   build user:       root@9f8e5b6970da
   build date:       20240710-10:18:44
   go version:       go1.22.5
@@ -69,17 +72,21 @@ apt-get install -y maven
   tags:             netgo,builtinassets,stringlabels
     - OS ==Version==: Linux ed68bcdd096b 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
     - command used:  /prometheus $ uname -a
+```
 ### 5. **Grafana**
 **Docker Image**: `docker run grafana/grafana:latest --version`
 - **Version Check**: Check the version via the web interface at `http://localhost:3000`.
 - **Configuration File**: `grafana.ini`, `datasources.yml`, `dashboards.yml`
-- Version : Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
+- Version :
+```
+Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 - OS Version: NAME="Alpine Linux"
   ID=alpine
   VERSION_ID=3.19.1
   PRETTY_NAME="Alpine Linux v3.19"
   HOME_URL="https://alpinelinux.org/"
   BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+```
 
 ### 6. **SonarQube**
 **Docker Image**: `sonarqube:latest`
@@ -88,6 +95,7 @@ apt-get install -y maven
 - Under lying OS:
     - Command: docker exec -it sonarqube cat /etc/os-release
     - Version:
+```
       PRETTY_NAME="Ubuntu 22.04.4 LTS"
       NAME="Ubuntu"
       VERSION_ID="22.04"
@@ -100,13 +108,16 @@ apt-get install -y maven
       BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
       PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
       UBUNTU_CODENAME=jammy
+```
 
 
 ### 7. **OWASP ZAP**
 **Docker Image**: `zaproxy/zap-weekly`
 - **Version Check**: Check the version via the web interface at `http://<zap-server-ip>:8081`.
 - **Version**: ZAP D-2024-07-22
-- OS Version : PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+- OS Version :
+```
+  PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
   NAME="Debian GNU/Linux"
   VERSION_ID="11"
   VERSION="11 (bullseye)"
@@ -115,6 +126,7 @@ apt-get install -y maven
   HOME_URL="https://www.debian.org/"
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
+```
 
 ![image](./screenshots/zap_version.png)
 ### 8. **PostgreSQL**
@@ -123,8 +135,10 @@ apt-get install -y maven
   ```sh
   docker run postgres:13 --version
   ```
+```
 Version: postgres (PostgreSQL) 13.15 (Debian 13.15-1.pgdg120+1)
 OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
+```
 
 ### 9. **Ansible**
 **Commands**:
@@ -132,9 +146,10 @@ OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 20
 sudo apt-get install ansible -y
 ```
 - **Version Check**:
-  ```sh
+```sh
   ansible --version
-  ```
+```
+```
 - Version : ansible [core 2.14.3]
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
@@ -144,7 +159,10 @@ sudo apt-get install ansible -y
   python version = 3.11.2 (main, May  2 2024, 11:59:08) [GCC 12.2.0] (/usr/bin/python3)
   jinja version = 3.1.2
   libyaml = True
+```
+
 ### 10. **AWS CLI**
+
 
 **Version Check**:
   ```sh
@@ -232,12 +250,12 @@ To accomplish this assignment, follow these steps:
 
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
-    1. ==Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)==  
+    1. Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)  
        ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
     2. Download complete  
        ![image](./screenshots/2_download_complete.png)
     3. Copy Docker.app to Applications folder  
-       ![./screenshots/3_Copy_Docker.app_to_Applications_folder.png]
+       ![image](./screenshots/3_Copy_Docker.app_to_Applications_folder.png)
     4. Copying to applications folder on my mac in progress  
        ![image](./screenshots/4_Copying_in_progress.png)
     5. Open the copied docker file  
@@ -268,8 +286,7 @@ To accomplish this assignment, follow these steps:
 
 
 1. 1. Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository to your GitHub/GitLab account.
-
-![image](./screenshots/01_fork_and_clone.png)
+      ![image](./screenshots/01_fork_and_clone.png)
 2. ![image](./screenshots/02_fork_and_clone.png)
 3. ![image](./screenshots/03_fork_and_clone.png)
 4. Clone the forked repository to your local machine:
@@ -868,11 +885,11 @@ In order to have a place to store these credentials, you must instantiate your c
 
 1. If you don't already have Docker Desktop started, start it.
 2. Build he container using the following command:
-```sh
-docker compose build 
-```
+    ```sh
+    docker compose build 
+    ```
 
-![image](./screenshots/A00_docker_compose_up_-d.png.png)
+   ![image](./screenshots/A00_docker_compose_up_-d.png.png)
 
 
 3. Run the following command from the main project directory.
@@ -987,7 +1004,7 @@ environment {
     - Select the user you want to create access keys for (or create a new user with programmatic access).  
       ![image](./screenshots/C05_AWS_createNewUser.png)
     - If creating a new user, name them something:  
-      ![image](./screenshots/C06_AWS_userName.png)   C06_AWS_grantPermission
+      ![image](./screenshots/C06_AWS_userName.png)
     - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:  
       ![image](./screenshots/C07_AWS_grantPermission.png)
     - Click "create user"  
@@ -2044,13 +2061,17 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
     ![image](./screenshots/22_deployment_and_verification.png)
 
 11. Changes to the code verified
+
     ![image](./screenshots/23_deployment_and_verification.png)
 
-    12. Console output: SUCCESS for the second run
-        ![image](./screenshots/24_deployment_and_verification.png)
-1. **Final Verification**
+12. Console output: SUCCESS for the second run
+
+    ![image](./screenshots/24_deployment_and_verification.png)
+
+1. Final Verification
     - A final check of the veterinarian list confirms the successful deployment and update process, completing the pipeline verification.
-    -
+
+
 
 # Journal
 
