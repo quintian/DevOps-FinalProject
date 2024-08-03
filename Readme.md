@@ -3,24 +3,26 @@
 ## Host OS: macOS
 
 1. OS Host Details:
-    1. OS Name: macOS Sonoma Version 14.5
-    2. Build version: 23F79
-    3. Chipset: Apple M1 Pro
-2. Screenshot :  
+   1. OS Name: macOS Sonoma Version 14.5
+   2. Build version: 23F79
+   3. Chipset: Apple M1 Pro
+2. Screenshot :
    ![image](./screenshots/macversion_1.png)
 
-
 ## Also Tested on: Windows 11 Education Edition
-    1. OS Host Details:        Processor   Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz   2.59 GHz        Installed RAM   16.0 GB (15.8 GB usable)        Product ID  00328-00805-52422-AA517        System type 64-bit operating system, x64-based processor  
-    2. Windows Details:        Windows 11 Education Edition        3. All Linux was through WSL2, (i.e., Through Docker Desktop using WSL installation.):  
-        WSL version: 2.2.4.0        Kernel version: 5.15.153.1-2        WSLg version: 1.0.61        MSRDC version: 1.2.5326        Direct3D version: 1.611.1-81528511        DXCore version: 10.0.26091.1-240325-1447.ge-release        Windows version: 10.0.22631.3880  
 
+1. OS Host Details:        Processor   Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz   2.59 GHz        Installed RAM   16.0 GB (15.8 GB usable)        Product ID  00328-00805-52422-AA517        System type 64-bit operating system, x64-based processor
+2. Windows Details:        Windows 11 Education Edition        3. All Linux was through WSL2, (i.e., Through Docker Desktop using WSL installation.):
+   WSL version: 2.2.4.0        Kernel version: 5.15.153.1-2        WSLg version: 1.0.61        MSRDC version: 1.2.5326        Direct3D version: 1.611.1-81528511        DXCore version: 10.0.26091.1-240325-1447.ge-release        Windows version: 10.0.22631.3880
 
 ## Softwares used
+
 Here's a breakdown of the software, third-party libraries, and commands used in the provided code along with how to find their versions:
 
 ### 1. **Jenkins**
+
 **Docker Image**: `jenkins/jenkins:lts`
+
 - **Version Check**:
   ```sh
   docker run jenkins/jenkins:lts --version
@@ -37,11 +39,15 @@ Here's a breakdown of the software, third-party libraries, and commands used in 
   HOME_URL="https://www.debian.org/"
   SUPPORT_URL="https://www.debian.org/support"
   BUG_REPORT_URL="https://bugs.debian.org/"
+
 ### 2. **Maven**
+
 **Commands**:
+
 ```sh
 apt-get install -y maven
 ```
+
 - **Version Check**:
   ```sh
   mvn -v
@@ -49,17 +55,22 @@ apt-get install -y maven
 - **Version**: Apache Maven 3.8.7
 
 ### 3. **Docker**
+
 **Commands**:
+
 - **Version Check**:
   ```sh
   docker --version
   docker compose version
   ```
+
 **docker version**: Docker version 27.0.3, build 7d4bcd8
 **docker compose version**: Docker Compose version v2.28.1-desktop.1
 
 ### 4. **Prometheus**
+
 **Docker Image**: `prom/prometheus:latest`
+
 - **Version Check**: docker run prom/prometheus:latest --version
 - **Version**:
 
@@ -73,11 +84,15 @@ prometheus, version 2.53.1 (branch: HEAD, revision: 14cfec3f6048b735e08c1e9c64c8
     - OS ==Version==: Linux ed68bcdd096b 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
     - command used:  /prometheus $ uname -a
 ```
+
 ### 5. **Grafana**
+
 **Docker Image**: `docker run grafana/grafana:latest --version`
+
 - **Version Check**: Check the version via the web interface at `http://localhost:3000`.
 - **Configuration File**: `grafana.ini`, `datasources.yml`, `dashboards.yml`
 - Version :
+
 ```
 Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 - OS Version: NAME="Alpine Linux"
@@ -89,12 +104,15 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 ```
 
 ### 6. **SonarQube**
+
 **Docker Image**: `sonarqube:latest`
+
 - **Version Check**: curl http://localhost:9000/api/server/version
 - Version: 10.6.0.92116
 - Under lying OS:
-    - Command: docker exec -it sonarqube cat /etc/os-release
-    - Version:
+  - Command: docker exec -it sonarqube cat /etc/os-release
+  - Version:
+
 ```
       PRETTY_NAME="Ubuntu 22.04.4 LTS"
       NAME="Ubuntu"
@@ -110,12 +128,14 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
       UBUNTU_CODENAME=jammy
 ```
 
-
 ### 7. **OWASP ZAP**
+
 **Docker Image**: `zaproxy/zap-weekly`
+
 - **Version Check**: Check the version via the web interface at `http://<zap-server-ip>:8081`.
 - **Version**: ZAP D-2024-07-22
 - OS Version :
+
 ```
   PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
   NAME="Debian GNU/Linux"
@@ -129,26 +149,35 @@ Version 11.1.0 (commit: 5b85c4c2fcf5d32d4f68aaef345c53096359b2f1, branch: HEAD)
 ```
 
 ![image](./screenshots/zap_version.png)
+
 ### 8. **PostgreSQL**
+
 **Docker Image**: `postgres:13`
+
 - **Version Check**:
   ```sh
   docker run postgres:13 --version
   ```
+
 ```
 Version: postgres (PostgreSQL) 13.15 (Debian 13.15-1.pgdg120+1)
 OS Version: Linux 5f89576cd8e0 6.6.32-linuxkit #1 SMP Thu Jun 13 14:13:01 UTC 2024 aarch64 GNU/Linux
 ```
 
 ### 9. **Ansible**
+
 **Commands**:
+
 ```sh
 sudo apt-get install ansible -y
 ```
+
 - **Version Check**:
+
 ```sh
   ansible --version
 ```
+
 ```
 - Version : ansible [core 2.14.3]
   config file = None
@@ -163,11 +192,12 @@ sudo apt-get install ansible -y
 
 ### 10. **AWS CLI**
 
-
 **Version Check**:
-  ```sh
-  aws --version
-  ```
+
+```sh
+aws --version
+```
+
 Version: aws-cli/2.16.4 Python/3.11.9 Darwin/23.5.0 source/arm64
 
 ### 11. **jq**
@@ -179,7 +209,9 @@ Version: aws-cli/2.16.4 Python/3.11.9 Darwin/23.5.0 source/arm64
 - Version : jq-1.6
 
 ### 12. **SonarQube Scanner**
+
 **Docker Image**: `sonarsource/sonar-scanner-cli`
+
 - **Version Check**:
   ```sh
   docker run sonarsource/sonar-scanner-cli sonar-scanner --version
@@ -194,33 +226,34 @@ Version: aws-cli/2.16.4 Python/3.11.9 Darwin/23.5.0 source/arm64
 command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f1c8814cc397f6142ab0eed8e9 list-plugins
 
 
-| Plugin Name                           | Description                                             | Version                         |
-|---------------------------------------|---------------------------------------------------------|---------------------------------|
-| ansible                               | Ansible plugin                                          | 403.v8d0ca_dcb_b_502            |
-| apache-httpcomponents-client-4-api    | Apache HttpComponents Client 4.x API Plugin             | 4.5.14-208.v438351942757        |
-| aws-credentials                       | AWS Credentials Plugin                                  | 231.v08a_59f17d742              |
-| blueocean                             | Blue Ocean                                              | 1.27.14                         |
-| docker-commons                        | Docker Commons Plugin                                   | 439.va_3cb_0a_6a_fb_29          |
-| docker-workflow                       | Docker Pipeline                                         | 580.vc0c340686b_54              |
-| git                                   | Git plugin                                              | 5.2.2                           |
-| github                                | GitHub plugin                                           | 1.39.0                          |
-| pipeline-aws                          | Pipeline: AWS Steps                                     | 1.45                            |
-| pipeline-model-definition             | Pipeline: Declarative                                    | 2.2205.vc9522a_9d5711           |
-| prometheus                            | Prometheus metrics plugin                               | 780.v7c50a_d288424              |
-| sonar                                 | SonarQube Scanner for Jenkins                           | 2.17.2                          |
-| zap                                   | Official OWASP ZAP Jenkins Plugin                       | 1.1.0                           |
-
+| Plugin Name                        | Description                                 | Version                  |
+| ---------------------------------- | ------------------------------------------- | ------------------------ |
+| ansible                            | Ansible plugin                              | 403.v8d0ca_dcb_b_502     |
+| apache-httpcomponents-client-4-api | Apache HttpComponents Client 4.x API Plugin | 4.5.14-208.v438351942757 |
+| aws-credentials                    | AWS Credentials Plugin                      | 231.v08a_59f17d742       |
+| blueocean                          | Blue Ocean                                  | 1.27.14                  |
+| docker-commons                     | Docker Commons Plugin                       | 439.va_3cb_0a_6a_fb_29   |
+| docker-workflow                    | Docker Pipeline                             | 580.vc0c340686b_54       |
+| git                                | Git plugin                                  | 5.2.2                    |
+| github                             | GitHub plugin                               | 1.39.0                   |
+| pipeline-aws                       | Pipeline: AWS Steps                         | 1.45                     |
+| pipeline-model-definition          | Pipeline: Declarative                       | 2.2205.vc9522a_9d5711    |
+| prometheus                         | Prometheus metrics plugin                   | 780.v7c50a_d288424       |
+| sonar                              | SonarQube Scanner for Jenkins               | 2.17.2                   |
+| zap                                | Official OWASP ZAP Jenkins Plugin           | 1.1.0                    |
 
 ### Additional Tools and Libraries
+
 1. **curl**:
-    1. Version: curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
-       Release-Date: 2023-02-20, security patched: 7.88.1-10+deb12u6
-       Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
-       Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
+   1. Version: curl 7.88.1 (aarch64-unknown-linux-gnu) libcurl/7.88.1 OpenSSL/3.0.13 zlib/1.2.13 brotli/1.0.9 zstd/1.5.4 libidn2/2.3.3 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.10.0 nghttp2/1.52.0 librtmp/2.3 OpenLDAP/2.5.13
+      Release-Date: 2023-02-20, security patched: 7.88.1-10+deb12u6
+      Protocols: dict file ftp ftps gopher gophers http https imap imaps ldap ldaps mqtt pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
+      Features: alt-svc AsynchDNS brotli GSS-API HSTS HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL threadsafe TLS-SRP UnixSockets zstd
 2. **sudo**:
-    1. Version: Sudo version 1.9.13p3
+   1. Version: Sudo version 1.9.13p3
 
 ### Commands to Check Versions
+
 1. **`jenkins`**: Included in Docker image.
 2. **`maven`**: `mvn -v`
 3. **`docker`**: `docker --version`
@@ -237,7 +270,6 @@ command: java -jar jenkins-cli.jar -s http://localhost:8080/ -auth admin:f49e45f
 
 By following the above instructions, you can identify the versions of the software and libraries used in your setup. This ensures that you have consistent and compatible versions across different environments.
 
-
 # Steps
 
 **Goal:** Build a DevSecOps pipeline for the spring-petclinic project using Docker, Jenkins, SonarQube, Prometheus, Grafana, OWASP ZAP, and Ansible for deploying the application to an AWS EC2 instance.
@@ -250,32 +282,32 @@ To accomplish this assignment, follow these steps:
 
    Referenced:  [link:](https://docs.docker.com/desktop/install/mac-install/#install-and-run-docker-desktop-on-mac)
 
-    1. Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)  
-       ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
-    2. Download complete  
-       ![image](./screenshots/2_download_complete.png)
-    3. Copy Docker.app to Applications folder  
-       ![image](./screenshots/3_Copy_Docker.app_to_Applications_folder.png)
-    4. Copying to applications folder on my mac in progress  
-       ![image](./screenshots/4_Copying_in_progress.png)
-    5. Open the copied docker file  
-       ![image](./screenshots/5_Open_the_copied_Docker_app.png)
-    6. Accept Docker service agreement  
-       ![image](./screenshots/6_Accept_the_terms_before_docker_starts.png)
-    7. Use recommended settings and Finish  
-       ![image](./screenshots/7_Use_recommended_settings_and_finish.png)
-    8. Either create an account on docker or sign in using existing account.  
-       ![image](./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png)
-    9. Signing in using existing docker account.   
-       ![image](./screenshots/9_Signing_in_using_existing_docker_account.png)
-    10. Docker is installed and signed-in. Now proceed to the docker desktop app.  
-        ![image](./screenshots/11_Docker_is_installed_and_signed-in_proceed.png)
-    11. Check if docker is installed by checking the docker version  
-        ![image](./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png)
-    12. Run hello-world test just to make sure everything is working fine.  
-        ![image](./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png)
-    13. Check on the docker app if the hello-world container instance ran and exited as expected  
-        ![image](./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png)
+   1. Downloaded the Docker file from [link](https://desktop.docker.com/mac/main/arm64/Docker.dmg?utm_source=docker&utm_medium=webreferral&utm_campaign=docs-driven-download-mac-arm64&_gl=1*1utz1qt*_ga*MTU0MDU1NDI0MS4xNzA4MDc0NTYw*_ga_XJWPQMJYHQ*MTcxOTE0MTk4OS4xMS4xLjE3MTkxNDE5ODkuNjAuMC4w)
+      ![image](./screenshots/1_download_docker_file_for_apple_silicon_chip.png)
+   2. Download complete
+      ![image](./screenshots/2_download_complete.png)
+   3. Copy Docker.app to Applications folder
+      ![image](./screenshots/3_Copy_Docker.app_to_Applications_folder.png)
+   4. Copying to applications folder on my mac in progress
+      ![image](./screenshots/4_Copying_in_progress.png)
+   5. Open the copied docker file
+      ![image](./screenshots/5_Open_the_copied_Docker_app.png)
+   6. Accept Docker service agreement
+      ![image](./screenshots/6_Accept_the_terms_before_docker_starts.png)
+   7. Use recommended settings and Finish
+      ![image](./screenshots/7_Use_recommended_settings_and_finish.png)
+   8. Either create an account on docker or sign in using existing account.
+      ![image](./screenshots/8_Either_create_an_account_on_docker_or_sign_in_using_existing_account.png)
+   9. Signing in using existing docker account.
+      ![image](./screenshots/9_Signing_in_using_existing_docker_account.png)
+   10. Docker is installed and signed-in. Now proceed to the docker desktop app.
+       ![image](./screenshots/11_Docker_is_installed_and_signed-in_proceed.png)
+   11. Check if docker is installed by checking the docker version
+       ![image](./screenshots/12_Check_if_docker_is_installed_by_checking_the_docker_version.png)
+   12. Run hello-world test just to make sure everything is working fine.
+       ![image](./screenshots/13_Run_hello-world_test_just_to_make_sure_everything_is_work_fine.png)
+   13. Check on the docker app if the hello-world container instance ran and exited as expected
+       ![image](./screenshots/14_Check_on_the_docker_app_if_the_hello-world_container_instance_ran_and_exited_as_expected.png)
 
 ## Step 2: Configure Docker Containers
 
@@ -284,16 +316,17 @@ To accomplish this assignment, follow these steps:
 - Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository on GitHub/GitLab.
 - Clone the forked repository to your local machine.
 
-
 1. 1. Fork the [spring-petclinic](https://github.com/spring-projects/spring-petclinic) repository to your GitHub/GitLab account.
       ![image](./screenshots/01_fork_and_clone.png)
 2. ![image](./screenshots/02_fork_and_clone.png)
 3. ![image](./screenshots/03_fork_and_clone.png)
 4. Clone the forked repository to your local machine:
+
    ```bash
    git clone https://github.com/<your-username>/spring-petclinic.git
    cd spring-petclinic
    ```
+
    **output**:
    sreeakash@KP-QNPHXDYRW1 DevOps-FinalProject-Akash % git clone https://github.com/akashcha/spring-petclinic.git
    Cloning into 'spring-petclinic'...
@@ -304,11 +337,12 @@ To accomplish this assignment, follow these steps:
 
    **Screenshot**:
    ![image](./screenshots/Pasted image 20240721132801.png)
+
 ### Project Structure
 
 Below is the text representation of the project structure shown in the image:
 
-```  
+```
 DevOps-FinalProject
 ├── ansible
 │   ├── deploy-petclinic.yml
@@ -338,7 +372,7 @@ DevOps-FinalProject
 ├── Readme.md
 └── textDump.txt
 
-```  
+```
 
 ### Create Docker Containers
 
@@ -346,7 +380,7 @@ DevOps-FinalProject
 
 Create Jenkins container using a dockerfile (Jenkinsfile) including all the plugins that may be required for accomplish the all the tasks. We use a custom script to create jenkins docker container. Do not instantiate the container yet; this will occur later in the process. Just build the file for now:
 
-```docker  
+```docker
 FROM jenkins/jenkins:lts  
    
 USER root  
@@ -412,56 +446,56 @@ COPY ansible /opt/ansible
   
 ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "] # Override the default entrypoint 
   
-```  
+```
 
 ##### Explanation: Detailed Breakdown of Each Command
 
-```Dockerfile  
+```Dockerfile
 # Use the official Jenkins LTS (Long Term Support) image as the base image  
 FROM jenkins/jenkins:lts  
-```  
+```
 
 - **FROM jenkins/jenkins:lts**: This sets the base image for the Dockerfile to the official Jenkins LTS image, which includes the Jenkins application and all necessary dependencies to run it.
 
-```Dockerfile  
+```Dockerfile
 # Switch to the root user to perform installation tasks  
 USER root  
-```  
+```
 
 - **USER root**: This switches the user to `root` so that we have the necessary permissions to install additional packages and perform configurations.
 
-```Dockerfile  
+```Dockerfile
 # Update the package list and install sudo and Maven  
 RUN apt-get update \  
     && apt-get install -y sudo \    && apt-get install -y maven \    && rm -rf /var/lib/apt/lists/*  
-```  
+```
 
 - **RUN apt-get update**: Updates the list of available packages and their versions.
 - **&& apt-get install -y sudo**: Installs the `sudo` package, which allows a permitted user to execute a command as the superuser or another user.
 - **&& apt-get install -y maven**: Installs Apache Maven, a build automation tool used primarily for Java projects.
 - **&& rm -rf /var/lib/apt/lists/**: Cleans up the package lists to reduce the image size, which is a good practice to keep the Docker image small and efficient.
 
-```Dockerfile  
+```Dockerfile
 # Optionally set up Maven environment variables for easy access  
 ENV MAVEN_HOME /usr/share/maven  
 ENV PATH $MAVEN_HOME/bin:$PATH  
-```  
+```
 
 - **ENV MAVEN_HOME /usr/share/maven**: Sets the `MAVEN_HOME` environment variable to the location where Maven is installed.
 - **ENV PATH $MAVEN_HOME/bin:$PATH**: Adds Maven’s `bin` directory to the `PATH` environment variable so that Maven commands can be run from anywhere.
 
-```Dockerfile  
+```Dockerfile
 # Allow the Jenkins user to run sudo commands without a password  
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers  
-```  
+```
 
 - **RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers**: Modifies the sudoers file to allow the `jenkins` user to execute `sudo` commands without needing to enter a password. This is important for automating tasks that require elevated privileges.
 
-```Dockerfile  
+```Dockerfile
 # Install necessary packages for Docker and other tools  
 RUN sudo apt-get update \  
     && sudo apt-get install ca-certificates curl unzip \    && sudo install -m 0755 -d /etc/apt/keyrings \    && sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \    && sudo chmod a+r /etc/apt/keyrings/docker.asc  
-```  
+```
 
 - **sudo apt-get update**: Updates the list of available packages and their versions.
 - **sudo apt-get install ca-certificates curl unzip**: Installs the necessary packages for handling HTTPS connections (`ca-certificates`), transferring data with URLs (`curl`), and unzipping files (`unzip`).
@@ -469,97 +503,97 @@ RUN sudo apt-get update \
 - **sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc**: Downloads Docker’s official GPG key and saves it to the keyrings directory.
 - **sudo chmod a+r /etc/apt/keyrings/docker.asc**: Changes the permissions of the GPG key file to make it readable by all users.
 
-```Dockerfile  
+```Dockerfile
 # Add Docker's official GPG key and repository  
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null  
 RUN sudo apt-get update  
-```  
+```
 
 - **RUN echo ...**: Adds Docker’s official repository to the sources list for the package manager. The repository URL is determined based on the current system’s architecture and OS version.
 - **RUN sudo apt-get update**: Updates the package list to include the packages available from the newly added Docker repository.
 
-```Dockerfile  
+```Dockerfile
 # Install Docker, Docker Compose, and other necessary packages  
 RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y  
-```  
+```
 
 - **RUN sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y**: Installs Docker Engine (`docker-ce`), Docker CLI (`docker-ce-cli`), Containerd (`containerd.io`), Docker Buildx plugin (`docker-buildx-plugin`), and Docker Compose plugin (`docker-compose-plugin`).
 
-```Dockerfile  
+```Dockerfile
 # Install iproute2 for networking tools  
 RUN sudo apt-get install iproute2 -y  
-```  
+```
 
 - **RUN sudo apt-get install iproute2 -y**: Installs `iproute2`, a collection of utilities for controlling and monitoring networking, routing, and traffic control in Linux.
 
-```Dockerfile  
+```Dockerfile
 # Install Ansible for automation and configuration management  
 RUN sudo apt-get install ansible -y  
-```  
+```
 
 - **RUN sudo apt-get install ansible -y**: Installs Ansible, an open-source automation tool for configuration management, application deployment, and task automation.
 
-```Dockerfile  
+```Dockerfile
 # Install OpenSSH server for SSH functionalities  
 RUN sudo apt-get install openssh-server -y  
-```  
+```
 
 - **RUN sudo apt-get install openssh-server -y**: Installs OpenSSH server, which allows the container to handle SSH connections.
 
-```Dockerfile  
+```Dockerfile
 # Update the package list and install curl, gnupg, and apt-transport-https for downloading the AWS CLI  
 RUN apt-get update && apt-get install -y curl gnupg apt-transport-https  
-```  
+```
 
 - **RUN apt-get update && apt-get install -y curl gnupg apt-transport-https**: Updates the package list and installs `curl` (for transferring data with URLs), `gnupg` (for encryption and signing data and communications), and `apt-transport-https` (for accessing repositories over HTTPS).
 
-```Dockerfile  
+```Dockerfile
 # Install AWS CLI for managing AWS resources  
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \  
     unzip awscliv2.zip && \    sudo ./aws/install  
-```  
+```
 
 - **RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip"**: Downloads the AWS CLI installer for the appropriate architecture.
 - **&& unzip awscliv2.zip**: Unzips the downloaded AWS CLI installer.
 - **&& sudo ./aws/install**: Runs the AWS CLI installer.
 
-```Dockerfile  
+```Dockerfile
 # Copy the SSH key to a specific location in the Docker image for secure access  
 COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem  
 COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub  
 RUN chmod 600 /root/.ssh/petclinic_key_pair.pem  
-```  
+```
 
 - **COPY key/petclinic_key_pair.pem /root/.ssh/petclinic_key_pair.pem**: Copies the private SSH key to the specified location in the Docker image.
 - **COPY key/petclinic_key_pair.pem.pub /root/.ssh/petclinic_key_pair.pem.pub**: Copies the public SSH key to the specified location in the Docker image.
 - **RUN chmod 600 /root/.ssh/petclinic_key_pair.pem**: Changes the permissions of the private SSH key to make it readable only by the owner, ensuring security.
 
-```Dockerfile  
+```Dockerfile
 # Switch back to the Jenkins user  
 USER jenkins  
-```  
+```
 
 - **USER jenkins**: Switches the user back to `jenkins` for the remaining operations.
 
-```Dockerfile  
+```Dockerfile
 # Install necessary Jenkins plugins using the Jenkins Plugin CLI  
 RUN jenkins-plugin-cli --plugins \  
     trilead-api:2.147.vb_73cc728a_32e \    docker-workflow \    workflow-aggregator \    sonar \    prometheus \    zap \    git \    pipeline-stage-step \    ansible \    cloudbees-disk-usage-simple \    blueocean \    aws-credentials \    credentials-binding \    pipeline-aws  
-```  
+```
 
 - **RUN jenkins-plugin-cli --plugins ...**: Uses the Jenkins Plugin CLI to install a list of essential Jenkins plugins. Each plugin is specified by its identifier and version (if needed). These plugins provide various functionalities, such as Docker integration (`docker-workflow`), pipeline support (`workflow-aggregator`), static analysis (`sonar`), monitoring (`prometheus`), security analysis (`zap`), version control (`git`), and AWS integration (`aws-credentials`, `pipeline-aws`).
 
-```Dockerfile  
+```Dockerfile
 # Copy Ansible playbooks or configuration files to the Docker image  
 COPY ansible /opt/ansible  
-```  
+```
 
 - **COPY ansible /opt/ansible**: Copies the Ansible playbooks or configuration files from the host machine to the specified directory in the Docker image.
 
-```Dockerfile  
+```Dockerfile
 # Override the default entrypoint to start Docker service and then Jenkins  
 ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
-```  
+```
 
 - **ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]**: Overrides the default entrypoint to first start the Docker service (`sudo service docker start`) and then start Jenkins using Tini (`/usr/bin/tini -- /usr/local/bin/jenkins.sh`). Tini is used to ensure proper handling of signal forwarding and zombie reaping.
 
@@ -567,7 +601,7 @@ ENTRYPOINT ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /us
 
 Create docker compose (docker-compose.yml) that creates all the containers with appropriate configs and custom docker network. This Docker compose file will reference the Dockerfile written for Jenkins:
 
-```bash  
+```bash
 services:
   jenkins:
     container_name: jenkins
@@ -673,7 +707,7 @@ networks:
     ipam:
       config:
         - subnet: 192.168.1.0/24
-```  
+```
 
 ##### Explanation of `docker-compose.yml` Commands
 
@@ -683,7 +717,7 @@ This section defines the different services (containers) to be run by Docker Com
 
 - Jenkins Service
 
-```yaml  
+```yaml
   jenkins:
     container_name: jenkins
     build:
@@ -702,27 +736,27 @@ This section defines the different services (containers) to be run by Docker Com
       dev-network:
         ipv4_address: 192.168.1.2
     entrypoint: ["/bin/sh", "-c" , "sudo service docker start && /usr/bin/tini -- /usr/local/bin/jenkins.sh "]  
-```  
+```
 
 - **container_name**: Assigns a name to the container.
 - **build**:
 
-    - **context**: Sets the build context to the current directory.
-    - **dockerfile**: Specifies the Dockerfile to use for building the image.
+  - **context**: Sets the build context to the current directory.
+  - **dockerfile**: Specifies the Dockerfile to use for building the image.
 - **user**: Sets the user as `root` to execute commands with root privileges.
 - **privileged**: Allows the container to run in privileged mode, giving it extended privileges.
 - **ports**: Maps host ports to container ports:
 
-    - `8080:8080`: Jenkins web UI.
-    - `50000:50000`: Jenkins agent connections.
-    - `8082:8082`: Spring PetClinic app.
-    - `8084:8084`: OWASP ZAP exposure.
+  - `8080:8080`: Jenkins web UI.
+  - `50000:50000`: Jenkins agent connections.
+  - `8082:8082`: Spring PetClinic app.
+  - `8084:8084`: OWASP ZAP exposure.
 - **volumes**: Mounts the Docker socket to the container to allow Docker commands within Jenkins.
 - **networks**: Connects the container to a custom network with a specified IP address.
 - **entrypoint**: Sets the command to run when the container starts. It starts the Docker service and Jenkins.
 - SonarQube Service
 
-```yaml  
+```yaml
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
@@ -739,7 +773,7 @@ This section defines the different services (containers) to be run by Docker Com
         ipv4_address: 192.168.1.3
 
 
-```  
+```
 
 - **image**: Uses the latest SonarQube image from Docker Hub.
 - **container_name**: Assigns a name to the container.
@@ -749,7 +783,7 @@ This section defines the different services (containers) to be run by Docker Com
 - **networks**: Connects the container to a custom network with a specified IP address.
 - Database Service (PostgreSQL)
 
-```yaml  
+```yaml
   db:
     image: postgres:13
     container_name: postgres
@@ -760,7 +794,7 @@ This section defines the different services (containers) to be run by Docker Com
     networks:
       dev-network:
         ipv4_address: 192.168.1.7 
-```  
+```
 
 - **image**: Uses PostgreSQL version 13 image from Docker Hub.
 - **container_name**: Assigns a name to the container.
@@ -768,7 +802,7 @@ This section defines the different services (containers) to be run by Docker Com
 - **networks**: Connects the container to a custom network with a specified IP address.
 - Prometheus Service
 
-```yaml  
+```yaml
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -787,7 +821,7 @@ This section defines the different services (containers) to be run by Docker Com
         ipv4_address: 192.168.1.4
 
 
-```  
+```
 
 - **image**: Uses the latest Prometheus image from Docker Hub.
 - **container_name**: Assigns a name to the container.
@@ -797,7 +831,7 @@ This section defines the different services (containers) to be run by Docker Com
 - **networks**: Connects the container to a custom network with a specified IP address.
 - Grafana Service
 
-```yaml  
+```yaml
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -818,7 +852,7 @@ This section defines the different services (containers) to be run by Docker Com
 
   volumes:
     grafana-storage:
-```  
+```
 
 - **image**: Uses the latest Grafana image from Docker Hub.
 - **container_name**: Assigns a name to the container.
@@ -828,7 +862,7 @@ This section defines the different services (containers) to be run by Docker Com
 - **networks**: Connects the container to a custom network with a specified IP address.
 - OWASP ZAP Service
 
-```yaml  
+```yaml
   owasp-zap:
     image: zaproxy/zap-weekly
     container_name: owasp-zap
@@ -844,7 +878,7 @@ This section defines the different services (containers) to be run by Docker Com
       timeout: 30s
       retries: 3
       start_period: 30s
-```  
+```
 
 - **image**: Uses the latest OWASP ZAP weekly image from Docker Hub.
 - **container_name**: Assigns a name to the container.
@@ -856,18 +890,18 @@ This section defines the different services (containers) to be run by Docker Com
 
 This section defines the custom network to be used by the services.
 
-```yaml  
+```yaml
 networks:
   dev-network:
     driver: bridge
     ipam:
       config:
         - subnet: 192.168.1.0/24
-```  
+```
 
 - **driver: bridge**: Specifies that the network uses the bridge driver.
 - **ipam**: Configures IP address management for the network.
-    - **subnet: 192.168.1.0/24**: Defines the subnet for the custom network, allowing IP addresses from 192.168.1.1 to 192.168.1.254.
+  - **subnet: 192.168.1.0/24**: Defines the subnet for the custom network, allowing IP addresses from 192.168.1.1 to 192.168.1.254.
 
 ## Step 3: Running Containers and Initial Setup
 
@@ -885,44 +919,44 @@ In order to have a place to store these credentials, you must instantiate your c
 
 1. If you don't already have Docker Desktop started, start it.
 2. Build he container using the following command:
-    ```sh
-    docker compose build 
-    ```
+
+   ```sh
+   docker compose build 
+   ```
 
    ![image](./screenshots/A00_docker_compose_up_-d.png.png)
-
-
 3. Run the following command from the main project directory.
-    ```bash  
-        docker compose -p devops-finalproject-team4 up -d 
-    ```    
+
+   ```bash
+       docker compose -p devops-finalproject-team4 up -d 
+   ```
+
    NOTE: The project name should be passed or it will take the project directory name as the default name which might cause issues with the network setup.
 
-   This command instantiates the volumes, networks, and containers required.  
-   Screenshot:  
+   This command instantiates the volumes, networks, and containers required.
+   Screenshot:
    ![image](./screenshots/A01_docker_compose_up_-d.png.png)
 
    If this is the first time you have ever built the containers, you will see something like this as they get built:
 
-   As the Jenkins container builds for the first time, you will see something like this:  
+   As the Jenkins container builds for the first time, you will see something like this:
    Screenshot:  ![image](./screenshots/A001_docker_compose_up_-d_first_time_jenkins_build.png)
-   Ultimately, the starting printouts will look the same:   
+   Ultimately, the starting printouts will look the same:
    Screenshot: ![image](./screenshots/A002_docker_compose_up_-d_first_time_start.png)
-3. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:  
+4. You will now need to do administrative setup of Jenkins. First, navigate to localhost:8080 in your browser:
    Screenshot:  ![image](./screenshots/A02_Jenkins_splashScreen.png)
-4. To get the administrative password, go to Docker Desktop, click on Jenkins  
+5. To get the administrative password, go to Docker Desktop, click on Jenkins
    Screenshot:  ![image](./screenshots/A03_Jenkins_openContainer.png)
-5. Now click on "Logs"  
+6. Now click on "Logs"
    Screenshot:  ![image](./screenshots/A04_Jenkins_logs.png)
-6. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.  
+7. And copy the provided password. Alternatively, this will be available in the terminal (after lots of searching) if you run the docker compose up command *without* the -d flag.
    Screenshot:  ![image](./screenshots/A05_Jenkins_logs_copyPassword.png)
-7. Paste this into the Jenkins Password bar:  
+8. Paste this into the Jenkins Password bar:
    Screenshot:  ![image](./screenshots/A05_Jenkins_paste_password.png)
-8. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.  
+9. Because our plugins were programmatically installed in the Jenkins container as specified in the Dockerfile during the build process, there is no need to install the suggested plugins, and you can exit out of the landing screen. Click the "x" in the top right hand corner.
    Screenshot: ![image](./screenshots/A06_Jenkins_bypassLanding.png)
-9. Jenkins is now setup. Click "Start using Jenkins"  
-   Screenshot: ![image](./screenshots/A07_Jenkins_startUsing.png)
-
+10. Jenkins is now setup. Click "Start using Jenkins"
+    Screenshot: ![image](./screenshots/A07_Jenkins_startUsing.png)
 
 Here are the steps to create and store the `github-token`, `aws-credentials`, and `grafana-admin-pass` credentials in Jenkins:
 
@@ -932,57 +966,58 @@ Here are the steps to create and store the `github-token`, `aws-credentials`, an
 
 1. **Log in to GitHub**:
 
-    - Go to [GitHub](https://github.com/) and log in to your account.
+   - Go to [GitHub](https://github.com/) and log in to your account.
 2. **Generate a New Token**:
 
-    - Click on your profile picture in the top right corner and select `Settings`.  
-      ![image](./screenshots/15_githubToken_select_settings.png)
-    - In the left sidebar, click on `Developer settings`.  
-      ![image](./screenshots/16_githubToken_developer_settings.png)
-    - Click on `Personal access tokens`.  
-      ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
-    - Click on `Generate new token`. We used a fine-grained token.    
-      ![image](./screenshots/18_githubToken_generateToken.png)
-    - Give your token a descriptive name (e.g., `Jenkins Token`).  
-      ![image](./screenshots/19_githubToken_nameToken.png)
-    - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.  
-      ![image](./screenshots/20_githubToken_scopeToken.png)
-    - Click `Repository permissions`  
-      ![image](./screenshots/21_githubToken_repoClick.png)
-    - Select webhooks under permissions.  
-      ![image](./screenshots/22_githubToken_webHooks.png)
-    - Click on `Generate token`.  
-      ![image](./screenshots/23_githubToken_generateToken.png)
-    - Copy the token. You will need it for the next step. (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)  
-      ![image](./screenshots/24_githubToken_copyToken.png)
+   - Click on your profile picture in the top right corner and select `Settings`.
+     ![image](./screenshots/15_githubToken_select_settings.png)
+   - In the left sidebar, click on `Developer settings`.
+     ![image](./screenshots/16_githubToken_developer_settings.png)
+   - Click on `Personal access tokens`.
+     ![image](./screenshots/17_githubToken_fineGrainedTokens.png)
+   - Click on `Generate new token`. We used a fine-grained token.
+     ![image](./screenshots/18_githubToken_generateToken.png)
+   - Give your token a descriptive name (e.g., `Jenkins Token`).
+     ![image](./screenshots/19_githubToken_nameToken.png)
+   - Select the scopes you need for your project (e.g., `repo` for repository access). Provide access to the forked pet clinic repo.
+     ![image](./screenshots/20_githubToken_scopeToken.png)
+   - Click `Repository permissions`
+     ![image](./screenshots/21_githubToken_repoClick.png)
+   - Select webhooks under permissions.
+     ![image](./screenshots/22_githubToken_webHooks.png)
+   - Click on `Generate token`.
+     ![image](./screenshots/23_githubToken_generateToken.png)
+   - Copy the token. You will need it for the next step. (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)
+     ![image](./screenshots/24_githubToken_copyToken.png)
 
 #### Store GitHub Token in Jenkins
 
 1. **Log in to Jenkins**:
-    - Navigate to your Jenkins instance by going to localhost:8080  
-      ![image](./screenshots/B01_tokenSetup_NavigateToJenkins.png)
+
+   - Navigate to your Jenkins instance by going to localhost:8080
+     ![image](./screenshots/B01_tokenSetup_NavigateToJenkins.png)
 2. **Add the Token to Jenkins Credentials**:
 
-    - Go to `Manage Jenkins` > `Manage Credentials`.  
-      ![image](./screenshots/B02_tokenSetup_clickManageJenkins.png)
-    - Click on `Add Credentials`.  
-      ![image](./screenshots/B03_tokenSetup_clickManageCredentials.png)
-    - Select a domain (e.g., `Global`).   
-      ![image](./screenshots/B04_tokenSetup_clickGlobal.png)
-    - Click "adding some credentials"  
-      ![image](./screenshots/B05_tokenSteup_addCredentials.png)
-    - Select `Secret text` as the kind.  
-      ![image](./screenshots/B06_tokenSteup_selectSecretText.png)
-    - Paste the GitHub token in the `Secret` field and give it an ID `github-token`, optionally a description, then click 'Create'  
-      ![image](./screenshots/B07_tokenSteup_createSecretText.png)
-
+   - Go to `Manage Jenkins` > `Manage Credentials`.
+     ![image](./screenshots/B02_tokenSetup_clickManageJenkins.png)
+   - Click on `Add Credentials`.
+     ![image](./screenshots/B03_tokenSetup_clickManageCredentials.png)
+   - Select a domain (e.g., `Global`).
+     ![image](./screenshots/B04_tokenSetup_clickGlobal.png)
+   - Click "adding some credentials"
+     ![image](./screenshots/B05_tokenSteup_addCredentials.png)
+   - Select `Secret text` as the kind.
+     ![image](./screenshots/B06_tokenSteup_selectSecretText.png)
+   - Paste the GitHub token in the `Secret` field and give it an ID `github-token`, optionally a description, then click 'Create'
+     ![image](./screenshots/B07_tokenSteup_createSecretText.png)
 3. Using GitHub Token
-    - The reason to do this is to use that token via a reference in the Jenkinsfile, i.e.:
 
-```groovy  
+   - The reason to do this is to use that token via a reference in the Jenkinsfile, i.e.:
+
+```groovy
 environment {  
     GITHUB_TOKEN = credentials('github-token')}  
-```  
+```
 
 ### 2. AWS Credentials
 
@@ -990,63 +1025,60 @@ environment {
 
 1. **Log in to AWS Management Console**:
 
-    - Go to [AWS Management Console](https://aws.amazon.com/console/).  
-      ![image](./screenshots/C01_AWS_console.png)
-    - Log into your account. You will land on different pages, depending on your region, but Pittsburgh points here:  
-      ![image](./screenshots/C02_AWS_landing.png)
-
+   - Go to [AWS Management Console](https://aws.amazon.com/console/).
+     ![image](./screenshots/C01_AWS_console.png)
+   - Log into your account. You will land on different pages, depending on your region, but Pittsburgh points here:
+     ![image](./screenshots/C02_AWS_landing.png)
 2. **Generate Access Keys**:
 
-    - Click on your account name in the top right corner and select `My Security Credentials`.  
-      ![image](./screenshots/C03_AWS_selectSecurityCredentials.png)
-    - In the left sidebar, click on `Users`.  
-      ![image](./screenshots/C04_AWS_selectUsers.png)
-    - Select the user you want to create access keys for (or create a new user with programmatic access).  
-      ![image](./screenshots/C05_AWS_createNewUser.png)
-    - If creating a new user, name them something:  
-      ![image](./screenshots/C06_AWS_userName.png)
-    - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:  
-      ![image](./screenshots/C07_AWS_grantPermission.png)
-    - Click "create user"  
-      ![image](./screenshots/C08_AWS_clickCreateAWSUser.png)
-    - Click on the `Security credentials` tab.  
-      ![image](./screenshots/C09_AWS_clickSecurityCredentials.png)
-    - Click on `Create access key`.  
-      ![image](./screenshots/C10_AWS_clickCreateAccessKey.png)
-    - Select "Application Running on an AWS Compute Service" and Confirm that you understand the risks. Then click "Next"  
-      ![image](./screenshots/C11_AWS_accessKeyCreation.png)
-    - Write a description, if desired  
-      ![image](./screenshots/C12_AWS_accessKeyDescription.png)
-    - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.  
-      ![image](./screenshots/C13_AWS_accessKeyCopy.png)
+   - Click on your account name in the top right corner and select `My Security Credentials`.
+     ![image](./screenshots/C03_AWS_selectSecurityCredentials.png)
+   - In the left sidebar, click on `Users`.
+     ![image](./screenshots/C04_AWS_selectUsers.png)
+   - Select the user you want to create access keys for (or create a new user with programmatic access).
+     ![image](./screenshots/C05_AWS_createNewUser.png)
+   - If creating a new user, name them something:
+     ![image](./screenshots/C06_AWS_userName.png)
+   - If creating a new user, add the user as an Administrator. This policy can be more fine-tuned as necessary:
+     ![image](./screenshots/C07_AWS_grantPermission.png)
+   - Click "create user"
+     ![image](./screenshots/C08_AWS_clickCreateAWSUser.png)
+   - Click on the `Security credentials` tab.
+     ![image](./screenshots/C09_AWS_clickSecurityCredentials.png)
+   - Click on `Create access key`.
+     ![image](./screenshots/C10_AWS_clickCreateAccessKey.png)
+   - Select "Application Running on an AWS Compute Service" and Confirm that you understand the risks. Then click "Next"
+     ![image](./screenshots/C11_AWS_accessKeyCreation.png)
+   - Write a description, if desired
+     ![image](./screenshots/C12_AWS_accessKeyDescription.png)
+   - Copy the `Access key ID` and `Secret access key`. You will need them for the next step.
+     ![image](./screenshots/C13_AWS_accessKeyCopy.png)
 
 #### Store AWS Credentials in Jenkins
 
 1. **Log in to Jenkins**:
 
-    - Navigate to your Jenkins instance; same as before.
-
+   - Navigate to your Jenkins instance; same as before.
 2. **Add the AWS Credentials to Jenkins**:
 
-    - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
-    - Select a domain (e.g., `Global`). (See above for directions/screenshots)
-    - Click on `Add Credentials`.  
-      ![image](./screenshots/C14_AWS_clickAddCredentials.png)
-    - Select `AWS Credentials` as the kind.  
-      ![image](./screenshots/C15_AWS_selectAddCredentials.png)
-    - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.  
-      ![image](./screenshots/C16_AWS_enterAddCredentials.png)
-    - A successful addition will look like this:  
-      ![image](./screenshots/C17_AWS_addedCredentials.png)
-
+   - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
+   - Select a domain (e.g., `Global`). (See above for directions/screenshots)
+   - Click on `Add Credentials`.
+     ![image](./screenshots/C14_AWS_clickAddCredentials.png)
+   - Select `AWS Credentials` as the kind.
+     ![image](./screenshots/C15_AWS_selectAddCredentials.png)
+   - Enter the `Access key ID` and `Secret access key`, give it an ID `aws-credentials`, click `OK`.
+     ![image](./screenshots/C16_AWS_enterAddCredentials.png)
+   - A successful addition will look like this:
+     ![image](./screenshots/C17_AWS_addedCredentials.png)
 3. **Using AWS Credentials**
 
    We have entered these credentials to use them within our Jenkisfile, example below:
 
-```groovy  
+```groovy
 withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {  
     // Your AWS related code here}  
-```  
+```
 
 ### 3. Grafana Admin Credentials
 
@@ -1054,73 +1086,69 @@ withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}") {
 
 1. **Log in to Grafana**:
 
-    - Navigate to your Grafana instance, on localhost:8080. If this is your first time or you are not logged in, you will see the following screen:  
-      ![image](./screenshots/D00_Grafana_landingScreen.png)
-
+   - Navigate to your Grafana instance, on localhost:8080. If this is your first time or you are not logged in, you will see the following screen:
+     ![image](./screenshots/D00_Grafana_landingScreen.png)
 2. **Get Admin Credentials**:
 
-    - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup. You will immediately be prompted to change password.  
-      ![image](./screenshots/D01_Grafana_newPassword.png)
-    - Change the password if you are using the default credentials for the first time.
-    - You will land at the Grafana homepage.  
-      ![image](./screenshots/D02_Grafana_homePage.png)
-
+   - Use the default admin credentials (`admin` / `admin`) or the ones you have set during Grafana setup. You will immediately be prompted to change password.
+     ![image](./screenshots/D01_Grafana_newPassword.png)
+   - Change the password if you are using the default credentials for the first time.
+   - You will land at the Grafana homepage.
+     ![image](./screenshots/D02_Grafana_homePage.png)
 
 #### Store Grafana Admin Credentials in Jenkins
 
 1. **Log in to Jenkins**:
 
-    - Navigate to your Jenkins instance. No change from above.
-
+   - Navigate to your Jenkins instance. No change from above.
 2. **Add the Grafana Admin Credentials to Jenkins**:
 
-    - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
-    - Select a domain (e.g., `Global`). (See above for directions/screenshots)
-    - Click on `Add Credentials`. (See above for directions/screenshots)
-    - Select `Username with password` as the kind.
-    - Enter `admin` (or your admin username) in the `Username` field.
-    - Enter the admin password in the `Password` field.
-    - Give it an ID `grafana-admin-pass`.
-    - Click `OK`.  
-      ![image](./screenshots/D03_Grafana_addToJenkins.png)
-
+   - Go to `Manage Jenkins` > `Manage Credentials`. (See above for directions/screenshots)
+   - Select a domain (e.g., `Global`). (See above for directions/screenshots)
+   - Click on `Add Credentials`. (See above for directions/screenshots)
+   - Select `Username with password` as the kind.
+   - Enter `admin` (or your admin username) in the `Username` field.
+   - Enter the admin password in the `Password` field.
+   - Give it an ID `grafana-admin-pass`.
+   - Click `OK`.
+     ![image](./screenshots/D03_Grafana_addToJenkins.png)
 3. Using Grafana Admin Credentials
 
 - We did this to use Grafana via Jenkins, as shown below:
 
-```groovy  
+```groovy
 stage('Generate Grafana API Key') {
     steps {        withCredentials([usernamePassword(credentialsId: 'grafana-admin-pass', usernameVariable: 'GRAFANA_ADMIN_USER', passwordVariable: 'GRAFANA_ADMIN_PASS')]) {            sh """                apt-get update && apt-get install -y jq                curl -s -X POST ${GRAFANA_URL}/api/auth/keys \                -u $GRAFANA_ADMIN_USER:$GRAFANA_ADMIN_PASS \                -H "Content-Type: application/json" \                -d '{"name":"jenkins-api-key","role":"Admin"}' | jq -r '.key' > grafana_api_key.txt            """            script {                env.GRAFANA_API_KEY = readFile('grafana_api_key.txt').trim()                if (!env.GRAFANA_API_KEY) {                    error 'Failed to generate Grafana API Key.'                }            }        }    }}  
-```  
+```
 
 ### 4. Generate SonarQube Token:
 
 - To integrate SonarQube with Jenkins, you'll need an authentication token. Here's how to generate it:
 
-    - **Log in to SonarQube**:
+  - **Log in to SonarQube**:
 
-        - Open your SonarQube instance in your browser.
-        - Log in with your user credentials.
-    - **Generate a Token**:
+    - Open your SonarQube instance in your browser.
+    - Log in with your user credentials.
+  - **Generate a Token**:
 
-        - Click on your user avatar in the upper-right corner.
-        - Select `My Account`.
-        - Navigate to the `Security` tab.
-        - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
-        - Copy the generated token. You will not be able to see this token again, so store it securely.
+    - Click on your user avatar in the upper-right corner.
+    - Select `My Account`.
+    - Navigate to the `Security` tab.
+    - In the `Tokens` section, enter a name for the token (e.g., `jenkins-token`) and click `Generate`.
+    - Copy the generated token. You will not be able to see this token again, so store it securely.
 - **Store the SonarQube Token in Jenkins Credentials**:
 
-    - **Log in to Jenkins**:
-        - Open your Jenkins instance in your browser.
-        - Log in with your admin credentials.
-    - **Add the Token to Jenkins Credentials**:
-        - Go to `Manage Jenkins` > `Manage Credentials`.
-        - Select a domain (e.g., `Global`).
-        - Click on `Add Credentials`.
-        - Select `Secret text` as the kind.
-        - Paste the SonarQube token in the `Secret` field.
-        - Give it an ID `sonarqube-token`.
-        - Click `OK`.
+  - **Log in to Jenkins**:
+    - Open your Jenkins instance in your browser.
+    - Log in with your admin credentials.
+  - **Add the Token to Jenkins Credentials**:
+    - Go to `Manage Jenkins` > `Manage Credentials`.
+    - Select a domain (e.g., `Global`).
+    - Click on `Add Credentials`.
+    - Select `Secret text` as the kind.
+    - Paste the SonarQube token in the `Secret` field.
+    - Give it an ID `sonarqube-token`.
+    - Click `OK`.
 
 ### 5. AWS Related info for Jenkins
 
@@ -1161,7 +1189,7 @@ For an Ubuntu instance, the default SSH user is typically `ubuntu`. This user is
 
 a. Use your own keys: If you use your own keys, copy them in the key folder in the project with the name "petclinic_key_pair.pem" and "petclinic_key_pair.pem.pub".
 
-b. if you decide to use the keys generated AWS for manual setup follow the following steps.  
+b. if you decide to use the keys generated AWS for manual setup follow the following steps.
 **Step 1:** From the **EC2 Dashboard**, in the left navigation pane, click **Key Pairs** under **Network & Security**.
 
 **Step 2:** If you already have a key pair, the name will be listed there. For example, `petclinic_key_pair`.
@@ -1170,12 +1198,12 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
 
 - Enter `petclinic_key_pair` as the key pair name.
 - Choose the file format (PEM for Linux/Mac, PPK for Windows).
-- Click **Create Key Pair** and download the key file.  
+- Click **Create Key Pair** and download the key file.
   **Step 4**: Download and Store the Key File
 - **Download the Key File:** Save the private key file in a secure location. You will need this file to connect to your EC2 instances.
 
-    - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
-    - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
+  - **Linux/MacOS:** The file will be named something like `petclinic_key_pair.pem`.
+  - **Windows:** The file will be named something like `petclinic_key_pair.ppk`.
 - In our application, you will have to store the private key in the following location on jenkins: /root/.ssh/
 
 #### 6. Get Security Group ID
@@ -1206,9 +1234,9 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
 
 1. **Create Jenkins Pipeline**
 
-    - Create a `Jenkinsfile` in the root of the forked repository:
+   - Create a `Jenkinsfile` in the root of the forked repository:
 
-```groovy  
+```groovy
    pipeline {
     agent any
 
@@ -1723,7 +1751,7 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
         }
     }
 } 
-```  
+```
 
 ## Step 5: Configure Prometheus and Grafana
 
@@ -1731,7 +1759,7 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
 
 - Update the `prometheus.yml` file to scrape metrics from Jenkins:
 
-```yaml  
+```yaml
    global:
    scrape_interval: 15s
 
@@ -1745,23 +1773,24 @@ b. if you decide to use the keys generated AWS for manual setup follow the follo
      - job_name: 'prometheus'
        static_configs:
          - targets: ['192.168.1.4:9090']  
-```  
+```
 
 Explanation:
 
 This Prometheus configuration file sets up the global scrape interval and defines specific scrape jobs to collect metrics from Jenkins and Prometheus instances. Here’s a detailed explanation of each section:
 
 - Global Configuration
+
 ```yaml
 global:
   scrape_interval: 15s
 ```
-- **scrape_interval: 15s**: This sets the default time interval between each scrape of targets (i.e., how frequently Prometheus will collect metrics) to 15 seconds.
 
+- **scrape_interval: 15s**: This sets the default time interval between each scrape of targets (i.e., how frequently Prometheus will collect metrics) to 15 seconds.
 - Scrape Configurations
   This section defines the individual jobs for scraping metrics from different targets.
-
 - Job: Jenkins
+
 ```yaml
 scrape_configs:
   - job_name: 'jenkins'
@@ -1770,22 +1799,24 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.1.2:8080']
 ```
+
 - **job_name: 'jenkins'**: This names the scrape job as "jenkins".
 - **metrics_path: /prometheus**: This specifies the path on the target where metrics are exposed. For Jenkins, it’s often `/prometheus` if the Prometheus plugin is used.
 - **scheme: http**: This defines the protocol to be used for scraping metrics. Here, it's HTTP.
 - **static_configs**: This specifies the static configuration for the targets.
-    - **targets: ['192.168.1.2:8080']**: This is the list of targets to be scraped. In this case, it's the Jenkins server running on `192.168.1.2` at port `8080`.
 
+  - **targets: ['192.168.1.2:8080']**: This is the list of targets to be scraped. In this case, it's the Jenkins server running on `192.168.1.2` at port `8080`.
 - Job: Prometheus
+
 ```yaml
   - job_name: 'prometheus'
     static_configs:
       - targets: ['192.168.1.4:9090']
 ```
+
 - **job_name: 'prometheus'**: This names the scrape job as "prometheus".
 - **static_configs**: This specifies the static configuration for the targets.
-    - **targets: ['192.168.1.4:9090']**: This is the list of targets to be scraped. In this case, it's the Prometheus server itself running on `192.168.1.4` at port `9090`.
-
+  - **targets: ['192.168.1.4:9090']**: This is the list of targets to be scraped. In this case, it's the Prometheus server itself running on `192.168.1.4` at port `9090`.
 
 ### **Grafana Configuration**
 
@@ -1808,12 +1839,12 @@ datasources:
 
 - **apiVersion**: Specifies the version of the Grafana data source provisioning format.
 - **datasources**: Lists the data sources to be configured in Grafana.
-    - **name**: The name of the data source. Here, it is "Prometheus".
-    - **type**: The type of data source, which is "prometheus".
-    - **access**: Defines how Grafana will access the data source. "proxy" means Grafana will act as a proxy.
-    - **url**: The URL where the Prometheus data source is accessible.
-    - **isDefault**: Indicates if this data source should be the default one. It is set to `true`.
-    - **editable**: If `true`, allows editing the data source settings via the Grafana UI.
+  - **name**: The name of the data source. Here, it is "Prometheus".
+  - **type**: The type of data source, which is "prometheus".
+  - **access**: Defines how Grafana will access the data source. "proxy" means Grafana will act as a proxy.
+  - **url**: The URL where the Prometheus data source is accessible.
+  - **isDefault**: Indicates if this data source should be the default one. It is set to `true`.
+  - **editable**: If `true`, allows editing the data source settings via the Grafana UI.
 
 2. `dashboards.yml`
    This file defines the dashboard providers for Grafana.
@@ -1834,14 +1865,14 @@ providers:
 
 - **apiVersion**: Specifies the version of the Grafana dashboard provisioning format.
 - **providers**: Lists the dashboard providers to be configured in Grafana.
-    - **name**: The name of the provider. Here, it is "default".
-    - **orgId**: The organization ID to which this provider belongs. It is set to `1`.
-    - **folder**: The folder within Grafana where the dashboards will be stored. An empty string means the root folder.
-    - **type**: The type of provider, which is "file", meaning it reads dashboards from the file system.
-    - **disableDeletion**: If `false`, allows deletion of dashboards via the Grafana UI.
-    - **updateIntervalSeconds**: How often (in seconds) Grafana will scan the specified path for updated dashboards. It is set to `10` seconds.
-    - **options**: Additional options for the provider.
-        - **path**: The file system path where Grafana will look for dashboard definitions. Here, it is `/etc/grafana/provisioning/dashboards`.
+  - **name**: The name of the provider. Here, it is "default".
+  - **orgId**: The organization ID to which this provider belongs. It is set to `1`.
+  - **folder**: The folder within Grafana where the dashboards will be stored. An empty string means the root folder.
+  - **type**: The type of provider, which is "file", meaning it reads dashboards from the file system.
+  - **disableDeletion**: If `false`, allows deletion of dashboards via the Grafana UI.
+  - **updateIntervalSeconds**: How often (in seconds) Grafana will scan the specified path for updated dashboards. It is set to `10` seconds.
+  - **options**: Additional options for the provider.
+    - **path**: The file system path where Grafana will look for dashboard definitions. Here, it is `/etc/grafana/provisioning/dashboards`.
 
 These files are essential for configuring Grafana to connect to Prometheus and to manage dashboards efficiently through automated provisioning.
 
@@ -1851,7 +1882,6 @@ These files are essential for configuring Grafana to connect to Prometheus and t
 - **Rows and Layouts**: How the panels are arranged.
 - **Queries**: The data queries that fetch the data to be displayed.
 - **Settings**: Various settings like time ranges, refresh intervals, and template variables.
-
 
 ## Step 6: Configure Ansible for Deployment
 
@@ -1900,56 +1930,60 @@ The `deploy-petclinic.yml` file is an Ansible playbook used to deploy the Spring
     - debug:
         msg: "Process Status: {{ ps_result }}"
 ```
+
 #### Playbook Structure
+
 - **Name:** Deploy Spring PetClinic Application
 - **Hosts:** new_ec2 (refers to the group of hosts specified in the `inventory.ini` file)
 - **Become:** yes (gives root privileges for the tasks)
 - **Vars:**
-    - `jar_file`: Path to the Spring PetClinic JAR file
+  - `jar_file`: Path to the Spring PetClinic JAR file
 
 #### Tasks
+
 1. **Update the package list**
-    - **Module:** `apt`
-    - **Parameters:**
-        - `update_cache: yes` (updates the list of available packages and their versions)
 
+   - **Module:** `apt`
+   - **Parameters:**
+     - `update_cache: yes` (updates the list of available packages and their versions)
 2. **Install OpenJDK 17**
-    - **Module:** `apt`
-    - **Parameters:**
-        - `name: openjdk-17-jdk` (name of the package to be installed)
-        - `state: present` (ensures the package is installed)
 
+   - **Module:** `apt`
+   - **Parameters:**
+     - `name: openjdk-17-jdk` (name of the package to be installed)
+     - `state: present` (ensures the package is installed)
 3. **Copy the Spring PetClinic JAR file to the EC2 instance**
-    - **Module:** `copy`
-    - **Parameters:**
-        - `src: "{{ jar_file }}"` (source path of the JAR file on the control node)
-        - `dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar` (destination path on the EC2 instance)
-        - `mode: '0755'` (permissions of the copied file)
-        - `owner: ubuntu` (owner of the copied file)
-        - `group: ubuntu` (group of the copied file)
 
+   - **Module:** `copy`
+   - **Parameters:**
+     - `src: "{{ jar_file }}"` (source path of the JAR file on the control node)
+     - `dest: /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar` (destination path on the EC2 instance)
+     - `mode: '0755'` (permissions of the copied file)
+     - `owner: ubuntu` (owner of the copied file)
+     - `group: ubuntu` (group of the copied file)
 4. **Run the Spring PetClinic application**
-    - **Module:** `shell`
-    - **Parameters:**
-        - `cmd: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"` (command to run the JAR file in the background and redirect output to a log file)
-        - `args: chdir: /home/ubuntu` (changes directory to `/home/ubuntu` before running the command)
-    - **Register:** `run_result` (stores the result of the command execution)
 
+   - **Module:** `shell`
+   - **Parameters:**
+     - `cmd: "nohup java -jar /home/ubuntu/spring-petclinic-3.3.0-SNAPSHOT.jar > /home/ubuntu/petclinic.log 2>&1 &"` (command to run the JAR file in the background and redirect output to a log file)
+     - `args: chdir: /home/ubuntu` (changes directory to `/home/ubuntu` before running the command)
+   - **Register:** `run_result` (stores the result of the command execution)
 5. **Debug - Check if the application is running**
-    - **Module:** `shell`
-    - **Parameters:**
-        - `cmd: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"` (command to check if the JAR file is running)
-    - **Register:** `ps_result` (stores the result of the command execution)
 
+   - **Module:** `shell`
+   - **Parameters:**
+     - `cmd: "ps aux | grep spring-petclinic-3.3.0-SNAPSHOT.jar"` (command to check if the JAR file is running)
+   - **Register:** `ps_result` (stores the result of the command execution)
 6. **Debug: Output the run result**
-    - **Module:** `debug`
-    - **Parameters:**
-        - `msg: "Run Result: {{ run_result }}"` (displays the result of the run command)
 
+   - **Module:** `debug`
+   - **Parameters:**
+     - `msg: "Run Result: {{ run_result }}"` (displays the result of the run command)
 7. **Debug: Output the process status**
-    - **Module:** `debug`
-    - **Parameters:**
-        - `msg: "Process Status: {{ ps_result }}"` (displays the status of the running process)
+
+   - **Module:** `debug`
+   - **Parameters:**
+     - `msg: "Process Status: {{ ps_result }}"` (displays the status of the running process)
 
 ---
 
@@ -1961,260 +1995,267 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
 [new_ec2]  
 3.14.144.37 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=/root/.ssh/petclinic_key_pair.pem
 ```
-#### Inventory Structure
-- **Group:** new_ec2
-    - **Host:** IP address of the EC2 instance
-    - **Parameters:**
-        - `ansible_ssh_user=ubuntu` (specifies the SSH user to connect as)
-        - `ansible_ssh_private_key_file=/root/.ssh/petclinic_key_pair.pem` (path to the SSH private key file)
 
+#### Inventory Structure
+
+- **Group:** new_ec2
+  - **Host:** IP address of the EC2 instance
+  - **Parameters:**
+    - `ansible_ssh_user=ubuntu` (specifies the SSH user to connect as)
+    - `ansible_ssh_private_key_file=/root/.ssh/petclinic_key_pair.pem` (path to the SSH private key file)
 
 ## Step 8: Execution and Verification
 
-
-
 1. **Docker Compose Setup - Initial Pulling of Images**
-    - **Context:** This step involves pulling the required Docker images for the containers defined in the `docker-compose.yml` file.
-    - ![image](./screenshots/01_deployment_and_verification.png)
 
+   - **Context:** This step involves pulling the required Docker images for the containers defined in the `docker-compose.yml` file.
+   - ![image](./screenshots/01_deployment_and_verification.png)
 2. **Docker Compose Setup - Containers Running**
-    - **Context:** After pulling the images, the containers are started. This ensures all the necessary services like Jenkins, Grafana, SonarQube, Prometheus, and OWASP ZAP are running.
-    - ![image](./screenshots/02_deployment_and_verification.png)
 
+   - **Context:** After pulling the images, the containers are started. This ensures all the necessary services like Jenkins, Grafana, SonarQube, Prometheus, and OWASP ZAP are running.
+   - ![image](./screenshots/02_deployment_and_verification.png)
 3. **Docker Dashboard - All Containers Running**
-    - **Context:** This view from the Docker dashboard confirms that all containers required for the pipeline are up and running, showing their statuses and ports.
-    - ![image](./screenshots/03_deployment_and_verification.png)
 
+   - **Context:** This view from the Docker dashboard confirms that all containers required for the pipeline are up and running, showing their statuses and ports.
+   - ![image](./screenshots/03_deployment_and_verification.png)
 4. **Jenkins Login Page**
-    - **Context:** Accessing the Jenkins web interface requires logging in with the admin credentials.
-    - ![image](./screenshots/04_deployment_and_verification.png)
 
+   - **Context:** Accessing the Jenkins web interface requires logging in with the admin credentials.
+   - ![image](./screenshots/04_deployment_and_verification.png)
 5. **Jenkins Dashboard - Welcome Page**
-    - **Context:** The initial dashboard after logging into Jenkins, where you can start setting up jobs and configure the Jenkins environment.
-    - ![image](./screenshots/05_deployment_and_verification.png)
 
+   - **Context:** The initial dashboard after logging into Jenkins, where you can start setting up jobs and configure the Jenkins environment.
+   - ![image](./screenshots/05_deployment_and_verification.png)
 6. **Jenkins Global Credentials Configuration**
-    - **Context:** Configuring global credentials in Jenkins to securely store AWS credentials, GitHub tokens, and SonarQube tokens, which are required for various stages of the pipeline.
-    - ![image](./screenshots/06_deployment_and_verification.png)
 
+   - **Context:** Configuring global credentials in Jenkins to securely store AWS credentials, GitHub tokens, and SonarQube tokens, which are required for various stages of the pipeline.
+   - ![image](./screenshots/06_deployment_and_verification.png)
 7. **Jenkins - Creating a New Pipeline Project**
-    - **Context:** Setting up a new pipeline project in Jenkins for the DevOps final project. This involves entering the project name and selecting the pipeline type.
-    - ![image](./screenshots/07_deployment_and_verification.png)
+
+   - **Context:** Setting up a new pipeline project in Jenkins for the DevOps final project. This involves entering the project name and selecting the pipeline type.
+   - ![image](./screenshots/07_deployment_and_verification.png)
 8. **Jenkins - Pipeline Configuration**
-    - **Context:** Configuring the pipeline script, environment variables, build triggers, and other settings. This script defines all the stages and steps of the CI/CD pipeline.
-    - ![image](./screenshots/08_deployment_and_verification.png)
 
+   - **Context:** Configuring the pipeline script, environment variables, build triggers, and other settings. This script defines all the stages and steps of the CI/CD pipeline.
+   - ![image](./screenshots/08_deployment_and_verification.png)
 9. **Jenkins - Initial Pipeline Setup**
-    - **Context:** The view of the Jenkins project after initial setup, showing options like build now, configure, and status. No builds have been triggered yet.
-    - ![image](./screenshots/10_deployment_and_verification.png)
 
+   - **Context:** The view of the Jenkins project after initial setup, showing options like build now, configure, and status. No builds have been triggered yet.
+   - ![image](./screenshots/10_deployment_and_verification.png)
 10. **Jenkins - Build History**
+
     - **Context:** This view shows the build history and allows tracking the progress and status of each build. It also provides access to console outputs and other build data.
     - ![image](./screenshots/11_deployment_and_verification.png)
+11. **Jenkins Pipeline Execution Start**
 
-
-
-1. **Jenkins Pipeline Execution Start**
     - The pipeline is initiated, showing the build process in Jenkins, including the time the build started and the details of the Git repository used.
     - ![image](./screenshots/11_deployment_and_verification.png)
+12. **Pipeline Console Output**
 
-2. **Pipeline Console Output**
     - The console output of the Jenkins pipeline execution shows detailed logs of the steps being executed, including verification messages and publishing of reports.
     - ![image](./screenshots/12_deployment_and_verification.png)
+13. **Git Build Data**
 
-
-3. **Git Build Data**
     - This view provides information about the Git build data, including the revision and repository details, indicating that the build process has retrieved the code from the specified repository.
     - ![image](./screenshots/13_deployment_and_verification.png)
+14. **Jenkins Blue Ocean Pipeline View**
 
-1. **Jenkins Blue Ocean Pipeline View**
     - The Blue Ocean view offers a visual representation of the pipeline stages and steps, showing a successful pipeline execution with all stages completed.
     - ![image](./screenshots/14_deployment_and_verification.png)
+15. **ZAP Scanning Report**
 
-
-
-
-1. **ZAP Scanning Report**
     - The ZAP scanning report highlights the security vulnerabilities detected during the static analysis stage of the pipeline, providing detailed information about each alert.
     - ![image](./screenshots/15_deployment_and_verification.png)
+    - Zap report embedded on Jenkins console
+    - ![image](./screenshots/19_deployment_and_verification.png)
+16. **Prometheus and Grafana and sonarqube dashboards**
 
-6. **Spring PetClinic Application**
+    - The first image below shows that the connection between Jenkins and Prometheus is active and the second screen shows grafana dashboard with various details. The 3rd image is the sonarqube report after the first run.
+
+      ![image](./screenshots/20_deployment_and_verification.png)
+    - ![image](./screenshots/21_deployment_and_verification.png)
+    - ![image](./screenshots/21a_deployment_and_verification.png)
+17. **Spring PetClinic Application**
+
     - The Spring PetClinic application is shown running, indicating a successful deployment to the AWS EC2 instance. This view is part of the verification stage, confirming that the application is operational.
     - ![image](./screenshots/16_deployment_and_verification.png)
+18. **GitHub Pull Request for Data Update**
 
-7. **Spring PetClinic Veterinarian List**
-    - The updated list of veterinarians in the Spring PetClinic application verifies that the changes from the `data.sql` file have been correctly applied.
-    - ![image](./screenshots/19_deployment_and_verification.png)
-      ![image](./screenshots/21_deployment_and_verification.png)
-
-
-8. **GitHub Pull Request for Data Update**
     - The pull request in GitHub showcases the changes made to the `data.sql` file, including the insertions of new data entries for veterinarians, owners, pets, and visits.
     - ![image](./screenshots/17_deployment_and_verification.png)
+19. **GitHub Pull Request Merge Confirmation**
 
-9. **GitHub Pull Request Merge Confirmation**
     - The successful merge of the pull request confirms that the updates have been integrated into the main branch, ready for the next deployment cycle.
     - ![image](./screenshots/18_deployment_and_verification.png)
-
-10. Build got initiated automatically for the second time after code changes
+20. Build got initiated automatically for the second time after code changes
 
     ![image](./screenshots/22_deployment_and_verification.png)
-
-11. Changes to the code verified
+21. Changes to the code verified
 
     ![image](./screenshots/23_deployment_and_verification.png)
-
-12. Console output: SUCCESS for the second run
+22. Console output: SUCCESS for the second run
 
     ![image](./screenshots/24_deployment_and_verification.png)
+23. **Final Verification**
 
-1. Final Verification
-    - A final check of the veterinarian list confirms the successful deployment and update process, completing the pipeline verification.
+- the data.sql was updated to include the following record for veternarians under point 18 above.
 
 
+| Name            | Specialties |
+| --------------- | ----------- |
+| Teamfourdoc Cmu | radiology   |
+
+![image](./screenshots/Final_result_of_code_update_deployed_page1.png)
+
+![image](./screenshots/Final_result_of_code_update_deployed_page2.png)
+
+24. **Zap report after the github update**
+
+- The zap report shows the new vulnerabilities detected after the code update
+  ![image](./screenshots/extracted_zap_report_second_run.png)
+- The zap report embedded on Jenkins console
+  ![image](./screenshots/embedded_zap_report_second_run.png)
+
+24. **Sonarqube dashboard after the github update**
+
+    ![image](./screenshots/sonarqube_after.png)
+25. **Prometheus dashboard after the github update**
+
+![image](./screenshots/prometheus_after.png)
+
+26. **Grafana dashboard after the github update**
+
+    ![image](./screenshots/grafana_after.png)
 
 # Journal
+27. **Maven Installation Issue on Jenkins:**
 
-
-1. **Maven Installation Issue on Jenkins:**
     - **Context:** During the initial setup of the Jenkins pipeline.
     - **Problem:** `Tool type "maven" does not have an install of "Maven 3.6.3" configured`.
     - **Solution:** Ensured Maven was correctly configured in Jenkins or used a Docker image with Maven pre-installed to avoid configuration issues.
+28. **SonarQube Configuration:**
 
-2. **SonarQube Configuration:**
     - **Context:** Setting up SonarQube for static analysis in the Jenkins pipeline.
     - **Problem:** `No SonarQube installation assigned for this job`.
     - **Solution:** Configured SonarQube correctly in Jenkins, ensuring the proper connection and authentication setup.
+29. **Static Analysis Failure:**
 
-3. **Static Analysis Failure:**
     - **Context:** Running static analysis using SonarQube in the Jenkins pipeline.
     - **Problem:** `Error during static analysis: hudson.AbortException: script returned exit code 125`.
     - **Solution:** Verified Docker daemon was running and accessible. Ensured SonarQube scanner was properly configured and had necessary permissions.
+30. **Docker Platform Compatibility:**
 
-4. **Docker Platform Compatibility:**
     - **Context:** Building Docker images for the pipeline.
     - **Problem:** `docker: no matching manifest for linux/arm64/v8`.
     - **Solution:** Ensured compatible Docker images were used, appropriate for the target platform.
+31. **General Pipeline Failures:**
 
-5. **General Pipeline Failures:**
     - **Context:** Various stages in the Jenkins pipeline.
     - **Problem:** Stages failing due to incorrect configurations or missing files.
     - **Solution:** Added error handling and validation steps, ensured all required files were in place, and verified configurations before execution.
+32. **Permissions for Docker Socket Binding:**
 
-6. **Permissions for Docker Socket Binding:**
     - **Context:** Running Docker commands from Jenkins.
     - **Problem:** "Docker: permission denied" error when binding Docker socket.
     - **Solution:** Ran the container as root or added the container user to the Docker group. Adjusted Docker socket permissions on the host.
+33. **SSH Key Issues:**
 
-7. **SSH Key Issues:**
     - **Context:** Connecting to EC2 instances from Jenkins.
     - **Problem:** SSH key-related errors when connecting to EC2 instances.
     - **Solution:** Generated a new key pair if necessary, and ensured the correct key was used and properly configured in Jenkins and AWS.
+34. **File Copying and Path Issues in Jenkins Pipeline:**
 
-8. **File Copying and Path Issues in Jenkins Pipeline:**
     - **Context:** Copying SSH key file in the Jenkins pipeline.
     - **Problem:** Errors while copying the SSH key file.
     - **Solution:** Ensured correct paths and permissions. Used absolute paths and ensured the file existed at the specified location.
+35. **ZAP Container Issues:**
 
-9. **ZAP Container Issues:**
     - **Context:** Running ZAP analysis in the Jenkins pipeline.
     - **Problem:** `Failed to access summary file /home/zap/zap_out.json`.
     - **Solution:** Ensured proper directory creation and file access permissions within the ZAP container.
+36. **Accessing Application URL:**
 
-10. **Accessing Application URL:**
     - **Context:** After deploying the application.
     - **Problem:** Unable to access the application at `http://192.168.1.2:8082`.
     - **Solution:** Ensured the application was correctly deployed and running, and verified network configurations to allow access.
+37. **AWS EC2 Instance Creation and Configuration:**
 
-11. **AWS EC2 Instance Creation and Configuration:**
     - **Context:** Creating and configuring EC2 instances in the Jenkins pipeline.
     - **Problem:** Various errors in creating and configuring EC2 instances, including invalid AMI IDs, security group issues, and SSH connection problems.
     - **Solution:** Verified AMI IDs, security group configurations, and ensured correct credentials. Added retries and proper error handling in the Jenkins pipeline.
+38. **Java Version Compatibility:**
 
-12. **Java Version Compatibility:**
     - **Context:** Running the Spring PetClinic application on the EC2 instance.
     - **Problem:** Java runtime version mismatch on the EC2 instance.
     - **Solution:** Installed the correct version of Java (OpenJDK 17) using Ansible in the deployment playbook.
+39. **Ansible Playbook Failures:**
 
-13. **Ansible Playbook Failures:**
     - **Context:** Deploying the application using Ansible.
     - **Problem:** Errors during various Ansible tasks, including adding repositories and copying files.
     - **Solution:** Fixed syntax issues, ensured correct permissions, and used appropriate Ansible modules and parameters.
+40. **Grafana Data Source Provisioning Error:**
 
-14. **Grafana Data Source Provisioning Error:**
     - **Context:** Setting up Grafana data sources.
     - **Problem:** `Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default`.
     - **Solution:** Ensured only one data source was marked as default in the `datasource.yml` file.
+41. **No Such File Exception for Grafana Dashboard:**
 
-15. **No Such File Exception for Grafana Dashboard:**
     - **Context:** Importing Grafana dashboards in Jenkins.
     - **Problem:** `java.nio.file.NoSuchFileException: /var/jenkins_home/workspace/bbbb/grafana/dashboards/dashboard.json`.
     - **Solution:** Ensured the correct path was used and the file existed. Placed the `dashboard.json` file in the correct directory and verified the path in the Jenkins pipeline.
+42. **Prometheus Targets Not Being Scraped:**
 
-16. **Prometheus Targets Not Being Scraped:**
     - **Context:** Setting up Prometheus for monitoring.
     - **Problem:** `Prometheus is not scraping targets correctly`.
     - **Solution:** Verified Prometheus configuration and ensured targets were correctly defined. Checked network connectivity between Prometheus and the targets.
+43. **Jenkins Job Failure:**
 
-17. **Jenkins Job Failure:**
     - **Context:** Running Jenkins jobs.
     - **Problem:** Jenkins job failed with a `hudson.AbortException`.
     - **Cause:** Multiple potential causes, including the non-availability of `curl` in the Docker container used for the Jenkins job.
     - **Solution:** Ensured `curl` was available in the Docker container by installing it or using a pre-configured container.
+44. **Grafana API Key Issue:**
 
-18. **Grafana API Key Issue:**
     - **Context:** Importing Grafana dashboards.
     - **Problem:** Invalid API key error.
     - **Solution:** Successfully generated and used a service account token instead of a direct API key.
+45. **Grafana Organization Creation:**
 
-19. **Grafana Organization Creation:**
     - **Context:** Creating Grafana organizations.
     - **Problem:** Attempted to create an organization with a name that was already taken, resulting in an error.
     - **Solution:** Handled the error gracefully by checking the response and skipping organization creation if it already existed.
+46. **SonarQube Report Redirect:**
 
-20. **SonarQube Report Redirect:**
     - **Context:** Generating SonarQube reports.
     - **Problem:** The SonarQube report did not automatically redirect to the SonarQube dashboard URL.
     - **Solution:** Created an HTML file with a meta-refresh tag to handle the redirection properly.
+47. **Jenkins Pipeline Insecure Interpolation Warning:**
 
-21. **Jenkins Pipeline Insecure Interpolation Warning:**
     - **Context:** Passing sensitive variables in Jenkins.
     - **Problem:** Sensitive variables such as `GITHUB_TOKEN`, `SONARQUBE_LOGIN`, and `GRAFANA_ADMIN_PASS` were passed insecurely.
     - **Solution:** Used the `withCredentials` block to handle sensitive information securely.
+48. **SonarQube Authentication Token Management:**
 
-22. **SonarQube Authentication Token Management:**
     - **Context:** Managing SonarQube authentication tokens.
     - **Problem:** Hardcoded SonarQube login tokens.
     - **Solution:** Used Jenkins credentials to securely store and access the SonarQube authentication token.
+49. **SSH Service Issues:**
 
-23. **SSH Service Issues:**
     - **Context:** Starting SSH service in different environments.
     - **Problem:** Errors when trying to start SSH service.
     - **Solution:** Used appropriate commands to start SSH service based on the environment.
+50. **Running Docker Commands from Jenkins:**
 
-24. **Running Docker Commands from Jenkins:**
     - **Context:** Running Docker commands from Jenkins.
     - **Problem:** `docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock`.
     - **Solution:** Mounted Docker socket in Jenkins container or ran Docker commands from the host.
+51. **Resource Usage Concerns:**
 
-25. **Resource Usage Concerns:**
     - **Context:** Managing AWS resources.
     - **Problem:** High resource usage and potential costs from AWS.
     - **Solution:** Implemented checks to reuse existing instances and monitored resource usage.
+52. **Grafana Initial Password Setup:**
 
-26. **Grafana Initial Password Setup:**
     - **Context:** Setting up initial Grafana password.
     - **Problem:** Grafana prompts for initial password setup.
     - **Solution:** Configured the initial admin user and password in the `grafana.ini` file or via environment variables.
-
-
-
-
-
-
-
-
-
-
-
-
