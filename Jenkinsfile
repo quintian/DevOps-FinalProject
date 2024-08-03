@@ -10,7 +10,7 @@ pipeline {
         SONARQUBE_URL = 'http://192.168.1.3:9000'
         GRAFANA_URL = 'http://192.168.1.5:3000'
         GRAFANA_DASHBOARD_URL = 'http://localhost:3000/d/haryan-jenkins/jenkins-performance-and-health-overview?orgId=1'
-        SONARQUBE_DASHBOARD_URL = "${SONARQUBE_URL}/dashboard?id=spring-petclinic"
+        SONARQUBE_DASHBOARD_URL = "http://localhost:9000/dashboard?id=spring-petclinic"
         DEPLOYMENT_URL = 'http://192.168.1.2:8082'
         SSH_USER = 'ubuntu'
         AWS_REGION = 'us-east-1'

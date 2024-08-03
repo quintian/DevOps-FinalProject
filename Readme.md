@@ -347,8 +347,9 @@ DevOps-FinalProject
 ├── ansible
 │   ├── deploy-petclinic.yml
 │   └── inventory.ini
-├── documentation
-│   └── placeholder
+├── automation
+│   ├── jenkins_job_trigger.py
+│   └── update_github_file.sh
 ├── grafana
 │   ├── dashboards
 │   └── provisioning
@@ -2128,6 +2129,7 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
     ![image](./screenshots/grafana_after.png)
 
 # Journal
+
 27. **Maven Installation Issue on Jenkins:**
 
     - **Context:** During the initial setup of the Jenkins pipeline.
@@ -2259,3 +2261,243 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
     - **Context:** Setting up initial Grafana password.
     - **Problem:** Grafana prompts for initial password setup.
     - **Solution:** Configured the initial admin user and password in the `grafana.ini` file or via environment variables.
+
+# Scripts (Automation)
+
+Note: scripts contain values that are specific to the user's environment and need to be updated accordingly.
+
+```markdown
+# Automation Script for Docker and GitHub File Update
+
+This project contains a shell script and a Python script to automate the process of building and starting Docker containers, waiting for them to be ready, and then updating a specific file in a GitHub repository.
+
+## Files
+
+- `update_github_file.sh`: A shell script that builds and starts Docker containers, waits for them to be ready, and runs a Python script to update a file in a GitHub repository.
+- `update_github_file.py`: A Python script that updates a specific file in a GitHub repository with new content.
+
+## Prerequisites
+
+- Docker and Docker Compose installed on your system.
+- Python 3 and `pip` installed on your system.
+- A GitHub Personal Access Token with the necessary permissions to update the file in the repository.
+
+## Usage
+
+### 1. Clone the repository
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/your-repository.git
+cd your-repository
+```
+
+### 2. Ensure the directory structure
+
+Make sure the `docker-compose.yml` file is in the root directory of the repository and the scripts are in the `automation` directory:
+
+```
+your-repository/
+├── docker-compose.yml
+└── automation/
+    ├── update_github_file.sh
+    └── update_github_file.py
+```
+
+### 3. Update the Python script
+
+Edit the `update_github_file.py` script to set your GitHub repository details and token:
+
+```python
+# Define the variables
+repo_owner = "your-username"
+repo_name = "your-repository"
+file_path = "path/to/your/file.sql"
+commit_message = "Update file.sql with new content"
+github_token = "your_github_personal_access_token"
+
+# Define the content to replace
+new_content = """
+# Your SQL content here
+"""
+```
+
+### 4. Make the shell script executable
+
+Make the `update_github_file.sh` script executable:
+
+```bash
+chmod +x automation/update_github_file.sh
+```
+
+### 5. Run the shell script
+
+Execute the shell script:
+
+```bash
+cd automation
+./update_github_file.sh
+```
+
+This script will:
+
+1. Navigate to the directory containing the `docker-compose.yml` file.
+2. Build and start the Docker containers using Docker Compose.
+3. Wait for 60 seconds to ensure the containers are running.
+4. Navigate back to the `automation` directory.
+5. Create and activate a Python virtual environment.
+6. Upgrade `pip` and install the `requests` library.
+7. Run the Python script to update the GitHub file.
+8. Deactivate the virtual environment.
+9. Optionally stop and remove the Docker containers.
+
+### Optional: Stop and Remove Docker Containers
+
+If you want to stop and remove the Docker containers after the script runs, uncomment the last two lines in the `update_github_file.sh` script:
+
+```bash
+cd ..
+docker compose -p devops-finalproject-team4 down
+```
+
+## Troubleshooting
+
+- Ensure you have the necessary permissions to update the file in the GitHub repository.
+- Verify that Docker and Docker Compose are correctly installed and running on your system.
+- Check that the `docker-compose.yml` file is correctly configured and placed in the root directory of the repository.
+
+
+```
+
+### Shell Script: `update_github_file.sh`
+
+```bash
+#!/bin/bash
+
+cd ..
+
+docker compose -p devops-finalproject-team4 up --build -d
+
+echo "Waiting for Docker containers to start..."
+sleep 60
+echo "Docker containers should be running now."
+
+cd automation
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install --upgrade pip
+pip install requests
+
+python update_github_file.py
+
+deactivate
+
+cd ..
+docker compose -p devops-finalproject-team4 down
+```
+
+### Python Script: `update_github_file.py`
+
+```python
+import requests
+import base64
+import json
+
+# Define the variables
+repo_owner = "your-username"
+repo_name = "your-repository"
+file_path = "path/to/your/file.sql"
+commit_message = "Update file.sql with new content"
+github_token = "your_github_personal_access_token"
+
+# Define the content to replace
+new_content = """
+INSERT INTO vets VALUES (default, 'James', 'Carter');
+INSERT INTO vets VALUES (default, 'Helen', 'Leary');
+INSERT INTO vets VALUES (default, 'Linda', 'Douglas');
+INSERT INTO vets VALUES (default, 'Rafael', 'Ortega');
+INSERT INTO vets VALUES (default, 'Henry', 'Stevens');
+INSERT INTO vets VALUES (default, 'Sharon', 'Jenkins');
+
+INSERT INTO specialties VALUES (default, 'radiology');
+INSERT INTO specialties VALUES (default, 'surgery');
+INSERT INTO specialties VALUES (default, 'dentistry');
+
+INSERT INTO vet_specialties VALUES (2, 1);
+INSERT INTO vet_specialties VALUES (3, 2);
+INSERT INTO vet_specialties VALUES (3, 3);
+INSERT INTO vet_specialties VALUES (4, 2);
+INSERT INTO vet_specialties VALUES (5, 1);
+
+INSERT INTO types VALUES (default, 'cat');
+INSERT INTO types VALUES (default, 'dog');
+INSERT INTO types VALUES (default, 'lizard');
+INSERT INTO types VALUES (default, 'snake');
+INSERT INTO types VALUES (default, 'bird');
+INSERT INTO types VALUES (default, 'hamster');
+
+INSERT INTO owners VALUES (default, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023');
+INSERT INTO owners VALUES (default, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749');
+INSERT INTO owners VALUES (default, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763');
+INSERT INTO owners VALUES (default, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198');
+INSERT INTO owners VALUES (default, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765');
+INSERT INTO owners VALUES (default, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654');
+INSERT INTO owners VALUES (default, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387');
+INSERT INTO owners VALUES (default, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683');
+INSERT INTO owners VALUES (default, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435');
+INSERT INTO owners VALUES (default, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487');
+
+INSERT INTO pets VALUES (default, 'Leo', '2010-09-07', 1, 1);
+INSERT INTO pets VALUES (default, 'Basil', '2012-08-06', 6, 2);
+INSERT INTO pets VALUES (default, 'Rosy', '2011-04-17', 2, 3);
+INSERT INTO pets VALUES (default, 'Jewel', '2010-03-07', 2, 3);
+INSERT INTO pets VALUES (default, 'Iggy', '2010-11-30', 3, 4);
+INSERT INTO pets VALUES (default, 'George', '2010-01-20', 4, 5);
+INSERT INTO pets VALUES (default, 'Samantha', '2012-09-04', 1, 6);
+INSERT INTO pets VALUES (default, 'Max', '2012-09-04', 1, 6);
+INSERT INTO pets VALUES (default, 'Lucky', '2011-08-06', 5, 7);
+INSERT INTO pets VALUES (default, 'Mulligan', '2007-02-24', 2, 8);
+INSERT INTO pets VALUES (default, 'Freddy', '2010-03-09', 5, 9);
+INSERT INTO pets VALUES (default, 'Lucky', '2010-06-24', 2, 10);
+INSERT INTO pets VALUES (default, 'Sly', '2012-06-08', 1, 10);
+
+INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
+INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
+INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
+INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
+"""
+
+# Get the current content of the file
+url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
+headers = {
+    "Authorization": f"token {github_token}",
+    "Accept": "application/vnd.github.v3+json"
+}
+
+response = requests.get(url, headers=headers)
+response.raise_for_status()
+file_info = response.json()
+file_sha = file_info['sha']
+
+# Encode the new content in Base64
+encoded_content = base64.b64encode(new_content.encode('utf-8')).decode('utf-8')
+
+# Update the file on GitHub
+data = {
+    "
+
+message": commit_message,
+    "content": encoded_content,
+    "sha": file_sha,
+    "branch": "main"
+}
+
+response = requests.put(url, headers=headers, data=json.dumps(data))
+response.raise_for_status()
+
+print(f"File updated successfully: {response.json()['content']['html_url']}")
+```
+
