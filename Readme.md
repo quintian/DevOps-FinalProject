@@ -2066,15 +2066,19 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
 
     - The ZAP scanning report highlights the security vulnerabilities detected during the static analysis stage of the pipeline, providing detailed information about each alert.
     - ![image](./screenshots/15_deployment_and_verification.png)
-16. **Spring PetClinic Application**
+    - Zap report embedded on Jenkins console
+    - ![image](./screenshots/19_deployment_and_verification.png)
+16. **Prometheus and Grafana and sonarqube dashboards**
+
+    - The first image below shows that the connection between Jenkins and Prometheus is active and the second screen shows grafana dashboard with various details. The 3rd image is the sonarqube report after the first run.
+
+      ![image](./screenshots/20_deployment_and_verification.png)
+    - ![image](./screenshots/21_deployment_and_verification.png)
+    - ![image](./screenshots/21a_deployment_and_verification.png)
+17. **Spring PetClinic Application**
 
     - The Spring PetClinic application is shown running, indicating a successful deployment to the AWS EC2 instance. This view is part of the verification stage, confirming that the application is operational.
     - ![image](./screenshots/16_deployment_and_verification.png)
-17. **Spring PetClinic Veterinarian List**
-
-    - The updated list of veterinarians in the Spring PetClinic application verifies that the changes from the `data.sql` file have been correctly applied.
-    - ![image](./screenshots/19_deployment_and_verification.png)
-      ![image](./screenshots/21_deployment_and_verification.png)
 18. **GitHub Pull Request for Data Update**
 
     - The pull request in GitHub showcases the changes made to the `data.sql` file, including the insertions of new data entries for veterinarians, owners, pets, and visits.
@@ -2105,135 +2109,152 @@ The `inventory.ini` file specifies the hosts that Ansible will manage. Below is 
 
 ![image](./screenshots/Final_result_of_code_update_deployed_page2.png)
 
+24. **Zap report after the github update**
+
+- The zap report shows the new vulnerabilities detected after the code update
+  ![image](./screenshots/extracted_zap_report_second_run.png)
+- The zap report embedded on Jenkins console
+  ![image](./screenshots/embedded_zap_report_second_run.png)
+
+24. **Sonarqube dashboard after the github update**
+
+    ![image](./screenshots/sonarqube_after.png)
+25. **Prometheus dashboard after the github update**
+
+![image](./screenshots/prometheus_after.png)
+
+26. **Grafana dashboard after the github update**
+
+    ![image](./screenshots/grafana_after.png)
+
 # Journal
+27. **Maven Installation Issue on Jenkins:**
 
-1. **Maven Installation Issue on Jenkins:**
+    - **Context:** During the initial setup of the Jenkins pipeline.
+    - **Problem:** `Tool type "maven" does not have an install of "Maven 3.6.3" configured`.
+    - **Solution:** Ensured Maven was correctly configured in Jenkins or used a Docker image with Maven pre-installed to avoid configuration issues.
+28. **SonarQube Configuration:**
 
-   - **Context:** During the initial setup of the Jenkins pipeline.
-   - **Problem:** `Tool type "maven" does not have an install of "Maven 3.6.3" configured`.
-   - **Solution:** Ensured Maven was correctly configured in Jenkins or used a Docker image with Maven pre-installed to avoid configuration issues.
-2. **SonarQube Configuration:**
+    - **Context:** Setting up SonarQube for static analysis in the Jenkins pipeline.
+    - **Problem:** `No SonarQube installation assigned for this job`.
+    - **Solution:** Configured SonarQube correctly in Jenkins, ensuring the proper connection and authentication setup.
+29. **Static Analysis Failure:**
 
-   - **Context:** Setting up SonarQube for static analysis in the Jenkins pipeline.
-   - **Problem:** `No SonarQube installation assigned for this job`.
-   - **Solution:** Configured SonarQube correctly in Jenkins, ensuring the proper connection and authentication setup.
-3. **Static Analysis Failure:**
+    - **Context:** Running static analysis using SonarQube in the Jenkins pipeline.
+    - **Problem:** `Error during static analysis: hudson.AbortException: script returned exit code 125`.
+    - **Solution:** Verified Docker daemon was running and accessible. Ensured SonarQube scanner was properly configured and had necessary permissions.
+30. **Docker Platform Compatibility:**
 
-   - **Context:** Running static analysis using SonarQube in the Jenkins pipeline.
-   - **Problem:** `Error during static analysis: hudson.AbortException: script returned exit code 125`.
-   - **Solution:** Verified Docker daemon was running and accessible. Ensured SonarQube scanner was properly configured and had necessary permissions.
-4. **Docker Platform Compatibility:**
+    - **Context:** Building Docker images for the pipeline.
+    - **Problem:** `docker: no matching manifest for linux/arm64/v8`.
+    - **Solution:** Ensured compatible Docker images were used, appropriate for the target platform.
+31. **General Pipeline Failures:**
 
-   - **Context:** Building Docker images for the pipeline.
-   - **Problem:** `docker: no matching manifest for linux/arm64/v8`.
-   - **Solution:** Ensured compatible Docker images were used, appropriate for the target platform.
-5. **General Pipeline Failures:**
+    - **Context:** Various stages in the Jenkins pipeline.
+    - **Problem:** Stages failing due to incorrect configurations or missing files.
+    - **Solution:** Added error handling and validation steps, ensured all required files were in place, and verified configurations before execution.
+32. **Permissions for Docker Socket Binding:**
 
-   - **Context:** Various stages in the Jenkins pipeline.
-   - **Problem:** Stages failing due to incorrect configurations or missing files.
-   - **Solution:** Added error handling and validation steps, ensured all required files were in place, and verified configurations before execution.
-6. **Permissions for Docker Socket Binding:**
+    - **Context:** Running Docker commands from Jenkins.
+    - **Problem:** "Docker: permission denied" error when binding Docker socket.
+    - **Solution:** Ran the container as root or added the container user to the Docker group. Adjusted Docker socket permissions on the host.
+33. **SSH Key Issues:**
 
-   - **Context:** Running Docker commands from Jenkins.
-   - **Problem:** "Docker: permission denied" error when binding Docker socket.
-   - **Solution:** Ran the container as root or added the container user to the Docker group. Adjusted Docker socket permissions on the host.
-7. **SSH Key Issues:**
+    - **Context:** Connecting to EC2 instances from Jenkins.
+    - **Problem:** SSH key-related errors when connecting to EC2 instances.
+    - **Solution:** Generated a new key pair if necessary, and ensured the correct key was used and properly configured in Jenkins and AWS.
+34. **File Copying and Path Issues in Jenkins Pipeline:**
 
-   - **Context:** Connecting to EC2 instances from Jenkins.
-   - **Problem:** SSH key-related errors when connecting to EC2 instances.
-   - **Solution:** Generated a new key pair if necessary, and ensured the correct key was used and properly configured in Jenkins and AWS.
-8. **File Copying and Path Issues in Jenkins Pipeline:**
+    - **Context:** Copying SSH key file in the Jenkins pipeline.
+    - **Problem:** Errors while copying the SSH key file.
+    - **Solution:** Ensured correct paths and permissions. Used absolute paths and ensured the file existed at the specified location.
+35. **ZAP Container Issues:**
 
-   - **Context:** Copying SSH key file in the Jenkins pipeline.
-   - **Problem:** Errors while copying the SSH key file.
-   - **Solution:** Ensured correct paths and permissions. Used absolute paths and ensured the file existed at the specified location.
-9. **ZAP Container Issues:**
-
-   - **Context:** Running ZAP analysis in the Jenkins pipeline.
-   - **Problem:** `Failed to access summary file /home/zap/zap_out.json`.
-   - **Solution:** Ensured proper directory creation and file access permissions within the ZAP container.
-10. **Accessing Application URL:**
+    - **Context:** Running ZAP analysis in the Jenkins pipeline.
+    - **Problem:** `Failed to access summary file /home/zap/zap_out.json`.
+    - **Solution:** Ensured proper directory creation and file access permissions within the ZAP container.
+36. **Accessing Application URL:**
 
     - **Context:** After deploying the application.
     - **Problem:** Unable to access the application at `http://192.168.1.2:8082`.
     - **Solution:** Ensured the application was correctly deployed and running, and verified network configurations to allow access.
-11. **AWS EC2 Instance Creation and Configuration:**
+37. **AWS EC2 Instance Creation and Configuration:**
 
     - **Context:** Creating and configuring EC2 instances in the Jenkins pipeline.
     - **Problem:** Various errors in creating and configuring EC2 instances, including invalid AMI IDs, security group issues, and SSH connection problems.
     - **Solution:** Verified AMI IDs, security group configurations, and ensured correct credentials. Added retries and proper error handling in the Jenkins pipeline.
-12. **Java Version Compatibility:**
+38. **Java Version Compatibility:**
 
     - **Context:** Running the Spring PetClinic application on the EC2 instance.
     - **Problem:** Java runtime version mismatch on the EC2 instance.
     - **Solution:** Installed the correct version of Java (OpenJDK 17) using Ansible in the deployment playbook.
-13. **Ansible Playbook Failures:**
+39. **Ansible Playbook Failures:**
 
     - **Context:** Deploying the application using Ansible.
     - **Problem:** Errors during various Ansible tasks, including adding repositories and copying files.
     - **Solution:** Fixed syntax issues, ensured correct permissions, and used appropriate Ansible modules and parameters.
-14. **Grafana Data Source Provisioning Error:**
+40. **Grafana Data Source Provisioning Error:**
 
     - **Context:** Setting up Grafana data sources.
     - **Problem:** `Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default`.
     - **Solution:** Ensured only one data source was marked as default in the `datasource.yml` file.
-15. **No Such File Exception for Grafana Dashboard:**
+41. **No Such File Exception for Grafana Dashboard:**
 
     - **Context:** Importing Grafana dashboards in Jenkins.
     - **Problem:** `java.nio.file.NoSuchFileException: /var/jenkins_home/workspace/bbbb/grafana/dashboards/dashboard.json`.
     - **Solution:** Ensured the correct path was used and the file existed. Placed the `dashboard.json` file in the correct directory and verified the path in the Jenkins pipeline.
-16. **Prometheus Targets Not Being Scraped:**
+42. **Prometheus Targets Not Being Scraped:**
 
     - **Context:** Setting up Prometheus for monitoring.
     - **Problem:** `Prometheus is not scraping targets correctly`.
     - **Solution:** Verified Prometheus configuration and ensured targets were correctly defined. Checked network connectivity between Prometheus and the targets.
-17. **Jenkins Job Failure:**
+43. **Jenkins Job Failure:**
 
     - **Context:** Running Jenkins jobs.
     - **Problem:** Jenkins job failed with a `hudson.AbortException`.
     - **Cause:** Multiple potential causes, including the non-availability of `curl` in the Docker container used for the Jenkins job.
     - **Solution:** Ensured `curl` was available in the Docker container by installing it or using a pre-configured container.
-18. **Grafana API Key Issue:**
+44. **Grafana API Key Issue:**
 
     - **Context:** Importing Grafana dashboards.
     - **Problem:** Invalid API key error.
     - **Solution:** Successfully generated and used a service account token instead of a direct API key.
-19. **Grafana Organization Creation:**
+45. **Grafana Organization Creation:**
 
     - **Context:** Creating Grafana organizations.
     - **Problem:** Attempted to create an organization with a name that was already taken, resulting in an error.
     - **Solution:** Handled the error gracefully by checking the response and skipping organization creation if it already existed.
-20. **SonarQube Report Redirect:**
+46. **SonarQube Report Redirect:**
 
     - **Context:** Generating SonarQube reports.
     - **Problem:** The SonarQube report did not automatically redirect to the SonarQube dashboard URL.
     - **Solution:** Created an HTML file with a meta-refresh tag to handle the redirection properly.
-21. **Jenkins Pipeline Insecure Interpolation Warning:**
+47. **Jenkins Pipeline Insecure Interpolation Warning:**
 
     - **Context:** Passing sensitive variables in Jenkins.
     - **Problem:** Sensitive variables such as `GITHUB_TOKEN`, `SONARQUBE_LOGIN`, and `GRAFANA_ADMIN_PASS` were passed insecurely.
     - **Solution:** Used the `withCredentials` block to handle sensitive information securely.
-22. **SonarQube Authentication Token Management:**
+48. **SonarQube Authentication Token Management:**
 
     - **Context:** Managing SonarQube authentication tokens.
     - **Problem:** Hardcoded SonarQube login tokens.
     - **Solution:** Used Jenkins credentials to securely store and access the SonarQube authentication token.
-23. **SSH Service Issues:**
+49. **SSH Service Issues:**
 
     - **Context:** Starting SSH service in different environments.
     - **Problem:** Errors when trying to start SSH service.
     - **Solution:** Used appropriate commands to start SSH service based on the environment.
-24. **Running Docker Commands from Jenkins:**
+50. **Running Docker Commands from Jenkins:**
 
     - **Context:** Running Docker commands from Jenkins.
     - **Problem:** `docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock`.
     - **Solution:** Mounted Docker socket in Jenkins container or ran Docker commands from the host.
-25. **Resource Usage Concerns:**
+51. **Resource Usage Concerns:**
 
     - **Context:** Managing AWS resources.
     - **Problem:** High resource usage and potential costs from AWS.
     - **Solution:** Implemented checks to reuse existing instances and monitored resource usage.
-26. **Grafana Initial Password Setup:**
+52. **Grafana Initial Password Setup:**
 
     - **Context:** Setting up initial Grafana password.
     - **Problem:** Grafana prompts for initial password setup.
